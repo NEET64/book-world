@@ -1,8 +1,8 @@
 ![/favourites](https://github.com/NEET64/book-world/assets/67575976/8f3fc809-86d2-4212-87f4-6481b8626d09)
+
 # Book World
 
 A simple MERN (`MongoDB`, `Express`, `React`, `Node.js`) application for managing a collection of books. Admins can add, edit, and delete books, while users can browse books and add them to their collection by liking them. used JWT for authorization, the app is responsive for differnet screen sizes. I used `Shadcn` UI library for fast and easy UI which uses `Radix-UI`, `Tailwind`, `react-hook-forms`, `Tanstack Tables` and `lucide-react`.
-
 
 ## Features
 
@@ -37,6 +37,7 @@ A simple MERN (`MongoDB`, `Express`, `React`, `Node.js`) application for managin
 - shadcn
 
 ## Screenshots
+
 ![/books](https://github.com/NEET64/book-world/assets/67575976/64fbd12a-fd5a-407f-92ad-45903a69dd5a)
 ![/books/:bookId](https://github.com/NEET64/book-world/assets/67575976/a3bf2908-55ca-4f1f-964e-6beaad9fd51b)
 ![/users](https://github.com/NEET64/book-world/assets/67575976/cefde2a6-8f2b-48ec-8765-02b1e87d6806)
@@ -51,7 +52,7 @@ A simple MERN (`MongoDB`, `Express`, `React`, `Node.js`) application for managin
 
 - Node.js
 - MongoDB
-  
+
 You can use use Mongo Atlas URL instead of local MongoDB
 
 ### Installation
@@ -73,7 +74,7 @@ cd frontend
 npm install
 ```
 
-Now rename env files from .env.sample to .env
+Now rename env files from .env.example to .env in both backend and frontend
 and add your `MONGO_URL` and `JWT_SECRET`
 
 now start the frontend and backend on different terminals

@@ -106,7 +106,7 @@ const EditBook = () => {
   let { id } = useParams();
   useEffect(() => {
     axios
-      .get("http://localhost:8000/books/" + id)
+      .get(`${VITE_BACKEND_URL}/books/` + id)
       .then((response) => {
         setBook(response.data.book);
       })
@@ -156,7 +156,7 @@ const EditBook = () => {
 
   const onSubmit = (values) => {
     axios
-      .put("http://localhost:8000/books/" + id, values, {
+      .put(`${VITE_BACKEND_URL}/books/` + id, values, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

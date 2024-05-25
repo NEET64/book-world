@@ -18,7 +18,7 @@ const useUserData = () => {
   useEffect(() => {
     console.log("fetch");
     axios
-      .get("http://localhost:8000/users/me", {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

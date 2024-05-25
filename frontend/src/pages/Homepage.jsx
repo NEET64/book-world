@@ -19,7 +19,7 @@ const Homepage = () => {
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get("q") || "";
     axios
-      .get("http://localhost:8000/books", {
+      .get(`${import.meta.env.VITE_BACKEND_URL}/books`, {
         params: { q: searchQuery },
       })
       .then((response) => {
@@ -59,7 +59,7 @@ const Homepage = () => {
 
         <TabsContent value="block">
           <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
-            {books.map((book, index) => (
+            {books?.map((book, index) => (
               <BookCard key={index} book={book} />
             ))}
           </div>

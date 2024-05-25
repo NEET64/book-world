@@ -110,7 +110,7 @@ const AddBook = () => {
 
   const onSubmit = (values) => {
     axios
-      .post("http://localhost:8000/books", values, {
+      .post(`${VITE_BACKEND_URL}/books`, values, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

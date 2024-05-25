@@ -11,7 +11,7 @@ const Users = () => {
   useEffect(() => {
     token &&
       axios
-        .get(`http://localhost:8000/users/`, {
+        .get(`${VITE_BACKEND_URL}/users/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

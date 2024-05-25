@@ -27,7 +27,7 @@ const Details = () => {
   let { id } = useParams();
   useEffect(() => {
     axios
-      .get("http://localhost:8000/books/" + id)
+      .get(`${VITE_BACKEND_URL}/books/` + id)
       .then((response) => {
         setBook(response.data.book);
       })
@@ -42,7 +42,7 @@ const Details = () => {
     isLoggedIn &&
       axios
         .put(
-          `http://localhost:8000/users/favourites`,
+          `${VITE_BACKEND_URL}/users/favourites`,
           { bookId: book._id },
           {
             headers: {
@@ -142,7 +142,7 @@ const Details = () => {
                           className="bg-red-500/90 hover:bg-red-500"
                           onClick={() => {
                             axios
-                              .delete("http://localhost:8000/books/" + id, {
+                              .delete(`${VITE_BACKEND_URL}/books/` + id, {
                                 headers: {
                                   Authorization: `Bearer ${localStorage.getItem(
                                     "token"
