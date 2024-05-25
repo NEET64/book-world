@@ -1,4 +1,4 @@
-# WanderHome
+# Book World
 
 A simple MERN (MongoDB, Express, React, Node.js) application for managing a collection of books. Admins can add, edit, and delete books, while users can browse books and add them to their collection by liking them.
 
