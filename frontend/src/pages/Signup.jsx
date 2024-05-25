@@ -55,7 +55,7 @@ const SignupForm = () => {
         navigate("/login");
       })
       .catch((error) => {
-        console.error("Login failed:", error);
+        console.error("Sign Failed failed:", error);
       });
   };
 
