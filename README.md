@@ -1,4 +1,5 @@
-![image](https://github.com/NEET64/book-world/assets/67575976/e307d3e8-cb2d-4bc5-bb9f-20a264591ae3)# Book World
+![/favourites](https://github.com/NEET64/book-world/assets/67575976/8f3fc809-86d2-4212-87f4-6481b8626d09)
+# Book World
 
 A simple MERN (MongoDB, Express, React, Node.js) application for managing a collection of books. Admins can add, edit, and delete books, while users can browse books and add them to their collection by liking them.
 
