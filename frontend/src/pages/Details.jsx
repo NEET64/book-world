@@ -27,7 +27,7 @@ const Details = () => {
   let { id } = useParams();
   useEffect(() => {
     axios
-      .get(`${VITE_BACKEND_URL}/books/` + id)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
       .then((response) => {
         setBook(response.data.book);
       })
@@ -42,7 +42,7 @@ const Details = () => {
     isLoggedIn &&
       axios
         .put(
-          `${VITE_BACKEND_URL}/users/favourites`,
+          `${import.meta.env.VITE_BACKEND_URL}/users/favourites`,
           { bookId: book._id },
           {
             headers: {
@@ -142,13 +142,17 @@ const Details = () => {
                           className="bg-red-500/90 hover:bg-red-500"
                           onClick={() => {
                             axios
-                              .delete(`${VITE_BACKEND_URL}/books/` + id, {
-                                headers: {
-                                  Authorization: `Bearer ${localStorage.getItem(
-                                    "token"
-                                  )}`,
-                                },
-                              })
+                              .delete(
+                                `${import.meta.env.VITE_BACKEND_URL}/books/` +
+                                  id,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${localStorage.getItem(
+                                      "token"
+                                    )}`,
+                                  },
+                                }
+                              )
                               .then((response) => {
                                 setBook(response.data.book);
                                 navigate("/books");

@@ -50,7 +50,7 @@ const SignupForm = () => {
 
   const onSubmit = (values) => {
     axios
-      .post(`${VITE_BACKEND_URL}/users/signup`, values)
+      .post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, values)
       .then((response) => {
         navigate("/login");
       })

@@ -106,7 +106,7 @@ const EditBook = () => {
   let { id } = useParams();
   useEffect(() => {
     axios
-      .get(`${VITE_BACKEND_URL}/books/` + id)
+      .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
       .then((response) => {
         setBook(response.data.book);
       })
@@ -156,7 +156,7 @@ const EditBook = () => {
 
   const onSubmit = (values) => {
     axios
-      .put(`${VITE_BACKEND_URL}/books/` + id, values, {
+      .put(`${import.meta.env.VITE_BACKEND_URL}/books/` + id, values, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,

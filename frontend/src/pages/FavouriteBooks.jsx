@@ -10,7 +10,7 @@ const FavouriteBooks = () => {
   useEffect(() => {
     token &&
       axios
-        .get(`${VITE_BACKEND_URL}/users/favourites`, {
+        .get(`${import.meta.env.VITE_BACKEND_URL}/users/favourites`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
