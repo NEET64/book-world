@@ -60,8 +60,8 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="grid items-center h-screen">
-      <Card className="mx-auto max-w-sm">
+    <div className="flex justify-center items-center h-screen">
+      <Card className="mx-6 max-w-sm h-fit">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardHeader>
