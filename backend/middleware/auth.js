@@ -1,5 +1,4 @@
 const { jwtVerify } = require("jose");
-const ExpressError = require("./utils/ExpressErrors");
 
 module.exports.authorization = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -7,7 +6,6 @@ module.exports.authorization = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(403).json({ message: "Not Authenticated" });
   }
-
   const token = authHeader.split(" ")[1];
 
   try {

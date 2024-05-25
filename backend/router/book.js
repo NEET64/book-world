@@ -2,21 +2,8 @@ const express = require("express");
 const bookController = require("../controller/books.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const router = express.Router();
-
-const multer = require("multer");
-const { authorization } = require("../middleware.js");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/thumbnail");
-  },
-  filename: function (req, file, cb) {
-    const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniquePrefix + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
+const { authorization } = require("../middleware/auth.js");
+const upload = require("../middleware/upload.js");
 
 router
   .route("/")

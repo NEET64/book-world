@@ -9,7 +9,7 @@ const {
   toggleFavouriteBook,
   getMe,
 } = require("../controller/users");
-const { authorization } = require("../middleware");
+const { authorization } = require("../middleware/auth");
 
 router.post("/signup", wrapAsync(signup));
 

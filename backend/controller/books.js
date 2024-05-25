@@ -33,8 +33,12 @@ module.exports.createBook = async (req, res) => {
   }
   const body = req.body;
 
-  const imagePath = `http://localhost:8000/public/thumbnail/${req.file.filename}`;
-  body.image_url = imagePath;
+  let url = req.file.path;
+  if (url.startsWith("public")) {
+    body.image_url = `http://localhost:8000/${url}`;
+  } else {
+    body.image_url = url;
+  }
   const book = new Book(body);
 
   await book.save();
