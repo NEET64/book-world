@@ -1,6 +1,6 @@
 const ExpressError = require("../utils/ExpressErrors");
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const { SignJWT } = require("jose");
 const User = require("../models/users");
 const Book = require("../models/books");
 
@@ -43,7 +43,12 @@ module.exports.login = async (req, res) => {
     role: user.role,
   };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET);
+  const secret = process.env.JWT_SECRET;
+  const secretBytes = new TextEncoder().encode(secret);
+  const signer = new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt();
+  const token = await signer.sign(secretBytes);
 
   res.status(200).json({ token, role: user.role });
 };
