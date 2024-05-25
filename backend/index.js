@@ -1,11 +1,11 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 8000;
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bookRouter = require("./router/book");
 const userRouter = require("./router/users");
-require("dotenv").config();
 
 // allow access of the api
 app.use(cors());
