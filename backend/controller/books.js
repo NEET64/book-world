@@ -33,12 +33,15 @@ module.exports.createBook = async (req, res) => {
   }
   const body = req.body;
 
-  let url = req.file.path;
-  if (url.startsWith("public")) {
-    body.image_url = `http://localhost:8000/${url}`;
-  } else {
-    body.image_url = url;
+  if (req.file) {
+    let url = req.file.path;
+    if (url.startsWith("public")) {
+      body.image_url = `http://localhost:8000/${url}`;
+    } else {
+      body.image_url = url;
+    }
   }
+
   const book = new Book(body);
 
   await book.save();
@@ -70,8 +73,12 @@ module.exports.updateBook = async (req, res) => {
 
   const previous = await Book.findById(id);
   if (req.file) {
-    const imagePath = `http://localhost:8000/public/thumbnail/${req.file?.filename}`;
-    body.image_url = imagePath;
+    let url = req.file.path;
+    if (url.startsWith("public")) {
+      body.image_url = `http://localhost:8000/${url}`;
+    } else {
+      body.image_url = url;
+    }
   } else body.image_url = previous.image_url;
 
   const current = await Book.findByIdAndUpdate(id, body, { new: true });

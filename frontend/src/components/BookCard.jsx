@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { Badge } from "./ui/badge";
 const BookCard = ({ book }) => {
+  const image = book.image_url.replace("/upload", "/upload/h_400");
   return (
     <Link
       to={`/books/` + book._id}
       className="w-full sm:w-1/3 md:w-1/4 lg:w-1/6 xl:58 fixed-height overflow-hidden">
       <div className="relative m-2 group rounded-lg aspect-w-3 aspect-h-4">
         <img
-          src={book.image_url}
+          src={image}
           alt="Book cover"
           className="w-full h-full object-cover object-center transition-transform duration-500 rounded-lg shadow-md group-hover:scale-105"
         />

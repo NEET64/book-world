@@ -13,7 +13,11 @@ const bookSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  image_url: String,
+  image_url: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/dibsgcq9a/image/upload/v1716750907/book-world/sfx9lfhbj3pkxy0esxkk.jpg",
+  },
   genre: {
     type: [String],
     enum: [

@@ -16,19 +16,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import useAuth from "@/hooks/useAuth";
+import { userSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-
-const userSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-});
 
 const SignupForm = () => {
   const form = useForm({
@@ -47,8 +43,10 @@ const SignupForm = () => {
       navigate("/books");
     }
   }, [isLoggedIn]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (values) => {
+    setIsLoading(true);
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, values)
       .then((response) => {
@@ -56,7 +54,8 @@ const SignupForm = () => {
       })
       .catch((error) => {
         console.error("Sign Failed failed:", error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -130,9 +129,16 @@ const SignupForm = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Create an account
-                </Button>
+                {isLoading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </Button>
+                ) : (
+                  <Button type="submit" className="w-full">
+                    Create an account
+                  </Button>
+                )}
               </div>
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}

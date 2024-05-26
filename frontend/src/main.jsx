@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./pages/App";
 import "./index.css";
@@ -7,16 +7,19 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
-import AddBook from "./pages/AddBook";
-import Homepage from "./pages/Homepage";
-import Details from "./pages/Details";
-import EditBook from "./pages/EditBook";
-import LoginForm from "./pages/Login";
-import SignupForm from "./pages/Signup";
+
 import useAuth from "./hooks/useAuth";
-import NotFound from "./components/NotFound";
-import FavouriteBooks from "./pages/FavouriteBooks";
-import Users from "./pages/Users";
+import { Loader2 } from "lucide-react";
+
+const AddBook = lazy(() => import("./pages/AddBook"));
+const Homepage = lazy(() => import("./pages/Homepage"));
+const Details = lazy(() => import("./pages/Details"));
+const EditBook = lazy(() => import("./pages/EditBook"));
+const LoginForm = lazy(() => import("./pages/Login"));
+const SignupForm = lazy(() => import("./pages/Signup"));
+const NotFound = lazy(() => import("./components/NotFound"));
+const FavouriteBooks = lazy(() => import("./pages/FavouriteBooks"));
+const Users = lazy(() => import("./pages/Users"));
 
 const ProtectedRoute = ({ children, roles }) => {
   const { role, isLoading, isLoggedIn } = useAuth("protecroute");
@@ -35,11 +38,29 @@ const ProtectedRoute = ({ children, roles }) => {
 const router = createBrowserRouter([
   {
     path: "/signup",
-    element: <SignupForm />,
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-full grid items-center h-screen">
+            <Loader2 className="mx-auto  h-10 w-10 animate-spin" />
+          </div>
+        }>
+        <SignupForm />
+      </Suspense>
+    ),
   },
   {
     path: "/login",
-    element: <LoginForm />,
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-full grid items-center h-screen">
+            <Loader2 className="mx-auto  h-10 w-10 animate-spin" />
+          </div>
+        }>
+        <LoginForm />
+      </Suspense>
+    ),
   },
   {
     path: "/",
@@ -51,13 +72,29 @@ const router = createBrowserRouter([
       },
       {
         path: "/books",
-        element: <Homepage />,
+        element: (
+          <Suspense
+            fallback={
+              <div className="w-full">
+                <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+              </div>
+            }>
+            <Homepage />
+          </Suspense>
+        ),
       },
       {
         path: "/books/add",
         element: (
           <ProtectedRoute roles={["admin"]}>
-            <AddBook />
+            <Suspense
+              fallback={
+                <div className="w-full">
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                </div>
+              }>
+              <AddBook />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -65,7 +102,14 @@ const router = createBrowserRouter([
         path: "/favourites",
         element: (
           <ProtectedRoute roles={["user", "admin"]}>
-            <FavouriteBooks />
+            <Suspense
+              fallback={
+                <div className="w-full">
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                </div>
+              }>
+              <FavouriteBooks />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -73,19 +117,42 @@ const router = createBrowserRouter([
         path: "/users",
         element: (
           <ProtectedRoute roles={["admin"]}>
-            <Users />
+            <Suspense
+              fallback={
+                <div className="w-full">
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                </div>
+              }>
+              <Users />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
       {
         path: "/books/:id",
-        element: <Details />,
+        element: (
+          <Suspense
+            fallback={
+              <div className="w-full">
+                <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+              </div>
+            }>
+            <Details />
+          </Suspense>
+        ),
       },
       {
         path: "/books/:id/edit",
         element: (
           <ProtectedRoute roles={["admin"]}>
-            <EditBook />
+            <Suspense
+              fallback={
+                <div className="w-full">
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                </div>
+              }>
+              <EditBook />
+            </Suspense>
           </ProtectedRoute>
         ),
       },
@@ -93,7 +160,16 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <NotFound />,
+    element: (
+      <Suspense
+        fallback={
+          <div className="w-full">
+            <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+          </div>
+        }>
+        <NotFound />
+      </Suspense>
+    ),
   },
 ]);
 

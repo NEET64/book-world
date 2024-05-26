@@ -16,22 +16,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import useAuth from "@/hooks/useAuth";
+import { loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { useEffect } from "react";
+import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long"),
-});
 
 const LoginForm = () => {
   const { isLoggedIn, login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -47,6 +43,7 @@ const LoginForm = () => {
   }, [isLoggedIn]);
 
   const onSubmit = (values) => {
+    setIsLoading(true);
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, values)
       .then((response) => {
@@ -56,7 +53,8 @@ const LoginForm = () => {
       })
       .catch((error) => {
         console.error("Login failed:", error);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -109,9 +107,16 @@ const LoginForm = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
+                {isLoading ? (
+                  <Button disabled>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </Button>
+                ) : (
+                  <Button type="submit" className="w-full">
+                    Login
+                  </Button>
+                )}
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}

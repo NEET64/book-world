@@ -1,17 +1,18 @@
-import { Button } from "@/components/ui/button";
+import useAuth from "@/hooks/useAuth";
 import { LayoutGrid, PlusCircle, Table } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { DataTable } from "@/components/DataTable";
 import { bookColumns } from "@/components/bookColumns";
-import useAuth from "@/hooks/useAuth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import BookCard from "@/components/BookCard";
 
 const Homepage = () => {
   const [books, setBooks] = useState([]);
-  const { isLoggedIn, role } = useAuth();
+  const { role } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

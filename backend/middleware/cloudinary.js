@@ -15,7 +15,7 @@ const cloudStorage = new CloudinaryStorage({
     allowedFormats: ["png", "jpg", "jpeg"],
     public_id: (req, file) => {
       const uniquePrefix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-      return uniquePrefix + "-" + file.originalname;
+      return uniquePrefix;
     },
   },
 });

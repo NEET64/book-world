@@ -2,7 +2,6 @@ import NotFound from "@/components/NotFound";
 import Heart from "@/components/Heart";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import axios from "axios";
-import { Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -23,8 +22,11 @@ const Details = () => {
   const [book, setBook] = useState();
   const [isLiked, setisLiked] = useState(false);
   const { isLoggedIn, token, role } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const navigate = useNavigate();
   let { id } = useParams();
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
@@ -33,7 +35,8 @@ const Details = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const toggleFavorite = async () => {
@@ -56,7 +59,11 @@ const Details = () => {
 
   return (
     <div className="grid p-4 sm:p-6 gap-2">
-      {book ? (
+      {isLoading ? (
+        <div className="w-full">
+          <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+        </div>
+      ) : book ? (
         <div className="flex flex-col sm:flex-row gap-5 h-auto w-full max-w-4xl m-auto">
           <div className="flex flex-col items-center rounded-lg h-full">
             <img
@@ -138,9 +145,10 @@ const Details = () => {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
+                        <Button
                           className="bg-red-500/90 hover:bg-red-500"
                           onClick={() => {
+                            setIsDeleteLoading(true);
                             axios
                               .delete(
                                 `${import.meta.env.VITE_BACKEND_URL}/books/` +
@@ -159,10 +167,18 @@ const Details = () => {
                               })
                               .catch((err) => {
                                 console.log(err);
-                              });
+                              })
+                              .finally(() => setIsDeleteLoading(false));
                           }}>
-                          Delete
-                        </AlertDialogAction>
+                          {isDeleteLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Please wait
+                            </>
+                          ) : (
+                            <>Delete</>
+                          )}
+                        </Button>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

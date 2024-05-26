@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -18,81 +17,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useController, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from "@/components/ui/command";
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
-const bookSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, { message: "Title must be at least 1 characters long" }),
-  description: z.string().optional(),
-  image: z
-    .any(
-      z
-        .instanceof(File)
-        .refine((file) => !file || file.size <= 5 * 1024 * 1024, {
-          message: `Image size must be less than ${
-            (5 * 1024 * 1024) / 1000000
-          }MB`,
-        })
-        .refine((file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), {
-          message: "Only JPEG, JPG, PNG, and WEBP formats are allowed",
-        })
-    )
-    .optional(),
-  author: z
-    .string()
-    .trim()
-    .min(3, { message: "Author name must be at least 3 characters long" }),
-  genre: z
-    .array(
-      z.enum([
-        "Fantasy",
-        "Science Fiction",
-        "Mystery",
-        "Romance",
-        "Historical Fiction",
-        "Non-Fiction",
-        "Adventure",
-      ])
-    )
-    .min(1, { message: "At least one genre is required" }),
-  year_published: z.preprocess(
-    (value) => (isNaN(value) ? 0 : value),
-    z.coerce
-      .number()
-      .int()
-      .gte(618, { message: "Year published must be at least 618" })
-      .lte(new Date().getFullYear(), {
-        message: "Year published cannot be in the future",
-      })
-      .optional()
-  ),
-});
+import { bookSchema } from "@/schema";
+import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 
 const EditBook = () => {
-  const [genre, setGenre] = useState([
+  const genre = [
     "Fantasy",
     "Science Fiction",
     "Mystery",
@@ -100,7 +35,7 @@ const EditBook = () => {
     "Historical Fiction",
     "Non-Fiction",
     "Adventure",
-  ]);
+  ];
   const [book, setBook] = useState();
   const navigate = useNavigate();
   let { id } = useParams();
@@ -139,6 +74,7 @@ const EditBook = () => {
       setPreviewURL(null);
     }
   };
+
   useEffect(() => {
     form.reset({
       title: book?.title,
@@ -154,7 +90,9 @@ const EditBook = () => {
 
   const fileRef = form.register("file");
 
+  const [isEditLoading, setIsEditLoading] = useState(false);
   const onSubmit = (values) => {
+    setIsEditLoading(true);
     axios
       .put(`${import.meta.env.VITE_BACKEND_URL}/books/` + id, values, {
         headers: {
@@ -167,7 +105,8 @@ const EditBook = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsEditLoading(false));
   };
 
   return (
@@ -249,7 +188,7 @@ const EditBook = () => {
                         options={genre}
                         name="Genre"
                         form={form}
-                        book={book}
+                        previousGenre={book?.genre}
                       />
                     </FormControl>
                     <FormMessage />
@@ -293,7 +232,16 @@ const EditBook = () => {
               )}
             </CardContent>
             <CardFooter className="border-t px-6 py-4">
-              <Button type="submit">Submit</Button>
+              {isEditLoading ? (
+                <>
+                  <Button disable>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Please wait
+                  </Button>
+                </>
+              ) : (
+                <Button type="submit">Submit</Button>
+              )}
             </CardFooter>
           </form>
         </Form>
@@ -301,108 +249,5 @@ const EditBook = () => {
     </div>
   );
 };
-
-export function SelectGenreCombobox({ options, form, name, book }) {
-  const [selectedValues, setSelectedValues] = useState(new Set());
-
-  const {
-    field,
-    fieldState: { invalid, isTouched, isDirty },
-    formState: { touchedFields, dirtyFields },
-  } = useController({
-    name,
-    control: form.control,
-    rules: { required: true },
-  });
-
-  useEffect(() => {
-    form.resetField("genre");
-    form.setValue(name.toLowerCase(), Array.from(selectedValues));
-  }, [selectedValues]);
-
-  useEffect(() => {
-    setSelectedValues(new Set(book?.genre));
-  }, [book]);
-  return (
-    <Popover>
-      <PopoverTrigger className="flex justify-start w-full">
-        <span className="h-10 py-2 px-2 w-full inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset- border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900">
-          {selectedValues.size > 0 ? (
-            <>
-              <div className="space-x-1 flex">
-                {Array.from(selectedValues)
-                  .slice(0, 2)
-                  ?.map((option) => (
-                    <Badge
-                      variant="secondary"
-                      key={option}
-                      className="rounded-md px-1 font-normal">
-                      {option}
-                    </Badge>
-                  ))}
-                {selectedValues?.size > 2 && (
-                  <span className="text-sm font-normal text-gray-400">
-                    +{selectedValues?.size - 2} more
-                  </span>
-                )}
-              </div>
-            </>
-          ) : (
-            <p className="px-1 text-slate-500 text-sm font-normal">Genre</p>
-          )}
-        </span>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandInput placeholder={name} />
-          <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
-            <CommandGroup>
-              {options.map((option) => {
-                const isSelected = selectedValues.has(option);
-                return (
-                  <CommandItem
-                    key={option}
-                    onSelect={() => {
-                      if (isSelected) {
-                        selectedValues.delete(option);
-                      } else {
-                        selectedValues.add(option);
-                      }
-                      const filterValues = new Set(selectedValues);
-                      setSelectedValues(filterValues);
-                    }}>
-                    <div
-                      className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
-                        isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
-                      )}>
-                      <Check className={cn("h-4 w-4")} />
-                    </div>
-                    <span>{option}</span>
-                  </CommandItem>
-                );
-              })}
-            </CommandGroup>
-            {selectedValues.size > 0 && (
-              <>
-                <CommandSeparator />
-                <CommandGroup>
-                  <CommandItem
-                    onSelect={() => setSelectedValues(new Set())}
-                    className="justify-center text-center">
-                    Clear filters
-                  </CommandItem>
-                </CommandGroup>
-              </>
-            )}
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-}
 
 export default EditBook;

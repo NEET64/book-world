@@ -5,22 +5,16 @@ import {
   BookOpen,
   Heart,
   Home,
-  Library,
-  LineChart,
   LogIn,
   LogOut,
   Menu,
-  Package,
-  Package2,
-  PanelLeft,
-  ShoppingCart,
   Users2,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import useAuth from "@/hooks/useAuth";
 
 const CollapsibleSidebar = () => {
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, role } = useAuth();
   const navigate = useNavigate();
   return (
     <Sheet>
@@ -58,16 +52,18 @@ const CollapsibleSidebar = () => {
             <Heart className="h-5 w-5" />
             Favourites
           </NavLink>
-          <NavLink
-            to="users"
-            className={({ isActive }) =>
-              isActive
-                ? " flex items-center gap-4 px-2.5 text-black font-bold hover:text-black"
-                : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-black"
-            }>
-            <Users2 className="h-5 w-5" />
-            Users
-          </NavLink>
+          {role === "admin" && (
+            <NavLink
+              to="users"
+              className={({ isActive }) =>
+                isActive
+                  ? " flex items-center gap-4 px-2.5 text-black font-bold hover:text-black"
+                  : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-black"
+              }>
+              <Users2 className="h-5 w-5" />
+              Users
+            </NavLink>
+          )}
 
           {isLoggedIn ? (
             <Link

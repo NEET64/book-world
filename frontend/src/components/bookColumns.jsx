@@ -1,7 +1,7 @@
-import { DataTableColumnHeader } from "./DataTable";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { useNavigate } from "react-router-dom";
+import DataTableColumnHeader from "./DataTableColumnHeader";
 
 export const bookColumns = [
   {
