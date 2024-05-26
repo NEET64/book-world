@@ -56,7 +56,7 @@ const Details = () => {
         .then((response) => console.log(response.data.message))
         .catch((error) => console.error(error));
   };
-
+  const image = book?.image_url.replace("upload/", "upload/w_512/");
   return (
     <div className="grid p-4 sm:p-6 gap-2">
       {isLoading ? (
@@ -67,7 +67,7 @@ const Details = () => {
         <div className="flex flex-col sm:flex-row gap-5 h-auto w-full max-w-4xl m-auto">
           <div className="flex flex-col items-center rounded-lg h-full">
             <img
-              src={book?.image_url}
+              src={image}
               alt="Book cover"
               className="max-w-lg w-full object-cover rounded-md"
             />
