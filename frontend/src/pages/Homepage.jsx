@@ -9,12 +9,14 @@ import { bookColumns } from "@/components/bookColumns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import BookCard from "@/components/BookCard";
+import { useToast } from "@/components/ui/use-toast";
 
 const Homepage = () => {
   const [books, setBooks] = useState([]);
   const { role } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -27,7 +29,11 @@ const Homepage = () => {
         setBooks(response.data.books);
       })
       .catch((err) => {
-        console.log(err);
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
       });
   }, [location.search]);
 

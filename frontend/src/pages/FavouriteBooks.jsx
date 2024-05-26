@@ -1,4 +1,5 @@
 import BookCard from "@/components/BookCard";
+import { useToast } from "@/components/ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
@@ -9,6 +10,7 @@ const FavouriteBooks = () => {
   const [books, setBooks] = useState([]);
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     token &&
@@ -20,11 +22,14 @@ const FavouriteBooks = () => {
         })
         .then((response) => {
           setBooks(response.data.books);
-
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error(error);
+          toast({
+            title: "Error",
+            description: error.response.data.message,
+            variant: "destructive",
+          });
           setIsLoading(false);
         });
   }, [token]);

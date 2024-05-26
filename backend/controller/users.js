@@ -50,7 +50,11 @@ module.exports.login = async (req, res) => {
     .setIssuedAt();
   const token = await signer.sign(secretBytes);
 
-  res.status(200).json({ token, role: user.role });
+  res.status(200).json({
+    token,
+    role: user.role,
+    message: `Welcome ${user.firstName}! to the Book World`,
+  });
 };
 
 module.exports.getAllUsers = async (req, res) => {

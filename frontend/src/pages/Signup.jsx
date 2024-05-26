@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { userSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +25,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { z } from "zod";
 
 const SignupForm = () => {
   const form = useForm({
@@ -36,6 +36,7 @@ const SignupForm = () => {
       password: "",
     },
   });
+  const { toast } = useToast();
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   useEffect(() => {
@@ -50,10 +51,17 @@ const SignupForm = () => {
     axios
       .post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, values)
       .then((response) => {
+        toast({
+          description: response.data.message,
+        });
         navigate("/login");
       })
       .catch((error) => {
-        console.error("Sign Failed failed:", error);
+        toast({
+          title: "Error",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
       })
       .finally(() => setIsLoading(false));
   };

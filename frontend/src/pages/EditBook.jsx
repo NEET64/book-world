@@ -25,6 +25,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
+import { useToast } from "@/components/ui/use-toast";
 
 const EditBook = () => {
   const genre = [
@@ -37,6 +38,7 @@ const EditBook = () => {
     "Adventure",
   ];
   const [book, setBook] = useState();
+  const { toast } = useToast();
   const navigate = useNavigate();
   let { id } = useParams();
   useEffect(() => {
@@ -46,7 +48,11 @@ const EditBook = () => {
         setBook(response.data.book);
       })
       .catch((err) => {
-        console.log(err);
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
       });
   }, []);
 
@@ -101,10 +107,17 @@ const EditBook = () => {
         },
       })
       .then((response) => {
+        toast({
+          description: response.data.message,
+        });
         navigate("/books/" + id);
       })
       .catch((err) => {
-        console.log(err);
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
       })
       .finally(() => setIsEditLoading(false));
   };

@@ -48,7 +48,7 @@ module.exports.createBook = async (req, res) => {
 
   res.json({
     book,
-    message: `${book.title} Added`,
+    message: `New Book: ${book.title} Added`,
   });
 };
 
@@ -60,7 +60,7 @@ module.exports.deleteBook = async (req, res) => {
   const book = await Book.findByIdAndDelete(id);
   res.json({
     book: book,
-    message: "Deleted",
+    message: `Book Deleted: ${book.title}`,
   });
 };
 
@@ -86,6 +86,6 @@ module.exports.updateBook = async (req, res) => {
   res.json({
     previous,
     current,
-    message: "Updated",
+    message: `Book Updated`,
   });
 };

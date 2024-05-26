@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +28,7 @@ import { Link, useNavigate } from "react-router-dom";
 const LoginForm = () => {
   const { isLoggedIn, login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -49,10 +50,17 @@ const LoginForm = () => {
       .then((response) => {
         const { token, role } = response.data;
         login({ token, role });
+        toast({
+          description: response.data.message,
+        });
         navigate("/books");
       })
       .catch((error) => {
-        console.error("Login failed:", error);
+        toast({
+          title: "Error",
+          description: error.response.data.message,
+          variant: "destructive",
+        });
       })
       .finally(() => setIsLoading(false));
   };

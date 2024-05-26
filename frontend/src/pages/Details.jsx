@@ -18,6 +18,7 @@ import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useUserData from "@/hooks/useUserData";
+import { useToast } from "@/components/ui/use-toast";
 
 const Details = () => {
   const [book, setBook] = useState();
@@ -28,6 +29,7 @@ const Details = () => {
   const { isLoading, setIsLoading, isFavouriteBook, usersFavouriteBooks } =
     useUserData();
   const [isHeartLoading, setIsHeartLoading] = useState(false);
+  const { toast } = useToast();
   const navigate = useNavigate();
   let { id } = useParams();
   useEffect(() => {
@@ -66,7 +68,13 @@ const Details = () => {
           setIsHeartLoading(false);
           setisLiked(!isLiked);
         })
-        .catch((error) => console.error(error));
+        .catch((error) =>
+          toast({
+            title: "Error",
+            description: err.response.data.message,
+            variant: "destructive",
+          })
+        );
   };
   const image = book?.image_url.replace("upload/", "upload/w_512/");
   return (
@@ -146,7 +154,7 @@ const Details = () => {
                       <Trash2 className="mr-2 h-4 w-4" />
                       Delete
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className="w-11/12">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
                           Are you absolutely sure?
@@ -175,11 +183,18 @@ const Details = () => {
                                 }
                               )
                               .then((response) => {
-                                setBook(response.data.book);
+                                toast({
+                                  description: response.data.message,
+                                  variant: "destructive",
+                                });
                                 navigate("/books");
                               })
                               .catch((err) => {
-                                console.log(err);
+                                toast({
+                                  title: "Error",
+                                  description: err.response.data.message,
+                                  variant: "destructive",
+                                });
                               })
                               .finally(() => setIsDeleteLoading(false));
                           }}>

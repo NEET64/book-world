@@ -3,11 +3,13 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserCard from "@/components/UserCard";
+import { useToast } from "@/components/ui/use-toast";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     token &&
@@ -18,7 +20,13 @@ const Users = () => {
           },
         })
         .then((response) => setUsers(response.data.users))
-        .catch((error) => console.error(error))
+        .catch((error) =>
+          toast({
+            title: "Error",
+            description: err.response.data.message,
+            variant: "destructive",
+          })
+        )
         .finally(setIsLoading(false));
   }, [token]);
   return (

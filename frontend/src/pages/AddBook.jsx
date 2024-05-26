@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
+import { useToast } from "@/components/ui/use-toast";
 
 const AddBook = () => {
   const genre = [
@@ -49,7 +50,7 @@ const AddBook = () => {
   const navigate = useNavigate();
   const fileRef = form.register("file");
   const [isLoading, setIsLoading] = useState(false);
-
+  const { toast } = useToast();
   const onSubmit = (values) => {
     setIsLoading(true);
     axios
@@ -60,10 +61,15 @@ const AddBook = () => {
         },
       })
       .then((response) => {
+        toast({ description: response.data.message });
         navigate("/books");
       })
       .catch((err) => {
-        console.log(err);
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
       })
       .finally(() => setIsLoading(false));
   };
