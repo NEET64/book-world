@@ -25,12 +25,11 @@ const Details = () => {
   const { isLoggedIn, token, role } = useAuth();
   const [isDetailLoading, setIsDetailLoading] = useState(true);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const navigate = useNavigate();
-  let { id } = useParams();
-
   const { isLoading, setIsLoading, isFavouriteBook, usersFavouriteBooks } =
     useUserData();
-
+  const [isHeartLoading, setIsHeartLoading] = useState(false);
+  const navigate = useNavigate();
+  let { id } = useParams();
   useEffect(() => {
     if (!isLoading && book) {
       setisLiked(isFavouriteBook(book._id));
@@ -50,9 +49,8 @@ const Details = () => {
   }, []);
 
   const toggleFavorite = async () => {
-    setisLiked(!isLiked);
     setIsLoading(true);
-
+    setIsHeartLoading(true);
     isLoggedIn &&
       axios
         .put(
@@ -64,7 +62,10 @@ const Details = () => {
             },
           }
         )
-        .then((response) => console.log(response.data.message))
+        .then((response) => {
+          setIsHeartLoading(false);
+          setisLiked(!isLiked);
+        })
         .catch((error) => console.error(error));
   };
   const image = book?.image_url.replace("upload/", "upload/w_512/");
@@ -130,6 +131,7 @@ const Details = () => {
                 <span className="hidden md:flex">
                   {isLiked ? "Added to Favourites" : "Add to Favourites"}
                 </span>
+                {isHeartLoading && <Loader2 className="animate-spin" />}
               </Button>
               {role === "admin" && (
                 <div className="flex gap-2 sm:justify-end pt-2 w-full">
