@@ -17,15 +17,25 @@ import axios from "axios";
 import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useUserData from "@/hooks/useUserData";
 
 const Details = () => {
   const [book, setBook] = useState();
   const [isLiked, setisLiked] = useState(false);
   const { isLoggedIn, token, role } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isDetailLoading, setIsDetailLoading] = useState(true);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const navigate = useNavigate();
   let { id } = useParams();
+
+  const { isLoading, setIsLoading, isFavouriteBook, usersFavouriteBooks } =
+    useUserData();
+
+  useEffect(() => {
+    if (!isLoading && book) {
+      setisLiked(isFavouriteBook(book._id));
+    }
+  }, [book, isLoading]);
 
   useEffect(() => {
     axios
@@ -36,11 +46,12 @@ const Details = () => {
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsDetailLoading(false));
   }, []);
 
   const toggleFavorite = async () => {
     setisLiked(!isLiked);
+    setIsLoading(true);
 
     isLoggedIn &&
       axios
@@ -59,7 +70,7 @@ const Details = () => {
   const image = book?.image_url.replace("upload/", "upload/w_512/");
   return (
     <div className="grid p-4 sm:p-6 gap-2">
-      {isLoading ? (
+      {isDetailLoading ? (
         <div className="w-full">
           <Loader2 className="mx-auto h-10 w-10 animate-spin" />
         </div>

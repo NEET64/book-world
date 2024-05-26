@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios"; // Assuming you're using axios for API calls
-import { useRouteLoaderData } from "react-router-dom";
+import axios from "axios";
 
 const useUserData = () => {
   const [userData, setUserData] = useState({
@@ -12,11 +11,10 @@ const useUserData = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const isFavouriteBook = (bookId) => {
-    return userData.usersFavouriteBooks.some((book) => book.id === bookId);
+    return userData.usersFavouriteBooks.includes(bookId);
   };
 
   useEffect(() => {
-    console.log("fetch");
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
         headers: {
@@ -28,7 +26,7 @@ const useUserData = () => {
           role: response.data.user.role,
           token: localStorage.getItem("token"),
           isLoggedIn: true,
-          usersFavouriteBooks: response.data.user.favouriteBooks || [],
+          usersFavouriteBooks: response.data.user.favoriteBooks || [],
         })
       )
       .catch((error) => {

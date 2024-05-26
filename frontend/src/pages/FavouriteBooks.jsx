@@ -28,14 +28,18 @@ const FavouriteBooks = () => {
           setIsLoading(false);
         });
   }, [token]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full">
+        <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
   return (
     <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0 md:gap-8 w-full">
       <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
-        {isLoading ? (
-          <div className="w-full">
-            <Loader2 className="mx-auto h-10 w-10 animate-spin" />
-          </div>
-        ) : books?.length !== 0 ? (
+        {books?.length !== 0 ? (
           books.map((book, index) => <BookCard key={index} book={book} />)
         ) : (
           <section className="bg-white dark:bg-gray-900 w-full">
