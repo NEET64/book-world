@@ -68,9 +68,8 @@ const LoginForm = () => {
 
   return (
     <div className="grid items-center h-screen">
-      <Toaster />
-
       <Card className="mx-auto max-w-sm">
+        <Toaster />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardHeader>
