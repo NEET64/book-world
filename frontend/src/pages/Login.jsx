@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import useAuth from "@/hooks/useAuth";
 import { loginSchema } from "@/schema";
@@ -67,6 +68,8 @@ const LoginForm = () => {
 
   return (
     <div className="grid items-center h-screen">
+      <Toaster />
+
       <Card className="mx-auto max-w-sm">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

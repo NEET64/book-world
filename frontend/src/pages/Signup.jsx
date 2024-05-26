@@ -68,6 +68,8 @@ const SignupForm = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
+      <Toaster />
+
       <Card className="mx-6 max-w-sm h-fit">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
