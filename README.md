@@ -75,7 +75,9 @@ npm install
 ```
 
 Now rename env files from .env.example to .env in both backend and frontend
-and add your `MONGO_URL` and `JWT_SECRET`
+and add your `MONGO_URL`, `JWT_SECRET`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET` and `PORT`
+
+if you don't have cloud you can replace `cloudStorage` to `diskStorage` at `/backend/middleware/upload.js`
 
 now start the frontend and backend on different terminals
 
