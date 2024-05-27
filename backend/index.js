@@ -8,11 +8,7 @@ const bookRouter = require("./router/book");
 const userRouter = require("./router/users");
 
 // allow access of the api
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(cors());
 
 // to support incoming form data in json
 app.use(express.json());
