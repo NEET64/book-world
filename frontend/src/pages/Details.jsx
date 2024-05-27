@@ -51,9 +51,9 @@ const Details = () => {
   }, []);
 
   const toggleFavorite = async () => {
-    setIsLoading(true);
-    setIsHeartLoading(true);
-    isLoggedIn &&
+    if (isLoggedIn) {
+      setIsLoading(true);
+      setIsHeartLoading(true);
       axios
         .put(
           `${import.meta.env.VITE_BACKEND_URL}/users/favourites`,
@@ -75,6 +75,13 @@ const Details = () => {
             variant: "destructive",
           })
         );
+    } else {
+      setisLiked(!isLiked);
+      toast({
+        description: "You need to be logged in",
+        variant: "destructive",
+      });
+    }
   };
   const image = book?.image_url.replace("upload/", "upload/w_512/");
   return (

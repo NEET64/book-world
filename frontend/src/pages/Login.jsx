@@ -67,83 +67,85 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="grid items-center h-screen">
-      <Card className="mx-auto max-w-sm">
-        <Toaster />
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader>
-              <CardTitle className="text-2xl">Login</CardTitle>
-              <CardDescription>
-                Enter your email below to login to your account
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="grid">
-                      <FormLabel className="text-left">Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="m@email.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+    <>
+      <Toaster />
+      <div className="grid items-center h-screen">
+        <Card className="mx-auto max-w-sm">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <CardHeader>
+                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardDescription>
+                  Enter your email below to login to your account
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem className="grid">
+                        <FormLabel className="text-left">Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="m@email.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="grid">
+                        <div className="flex">
+                          <FormLabel className="text-left">Password</FormLabel>
+                          <Link
+                            href="#"
+                            className="ml-auto inline-block text-sm underline">
+                            Forgot your password?
+                          </Link>
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="password"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {isLoading ? (
+                    <Button disabled>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait
+                    </Button>
+                  ) : (
+                    <Button type="submit" className="w-full">
+                      Login
+                    </Button>
                   )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem className="grid">
-                      <div className="flex">
-                        <FormLabel className="text-left">Password</FormLabel>
-                        <Link
-                          href="#"
-                          className="ml-auto inline-block text-sm underline">
-                          Forgot your password?
-                        </Link>
-                      </div>
-                      <FormControl>
-                        <Input
-                          type="password"
-                          placeholder="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {isLoading ? (
-                  <Button disabled>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Please wait
-                  </Button>
-                ) : (
-                  <Button type="submit" className="w-full">
-                    Login
-                  </Button>
-                )}
-              </div>
-              <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link to="/signup" className="underline">
-                  Sign up
-                </Link>
-              </div>
-            </CardContent>
-          </form>
-        </Form>
-        <div className="w-full text-center">
-          <h3 className="text-slate-400">user: john.doe@example.com</h3>
-          <h3 className="text-slate-400">admin: john.doe2@example.com</h3>
-          <h3 className="text-slate-400">password: password123</h3>
-        </div>
-      </Card>
-    </div>
+                </div>
+                <div className="mt-4 text-center text-sm">
+                  Don&apos;t have an account?{" "}
+                  <Link to="/signup" className="underline">
+                    Sign up
+                  </Link>
+                </div>
+              </CardContent>
+            </form>
+          </Form>
+          <div className="w-full text-center">
+            <h3 className="text-slate-400">user: john.doe@example.com</h3>
+            <h3 className="text-slate-400">admin: john.doe2@example.com</h3>
+            <h3 className="text-slate-400">password: password123</h3>
+          </div>
+        </Card>
+      </div>
+    </>
   );
 };
 
