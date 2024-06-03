@@ -65,7 +65,7 @@ const ReviewList = ({ book }) => {
         Ratings and Reviews
       </h2>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm py-4 my-2 border-b-2">
-        <div className="flex flex-col justify-center p-4 rounded-lg border-2">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2">
           <h3 className="text-md font-bold mb-2">Total Reviews</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">
@@ -84,7 +84,7 @@ const ReviewList = ({ book }) => {
             Growth in reviews on this year
           </p>
         </div>
-        <div className="flex flex-col justify-center p-4 rounded-lg border-2">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2">
           <h3 className="text-md font-bold mb-2">Average Rating</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">

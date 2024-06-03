@@ -203,8 +203,10 @@ const ReviewCard = ({ review, bookId }) => {
               className="gap-2 p-2 "
               onClick={() => setShowReplies(!showReplies)}>
               <MessagesSquare />
-              <span className="hidden md:flex gap-2">
-                {showReplies ? "Hide Replies" : "Show Replies"}
+              <span className="flex gap-2">
+                <span className="hidden md:flex">
+                  {showReplies ? "Hide Replies" : "Show Replies"}
+                </span>
                 <span className="flex items-center justify-center bg-slate-200 text-gray-600 p-3 h-5 w-5 rounded-full">
                   {review.comments.length}
                 </span>

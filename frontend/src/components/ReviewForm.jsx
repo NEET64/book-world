@@ -87,8 +87,10 @@ const Review = ({ book, isEditing, reviewId }) => {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem className="space-y-0 sm:col-span-3">
-              <FormLabel className="text-left">Review</FormLabel>
+            <FormItem className="space-y-1 sm:col-span-3">
+              <FormLabel className="text-left text-lg pl-0.5">
+                {isEditing ? "Edit the Review" : "Leave a Review"}
+              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Write a brief review of the book..."
@@ -106,7 +108,7 @@ const Review = ({ book, isEditing, reviewId }) => {
           </Button>
         ) : (
           <Button type="submit" variant="outline">
-            Submit
+            {isEditing ? "Edit" : "Submit"}
           </Button>
         )}
       </form>
