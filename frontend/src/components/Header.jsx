@@ -9,7 +9,7 @@ const Header = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   return (
-    <header className="sticky top-0 bg-gray-200 z-30 flex h-14 items-center gap-4 border-b px-4 sm:static sm:h-auto sm:border-0 sm:px-6 sm:bg-transparent">
+    <header className="sticky top-0 py-2 bg-gray-200 z-30 flex h-14 items-center gap-4 border-b px-4 sm:h-auto sm:border-0 sm:px-6 sm:bg-white sm:shadow-sm ">
       <CollapsibleSidebar />
 
       <h1 className="text-3xl font-semibold tracking-tight transition-colors hidden sm:flex">

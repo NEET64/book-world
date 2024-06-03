@@ -17,6 +17,25 @@
   animation: animate 1s steps(28) 1;
   background-position: right;
 }
+
+.star {
+  position: absolute;
+  background: url("./images/star.png") no-repeat;
+  background-position: left;
+  background-size: 3000%;
+  height: 100px;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.star.star-animate {
+  animation: animate 1s steps(29) 1;
+}
+
+.star.star-active {
+  background-position: right;
+}
 @keyframes animate {
   0% {
     background-position: left;

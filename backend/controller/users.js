@@ -68,6 +68,17 @@ module.exports.getAllUsers = async (req, res) => {
   });
 };
 
+module.exports.reportUser = async (req, res) => {
+  console.log(req.params);
+  const userId = req.userId;
+  const susId = req.params.userId;
+  const user = await User.findByIdAndUpdate(susId, {
+    $addToSet: { reportedBy: userId },
+  });
+  console.log(user.reportedBy);
+  res.json({ message: "User Reported" });
+};
+
 module.exports.toggleFavouriteBook = async (req, res) => {
   const userId = req.userId;
   const { bookId } = req.body;

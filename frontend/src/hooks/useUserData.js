@@ -2,46 +2,67 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useUserData = () => {
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const [userData, setUserData] = useState({
     role: "",
-    token: "",
-    isLoggedIn: false,
+    userId: "",
+    isLoggedIn: !!localStorage.getItem("token"),
     usersFavouriteBooks: [],
+    likedReviews: [],
+    likedComments: [],
   });
-  const [isLoading, setIsLoading] = useState(true);
 
   const isFavouriteBook = (bookId) => {
     return userData.usersFavouriteBooks.includes(bookId);
   };
 
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) =>
-        setUserData({
-          role: response.data.user.role,
-          token: localStorage.getItem("token"),
-          isLoggedIn: true,
-          usersFavouriteBooks: response.data.user.favoriteBooks || [],
-        })
-      )
-      .catch((error) => {
-        console.error("Error fetching user data:", error);
-        setUserData({
-          role: "",
-          token: "",
-          isLoggedIn: false,
-          usersFavouriteBooks: [],
-        });
-      })
-      .finally(() => setIsLoading(false));
-  }, [isLoading]);
+  const isLikedReview = (reviewId) => {
+    return userData.likedReviews.includes(reviewId);
+  };
 
-  return { ...userData, isFavouriteBook, isLoading, setUserData, setIsLoading };
+  const isLikedComment = (commentId) => {
+    return userData.likedComments.includes(commentId);
+  };
+  useEffect(() => {
+    userData.isLoggedIn &&
+      axios
+        .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          setUserData({
+            role: response.data.user.role,
+            userId: response.data.user._id,
+            isLoggedIn: true,
+            likedReviews: response.data.user.likedReviews || [],
+            likedComments: response.data.user.likedComments || [],
+            usersFavouriteBooks: response.data.user.favoriteBooks || [],
+          });
+        })
+        .catch((error) =>
+          setUserData({
+            role: "",
+            userId: "",
+            isLoggedIn: !!localStorage.getItem("token"),
+            usersFavouriteBooks: [],
+            likedReviews: [],
+            likedComments: [],
+          })
+        )
+        .finally(() => setIsUserLoading(false));
+  }, [isUserLoading]);
+
+  return {
+    ...userData,
+    isFavouriteBook,
+    setUserData,
+    isLikedReview,
+    isLikedComment,
+    isUserLoading,
+    setIsUserLoading,
+  };
 };
 
 export default useUserData;

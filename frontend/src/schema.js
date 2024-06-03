@@ -1,4 +1,16 @@
 import { z } from "zod";
+
+export const reviewSchema = z.object({
+  content: z
+    .string()
+    .trim()
+    .min(1, { message: "review should be at least 1 characters long" }),
+  rating: z.preprocess(
+    (value) => (isNaN(value) ? 0 : value),
+    z.coerce.number().int().gte(1).lte(5)
+  ),
+});
+
 export const bookSchema = z.object({
   title: z
     .string()

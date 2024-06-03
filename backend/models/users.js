@@ -25,7 +25,30 @@ const userSchema = new Schema({
     enum: ["user", "admin"],
     default: "user",
   },
-  favoriteBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
+  reportedBy: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  likedReviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
+  ],
+  likedComments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
+  favoriteBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
+    },
+  ],
 });
 
 const User = mongoose.model("User", userSchema);
