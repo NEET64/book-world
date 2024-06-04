@@ -81,7 +81,7 @@ const ReviewList = ({ book }) => {
             </p>
           </div>
           <p className="text-gray-500/60 text-sm">
-            Growth in reviews on this year
+            Growth in reviews this year
           </p>
         </div>
         <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2">
@@ -93,9 +93,7 @@ const ReviewList = ({ book }) => {
 
             <Star size={30} color="gold" fill="gold" />
           </div>
-          <p className="text-gray-500/60 text-sm">
-            Average Rating on this year
-          </p>
+          <p className="text-gray-500/60 text-sm">Average Rating this year</p>
         </div>
         <div className="flex flex-col sm:col-span-2 md:col-span-1 gap-2 justify-center p-4 rounded-lg border-2">
           <div className="flex h-3 items-center gap-2">
