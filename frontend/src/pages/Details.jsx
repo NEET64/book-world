@@ -204,7 +204,11 @@ const Details = () => {
           )}
 
           {(isEditing || !myReview) && (
-            <ReviewForm book={book} isEditing={true} reviewId={myReview?._id} />
+            <ReviewForm
+              book={book}
+              isEditing={isEditing}
+              reviewId={myReview?._id}
+            />
           )}
 
           <div className="flex pb-2">
