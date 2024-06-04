@@ -68,7 +68,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen dark:bg-zinc-950">
       <Toaster />
 
       <Card className="mx-6 max-w-sm h-fit">

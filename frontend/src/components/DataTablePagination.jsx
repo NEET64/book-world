@@ -33,7 +33,7 @@ const DataTablePagination = ({ table }) => {
             ))}
           </SelectContent>
         </Select>
-        <p className="text-sm font-medium">Rows per page</p>
+        <p className="text-sm font-medium dark:text-zinc-50">Rows per page</p>
       </div>
       <div className="flex gap-2 items-center w-full sm:w-60">
         <Button
@@ -53,7 +53,7 @@ const DataTablePagination = ({ table }) => {
           <ChevronLeft className="h-4 w-4" />
         </Button>
 
-        <div className="flex mx-auto items-center justify-center text-sm font-medium">
+        <div className="flex mx-auto items-center justify-center text-sm font-medium dark:text-zinc-50">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>

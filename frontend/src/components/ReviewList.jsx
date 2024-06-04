@@ -10,6 +10,7 @@ const ReviewList = ({ book }) => {
   const [reviews, setReviews] = useState([]);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const [counter, setCounter] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
@@ -26,7 +27,7 @@ const ReviewList = ({ book }) => {
         });
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [counter]);
 
   const [meta, setMeta] = useState({
     totalReviews: 4000,
@@ -54,7 +55,7 @@ const ReviewList = ({ book }) => {
   if (isLoading) {
     return (
       <div className="w-full grid items-center">
-        <Loader2 className="mx-auto  h-10 w-10 animate-spin" />
+        <Loader2 className="mx-auto h-10 w-10 animate-spin" />
       </div>
     );
   }
@@ -64,8 +65,8 @@ const ReviewList = ({ book }) => {
       <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl">
         Ratings and Reviews
       </h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm py-4 my-2 border-b-2">
-        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm py-4 my-2 border-b-2 dark:border-zinc-800">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 dark:border-zinc-800">
           <h3 className="text-md font-bold mb-2">Total Reviews</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">
@@ -84,7 +85,7 @@ const ReviewList = ({ book }) => {
             Growth in reviews this year
           </p>
         </div>
-        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 dark:border-zinc-800">
           <h3 className="text-md font-bold mb-2">Average Rating</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">
@@ -95,7 +96,7 @@ const ReviewList = ({ book }) => {
           </div>
           <p className="text-gray-500/60 text-sm">Average Rating this year</p>
         </div>
-        <div className="flex flex-col sm:col-span-2 md:col-span-1 gap-2 justify-center p-4 rounded-lg border-2">
+        <div className="flex flex-col sm:col-span-2 md:col-span-1 gap-2 justify-center p-4 rounded-lg border-2 dark:border-zinc-800">
           <div className="flex h-3 items-center gap-2">
             <Star size={15} color="grey" fill="grey" opacity={0.3} />
             <span>5</span>
@@ -145,7 +146,12 @@ const ReviewList = ({ book }) => {
       </div>
       {reviews.length !== 0 ? (
         reviews?.map((review, index) => (
-          <ReviewCard key={index} review={review} bookId={book._id} />
+          <ReviewCard
+            key={index}
+            review={review}
+            bookId={book._id}
+            handleParentReload={() => setCounter(counter + 1)}
+          />
         ))
       ) : (
         <h3 className=" text-2xl tracking-tight">No Reviews</h3>

@@ -8,19 +8,22 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useAuth from "@/hooks/useAuth";
+import { ModeToggle } from "./mode-toggle";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, logout, role } = useAuth();
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r shadow-md bg-white sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-        <Link
-          to="books"
-          className="flex items-center justify-center gap-2 rounded-full bg-slate-500 text-white text-lg font-semibold sm:h-8 sm:w-8 sm:text-base">
-          <BookOpen className="h-4 w-4" />
-          <span className="sr-only">Acme Inc</span>
-        </Link>
+    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex dark:bg-zinc-950 dark:border-zinc-800">
+      <nav className="flex flex-col items-center gap-2">
+        <div className="border-b p-2 w-full dark:border-zinc-800">
+          <Link
+            to="books"
+            className="flex items-center justify-center gap-2 rounded-full bg-zinc-500 text-zinc-50 text-lg font-semibold h-10 w-10 dark:bg-zinc-600">
+            <BookOpen size={20} />
+            <span className="sr-only">Acme Inc</span>
+          </Link>
+        </div>
 
         <TooltipProvider>
           <Tooltip>
@@ -29,8 +32,8 @@ const Sidebar = () => {
                 to="books"
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-slate-300 flex h-9 w-9 items-center justify-center rounded-lg sm:h-8 sm:w-8"
-                    : "flex h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-300 transition-colors sm:h-8 sm:w-8"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Home className="h-5 w-5" />
                 <span className="sr-only">Home</span>
@@ -47,8 +50,8 @@ const Sidebar = () => {
                 end
                 className={({ isActive }) =>
                   isActive
-                    ? "bg-slate-300 flex h-9 w-9 items-center justify-center rounded-lg sm:h-8 sm:w-8"
-                    : "flex h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-300 transition-colors sm:h-8 sm:w-8"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Heart className="h-5 w-5" />
                 <span className="sr-only">Favourites</span>
@@ -65,8 +68,8 @@ const Sidebar = () => {
                   to="users"
                   className={({ isActive }) =>
                     isActive
-                      ? "bg-slate-300 flex h-9 w-9 items-center justify-center rounded-lg sm:h-8 sm:w-8"
-                      : "flex h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-300 transition-colors sm:h-8 sm:w-8"
+                      ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
+                      : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                   }>
                   <Users2 className="h-5 w-5" />
                   <span className="sr-only">Users</span>
@@ -77,7 +80,7 @@ const Sidebar = () => {
           </TooltipProvider>
         )}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+      <nav className="mt-auto flex flex-col items-center gap-2 px-2 border-t dark:border-zinc-800 py-2">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -86,8 +89,8 @@ const Sidebar = () => {
                   onClick={() => {
                     logout();
                   }}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-300 transition-colors sm:h-8 sm:w-8">
-                  <LogOut className="h-5 w-5 text-black" />
+                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 bg-white hover:bg-zinc-300 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
+                  <LogOut className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
                   <span className="sr-only">Log Out</span>
                 </span>
               ) : (
@@ -95,8 +98,8 @@ const Sidebar = () => {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-slate-300 transition-colors sm:h-8 sm:w-8">
-                  <LogIn className="h-5 w-5 text-black" />
+                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 bg-white hover:bg-zinc-300 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
+                  <LogIn className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
                   <span className="sr-only">Log In</span>
                 </span>
               )}

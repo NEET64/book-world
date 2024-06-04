@@ -24,34 +24,35 @@ const useUserData = () => {
     return userData.likedComments.includes(commentId);
   };
   useEffect(() => {
-    userData.isLoggedIn &&
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+    if (!userData.isLoggedIn) return;
+    console.log("here");
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        setUserData({
+          role: response.data.user.role,
+          userId: response.data.user._id,
+          isLoggedIn: true,
+          likedReviews: response.data.user.likedReviews || [],
+          likedComments: response.data.user.likedComments || [],
+          usersFavouriteBooks: response.data.user.favoriteBooks || [],
+        });
+      })
+      .catch((error) =>
+        setUserData({
+          role: "",
+          userId: "",
+          isLoggedIn: !!localStorage.getItem("token"),
+          usersFavouriteBooks: [],
+          likedReviews: [],
+          likedComments: [],
         })
-        .then((response) => {
-          setUserData({
-            role: response.data.user.role,
-            userId: response.data.user._id,
-            isLoggedIn: true,
-            likedReviews: response.data.user.likedReviews || [],
-            likedComments: response.data.user.likedComments || [],
-            usersFavouriteBooks: response.data.user.favoriteBooks || [],
-          });
-        })
-        .catch((error) =>
-          setUserData({
-            role: "",
-            userId: "",
-            isLoggedIn: !!localStorage.getItem("token"),
-            usersFavouriteBooks: [],
-            likedReviews: [],
-            likedComments: [],
-          })
-        )
-        .finally(() => setIsUserLoading(false));
+      )
+      .finally(() => setIsUserLoading(false));
   }, [isUserLoading]);
 
   return {

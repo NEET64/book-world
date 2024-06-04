@@ -127,7 +127,7 @@ const EditBook = () => {
       <Card className="w-full max-w-xl mx-auto rounded-lg shadow-md overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader className="border-b">
+            <CardHeader className="border-b dark:border-zinc-800">
               <CardTitle>Edit Book</CardTitle>
             </CardHeader>
             <CardContent className="grid sm:grid-cols-3 gap-3 py-5">
@@ -244,7 +244,7 @@ const EditBook = () => {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="border-t px-6 py-4">
+            <CardFooter className="border-t px-6 py-4 dark:border-zinc-800">
               {isEditLoading ? (
                 <>
                   <Button disable>

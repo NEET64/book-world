@@ -16,7 +16,7 @@ const BookCard = ({ book }) => {
           />
         </Suspense>
         <div className="absolute flex flex-col inset-0 justify-end opacity-0 group-hover:opacity-100 duration-500">
-          <div className="absolute group-hover:scale-105 transition-all duration-700 inset-0 rounded-lg bg-gradient-to-t from-gray-900 via-gray-900/10"></div>
+          <div className="absolute group-hover:scale-105 transition-all duration-500 inset-0 rounded-lg bg-gradient-to-t from-gray-900 via-gray-900/10"></div>
           <h3
             className="z-10 mx-2 text-xl line-clamp-2 font-bold text-white"
             title={book.title}>
@@ -28,7 +28,7 @@ const BookCard = ({ book }) => {
           <div className="z-10 mx-2 mt-2 flex flex-wrap gap-2 text-white">
             {book.genre?.slice(0, 3).map((genre, index) => (
               <Badge
-                className="bg-slate-50 text-slate-900 hover:bg-slate-50/80"
+                className="bg-zinc-50 text-zinc-900 hover:bg-zinc-50/80"
                 key={index}>
                 {genre}
               </Badge>

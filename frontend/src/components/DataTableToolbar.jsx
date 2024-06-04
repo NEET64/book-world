@@ -37,7 +37,7 @@ const DataTableToolbar = ({ table, children, searchBy }) => {
           onValueChange={(value) => setSearchByState(value)}
           defaultValue={"title"}>
           <SelectTrigger className="max-w-20">
-            <SelectValue placeholder="Theme" />
+            <SelectValue placeholder="Search By" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="title">Title</SelectItem>

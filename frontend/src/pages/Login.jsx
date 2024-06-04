@@ -69,7 +69,7 @@ const LoginForm = () => {
   return (
     <>
       <Toaster />
-      <div className="grid items-center h-screen">
+      <div className="grid items-center h-screen dark:bg-zinc-950">
         <Card className="mx-auto max-w-sm">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -139,9 +139,9 @@ const LoginForm = () => {
             </form>
           </Form>
           <div className="w-full text-center">
-            <h3 className="text-slate-400">user: john.doe@example.com</h3>
-            <h3 className="text-slate-400">admin: john.doe2@example.com</h3>
-            <h3 className="text-slate-400">password: password123</h3>
+            <h3 className="text-zinc-400">user: john.doe@example.com</h3>
+            <h3 className="text-zinc-400">admin: john.doe2@example.com</h3>
+            <h3 className="text-zinc-400">password: password123</h3>
           </div>
         </Card>
       </div>

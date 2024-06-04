@@ -5,8 +5,8 @@ import { Separator } from "./ui/separator";
 const UserCard = ({ user }) => {
   return (
     <div className="p-1 w-full col-span-2 sm:w-1/2 lg:w-1/3 xl:w-1/4 text-center">
-      <div className="p-2 flex flex-col gap-3 w-full rounded-lg border-2 relative">
-        <div className="flex items-center gap-2 p-2">
+      <div className="p-2 flex flex-col gap-3 w-full rounded-lg border relative dark:border-zinc-800">
+        <div className="flex items-center gap-2 p-2 pb-4 border-b dark:border-zinc-800">
           <img
             className="w-16 h-16 rounded-full shadow-lg"
             src={`https://api.multiavatar.com/${user._id}.svg`}
@@ -15,7 +15,7 @@ const UserCard = ({ user }) => {
           <div className="flex flex-col text-left">
             <h5
               title={user.firstName + " " + user.lastName}
-              className="w-36 truncate mb-1 text-xl font-medium text-gray-900">
+              className="w-36 truncate mb-1 text-xl font-medium text-gray-900 dark:text-zinc-50">
               {user.firstName} {user.lastName}
             </h5>
             <span
@@ -24,14 +24,13 @@ const UserCard = ({ user }) => {
               {user.email}
             </span>
           </div>
-          <div className="absolute right-4 top-4 flex flex-col items-end">
+          <div className="absolute right-4 top-4">
             <Badge variant="outline" className="ml-auto">
               {user.role}
             </Badge>
           </div>
         </div>
-        <Separator />
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 dark:text-zinc-50/60">
           <div className="flex flex-col items-center">
             <span className="flex gap-1 items-center justify-center text-base">
               <span>

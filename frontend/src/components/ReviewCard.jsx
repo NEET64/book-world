@@ -26,7 +26,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 
-const ReviewCard = ({ review, bookId }) => {
+const ReviewCard = ({ review, bookId, handleParentReload }) => {
   const [showForm, setShowForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
   const { toast } = useToast();
@@ -37,10 +37,15 @@ const ReviewCard = ({ review, bookId }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [comment, setComment] = useState("");
   const [replies, setReplies] = useState();
-  const { userId, role, isLikedReview, isUserLoading, setIsUserLoading } =
-    useUserData();
+  const { userId, role, isLikedReview, isUserLoading } = useUserData();
   const [open, setOpen] = useState(false);
   const [openReport, setOpenReport] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const [replyCount, setReplyCount] = useState(0);
+
+  const handleReload = () => {
+    setCounter(counter + 1);
+  };
 
   const toggleLike = async () => {
     if (!!role) {
@@ -80,8 +85,6 @@ const ReviewCard = ({ review, bookId }) => {
   };
 
   useEffect(() => {
-    if (!showReplies) return;
-
     setIsReplyLoading(true);
     axios
       .get(
@@ -91,6 +94,7 @@ const ReviewCard = ({ review, bookId }) => {
       )
       .then((response) => {
         setReplies(response.data.comments);
+        setReplyCount(response.data.comments.length);
       })
       .catch((err) => {
         toast({
@@ -99,7 +103,7 @@ const ReviewCard = ({ review, bookId }) => {
         });
       })
       .finally(() => setIsReplyLoading(false));
-  }, [showReplies]);
+  }, [showReplies, counter]);
 
   useEffect(() => {
     if (!isUserLoading && review) setIsLiked(isLikedReview(review._id));
@@ -128,6 +132,7 @@ const ReviewCard = ({ review, bookId }) => {
         }
       )
       .then((response) => {
+        handleParentReload();
         toast({ description: response.data.message });
       })
       .catch((err) => {
@@ -140,8 +145,8 @@ const ReviewCard = ({ review, bookId }) => {
   };
 
   return (
-    <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto">
-      <div className="flex items-center w-full gap-2">
+    <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto dark:border-zinc-800">
+      <div className="flex items-center w-full gap-2 pb-2">
         <img
           className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
           src={`https://api.multiavatar.com/${review.userId._id}.svg`}
@@ -168,14 +173,15 @@ const ReviewCard = ({ review, bookId }) => {
       </div>
       <div
         className={showReplies ? "border-l-2 ml-5 pl-6 sm:ml-6 sm:pl-7" : ""}>
-        <blockquote className="ml-1 my-2 sm:my-4 italic text-sm sm:text-base">
+        <blockquote className="ml-1 mb-2 sm:mb-4 italic text-sm sm:text-base">
           {review.content}
         </blockquote>
         <div className="flex gap-2 items-center">
           <Button
             variant="outline"
             className={`gap-2 p-2 ${
-              isLiked && "bg-slate-200 border-2 border-slate-300"
+              isLiked &&
+              "bg-zinc-200 border-2 border-zinc-300 dark:border-zinc-500 dark:bg-zinc-800"
             }`}
             title={isLiked ? "unlike" : "like"}
             onClick={toggleLike}>
@@ -197,7 +203,7 @@ const ReviewCard = ({ review, bookId }) => {
             <MessageSquare />
             <span className="hidden md:flex">Comment</span>
           </Button>
-          {review.comments.length > 0 && (
+          {replyCount > 0 && (
             <Button
               variant="outline"
               className="gap-2 p-2 "
@@ -207,8 +213,8 @@ const ReviewCard = ({ review, bookId }) => {
                 <span className="hidden md:flex">
                   {showReplies ? "Hide Replies" : "Show Replies"}
                 </span>
-                <span className="flex items-center justify-center bg-slate-200 text-gray-600 p-3 h-5 w-5 rounded-full">
-                  {review.comments.length}
+                <span className="flex items-center justify-center bg-zinc-200 text-gray-600 p-3 h-5 w-5 rounded-full">
+                  {replyCount}
                 </span>
               </span>
             </Button>
@@ -234,7 +240,7 @@ const ReviewCard = ({ review, bookId }) => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button
-                    className="bg-red-500/90 hover:bg-red-500"
+                    variant="destructive"
                     onClick={() => {
                       setIsDeleteLoading(true);
                       axios
@@ -251,6 +257,7 @@ const ReviewCard = ({ review, bookId }) => {
                           }
                         )
                         .then((response) => {
+                          handleParentReload();
                           toast({
                             description: response.data.message,
                             variant: "destructive",
@@ -304,7 +311,7 @@ const ReviewCard = ({ review, bookId }) => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button
-                    className="bg-red-500/90 hover:bg-red-500"
+                    variant="destructive"
                     onClick={() => {
                       setIsDeleteLoading(true);
                       axios
@@ -361,7 +368,7 @@ const ReviewCard = ({ review, bookId }) => {
               onChange={(event) => setComment(event.target.value)}
             />
             {isLoading ? (
-              <Button disabled>
+              <Button disabled className="mt-2">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>
@@ -384,6 +391,7 @@ const ReviewCard = ({ review, bookId }) => {
               comment={comment}
               bookId={bookId}
               reviewId={review._id}
+              handleParentReloadReply={handleReload}
             />
           ))
         )}

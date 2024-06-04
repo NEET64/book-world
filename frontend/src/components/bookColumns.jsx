@@ -32,11 +32,7 @@ export const bookColumns = [
   {
     accessorKey: "year_published",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Year Published"
-        className="max-w-[500px] truncate"
-      />
+      <DataTableColumnHeader column={column} title="Year Published" />
     ),
     cell: ({ row }) => {
       return <span className="truncate">{row.getValue("year_published")}</span>;
@@ -50,7 +46,9 @@ export const bookColumns = [
       return (
         <div className="flex flex-wrap max-w-sm gap-2">
           {data?.slice(0, 2).map((genre, index) => (
-            <Badge key={index}>{genre}</Badge>
+            <Badge variant="dark:secondary" key={index}>
+              {genre}
+            </Badge>
           ))}
           {data?.length > 2 && (
             <span className="text-gray-400 text-xs self-center">

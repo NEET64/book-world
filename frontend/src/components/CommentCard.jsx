@@ -15,7 +15,6 @@ import axios from "axios";
 import useUserData from "@/hooks/useUserData";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -25,9 +24,15 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 
-const Commentcard = ({ comment, bookId, reviewId }) => {
+const Commentcard = ({
+  comment,
+  bookId,
+  reviewId,
+  handleParentReloadReply,
+}) => {
   const [showForm, setShowForm] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
+  const [counter, setCounter] = useState(0);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isReplyLoading, setIsReplyLoading] = useState(false);
@@ -36,8 +41,8 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [myComment, setMyComment] = useState("");
   const [replies, setReplies] = useState();
-  const { userId, role, isLikedComment, isUserLoading, setIsUserLoading } =
-    useUserData();
+  const [replyCount, setReplyCount] = useState(0);
+  const { userId, role, isLikedComment, isUserLoading } = useUserData();
   const [open, setOpen] = useState(false);
   const [openReport, setOpenReport] = useState(false);
 
@@ -81,31 +86,36 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
     }
   };
 
-  useEffect(() => {
-    if (!showReplies) return;
+  const handleReloadReply = () => {
+    setCounter(counter + 1);
+  };
 
-    setIsReplyLoading(true);
-    axios
-      .get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/books/${bookId}/reviews/${reviewId}/comments/${comment._id}`
-      )
-      .then((response) => {
-        setReplies(response.data.comments);
-      })
-      .catch((err) => {
-        toast({
-          description: "User can only have 1 review ",
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsReplyLoading(false));
-  }, [showReplies]);
+  useEffect(() => {
+    const fetchReply = async () => {
+      setIsReplyLoading(true);
+      axios
+        .get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/books/${bookId}/reviews/${reviewId}/comments/${comment._id}`
+        )
+        .then((response) => {
+          setReplies(response.data.comments);
+          setReplyCount(response.data.comments.length);
+        })
+        .catch((err) => {
+          toast({
+            description: err.response.data.message,
+            variant: "destructive",
+          });
+        })
+        .finally(() => setIsReplyLoading(false));
+    };
+    fetchReply();
+  }, [showReplies, reviewId, comment, bookId, counter]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(myComment);
     setIsLoading(true);
     if (!comment) {
       toast({
@@ -127,11 +137,12 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
         }
       )
       .then((response) => {
+        handleParentReloadReply();
         toast({ description: response.data.message });
       })
       .catch((err) => {
         toast({
-          description: err.response.data.message,
+          description: err.message,
           variant: "destructive",
         });
       })
@@ -161,42 +172,42 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
           {comment.content}
         </blockquote>
         <div className="flex gap-2 items-center my-2">
-          <div
+          <Button
             variant="outline"
-            className="flex gap-2 items-center my-2"
             title="like"
+            size="sm"
+            className={`flex rounded-full p-2 ${
+              isLiked &&
+              "bg-zinc-200 border-2 border-zinc-300 dark:border-zinc-500 dark:bg-zinc-800"
+            }`}
             onClick={toggleLike}>
             {isLikeLoading ? (
-              <div className={`rounded-full p-2 border-2`}>
-                <Loader2 opacity={0.5} size={20} className=" animate-spin" />
-              </div>
+              <Loader2 opacity={0.5} size={20} className=" animate-spin" />
             ) : (
-              <div
-                className={`rounded-full p-2 border hover:bg-slate-100 ${
-                  isLiked && "bg-slate-200 border-2 border-slate-300"
-                }`}>
-                <ThumbsUp size={20} />
-              </div>
+              <ThumbsUp size={20} />
             )}
-          </div>
-          <div
+          </Button>
+          <Button
             variant="outline"
             title="comment"
-            className="rounded-full border hover:bg-slate-100 p-2"
+            size="sm"
+            className="flex p-2 rounded-full"
             onClick={() => setShowForm(!showForm)}>
             <MessageSquare size={20} />
-          </div>
-          {comment.replies.length > 0 && (
-            <div
+          </Button>
+
+          {replyCount > 0 && (
+            <Button
               variant="outline"
               title="replies"
-              className="flex gap-1 items-center justify-center rounded-full border hover:bg-slate-100 p-2"
+              size="sm"
+              className="flex gap-1 rounded-full p-2"
               onClick={() => setShowReplies(!showReplies)}>
               <MessagesSquare size={20} />
-              <span className="flex items-center justify-center bg-slate-200 text-gray-600 p-3 h-5 w-5 rounded-full">
-                {comment.replies.length}
+              <span className="flex items-center justify-center bg-zinc-200 text-gray-600 p-3 h-5 w-5 rounded-full">
+                {replyCount}
               </span>
-            </div>
+            </Button>
           )}
 
           {(role === "admin" || userId === comment.userId._id) && (
@@ -221,7 +232,7 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button
-                    className="bg-red-500/90 hover:bg-red-500"
+                    variant="destructive"
                     onClick={() => {
                       setIsDeleteLoading(true);
                       axios
@@ -240,11 +251,11 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
                           }
                         )
                         .then((response) => {
+                          handleParentReloadReply();
                           toast({
                             description: response.data.message,
                             variant: "destructive",
                           });
-                          navigate("/books");
                         })
                         .catch((err) => {
                           toast({
@@ -293,7 +304,7 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Button
-                    className="bg-red-500/90 hover:bg-red-500"
+                    variant="destructive"
                     onClick={() => {
                       setIsDeleteLoading(true);
                       axios
@@ -352,7 +363,7 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
               onChange={(event) => setMyComment(event.target.value)}
             />
             {isLoading ? (
-              <Button disabled>
+              <Button disabled className="mt-2">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>
@@ -376,6 +387,7 @@ const Commentcard = ({ comment, bookId, reviewId }) => {
               comment={comment}
               bookId={bookId}
               reviewId={reviewId}
+              handleParentReloadReply={handleReloadReply}
             />
           ))
         )}

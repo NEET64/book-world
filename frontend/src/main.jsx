@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       <Suspense
         fallback={
           <div className="w-full grid items-center h-screen">
-            <Loader2 className="mx-auto  h-10 w-10 animate-spin" />
+            <Loader2 className="mx-auto  h-10 w-10 animate-spin dark:text-zinc-50" />
           </div>
         }>
         <SignupForm />
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       <Suspense
         fallback={
           <div className="w-full grid items-center h-screen">
-            <Loader2 className="mx-auto  h-10 w-10 animate-spin" />
+            <Loader2 className="mx-auto  h-10 w-10 animate-spin dark:text-zinc-50" />
           </div>
         }>
         <LoginForm />
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
           <Suspense
             fallback={
               <div className="w-full">
-                <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
               </div>
             }>
             <Homepage />
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
             <Suspense
               fallback={
                 <div className="w-full">
-                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
                 </div>
               }>
               <AddBook />
@@ -105,7 +105,7 @@ const router = createBrowserRouter([
             <Suspense
               fallback={
                 <div className="w-full">
-                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
                 </div>
               }>
               <FavouriteBooks />
@@ -120,7 +120,7 @@ const router = createBrowserRouter([
             <Suspense
               fallback={
                 <div className="w-full">
-                  <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                  <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
                 </div>
               }>
               <Users />
@@ -134,7 +134,7 @@ const router = createBrowserRouter([
           <Suspense
             fallback={
               <div className="w-full">
-                <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+                <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
               </div>
             }>
             <Details />

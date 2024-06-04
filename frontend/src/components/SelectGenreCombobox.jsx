@@ -43,7 +43,7 @@ const SelectGenreCombobox = ({ options, form, name, previousGenre }) => {
   return (
     <Popover>
       <PopoverTrigger className="flex justify-start w-full">
-        <span className="h-10 py-2 px-2 w-full inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset- border border-slate-200 bg-white hover:bg-slate-100 hover:text-slate-900">
+        <span className="h-10 py-2 px-2 w-full inline-flex items-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset- border border-zinc-200 bg-white hover:bg-zinc-100 hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-950">
           {selectedValues.size > 0 ? (
             <>
               <div className="space-x-1 flex">
@@ -65,7 +65,7 @@ const SelectGenreCombobox = ({ options, form, name, previousGenre }) => {
               </div>
             </>
           ) : (
-            <p className="px-1 text-slate-500 text-sm font-normal">Genre</p>
+            <p className="px-1 text-zinc-500 text-sm font-normal">Genre</p>
           )}
         </span>
       </PopoverTrigger>

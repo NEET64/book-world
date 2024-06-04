@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import DataTableToolbar from "./DatableToolbar";
+import DataTableToolbar from "./DataTableToolbar";
 import DataTablePagination from "./DataTablePagination";
 
 export function DataTable({ columns, data, children, searchBy = "name" }) {
