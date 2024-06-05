@@ -44,9 +44,8 @@ const UserDetails = () => {
   }
 
   return (
-    // <div className="flex justify-center items-center w-full p-4 h-full dark:bg-zinc-950">
-    <div className="mx-auto mt-40 p-4 w-full col-span-2 max-w-xl text-center">
-      <div className="p-2 flex flex-col gap-3 w-full rounded-lg border relative dark:border-zinc-800">
+    <div className="mx-auto flex p-4 w-full min-h-[calc(100vh-80px)] items-center flex-grow col-span-2 max-w-xl text-center">
+      <div className="p-2 flex flex-col gap-3 w-full h-fit rounded-lg border relative dark:border-zinc-800">
         <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b dark:border-zinc-800">
           <img
             className="absolute w-32 h-32 -top-20 rounded-full shadow-lg p-3 border-2 bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-800"
@@ -96,7 +95,6 @@ const UserDetails = () => {
         </div>
       </div>
     </div>
-    // </div>
   );
 };
 
