@@ -7,12 +7,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import useAuth from "@/hooks/useAuth";
-import { ModeToggle } from "./mode-toggle";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoggedInAtom, userRoleAtom } from "@/atoms/userData";
 
 const Sidebar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
+  const role = useRecoilValue(userRoleAtom);
   const navigate = useNavigate();
-  const { isLoggedIn, logout, role } = useAuth();
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex dark:bg-zinc-950 dark:border-zinc-800">
       <nav className="flex flex-col items-center gap-2">
@@ -87,7 +88,9 @@ const Sidebar = () => {
               {isLoggedIn ? (
                 <span
                   onClick={() => {
-                    logout();
+                    localStorage.removeItem("token");
+                    setIsLoggedIn(false);
+                    // window.location.reload();
                   }}
                   className="flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 bg-white hover:bg-zinc-300 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
                   <LogOut className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />

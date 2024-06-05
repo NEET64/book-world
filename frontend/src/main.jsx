@@ -8,8 +8,14 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
-import useAuth from "./hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { RecoilRoot, useRecoilValue } from "recoil";
+import {
+  isLoggedInAtom,
+  isUserLoadingAtom,
+  userRoleAtom,
+} from "./atoms/userData";
+import { ThemeProvider } from "./components/theme-provider";
 
 const AddBook = lazy(() => import("./pages/AddBook"));
 const Homepage = lazy(() => import("./pages/Homepage"));
@@ -22,13 +28,15 @@ const FavouriteBooks = lazy(() => import("./pages/FavouriteBooks"));
 const Users = lazy(() => import("./pages/Users"));
 
 const ProtectedRoute = ({ children, roles }) => {
-  const { role, isLoading, isLoggedIn } = useAuth("protecroute");
+  const userRole = useRecoilValue(userRoleAtom);
+  const isLoading = useRecoilValue(isUserLoadingAtom);
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (!isLoggedIn || !roles.includes(role)) {
+  if (!isLoggedIn || !roles.includes(userRole)) {
     return <Navigate to="/login" replace />;
   }
 
@@ -174,5 +182,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <RecoilRoot>
+      <RouterProvider router={router} />
+    </RecoilRoot>
+  </ThemeProvider>
 );

@@ -1,44 +1,19 @@
-import useAuth from "@/hooks/useAuth";
 import { LayoutGrid, Loader2, PlusCircle, Table } from "lucide-react";
-import { lazy, useEffect, useState } from "react";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { lazy } from "react";
+import { useNavigate } from "react-router-dom";
 import { DataTable } from "@/components/DataTable";
 import { bookColumns } from "@/components/bookColumns";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 const BookCard = lazy(() => import("@/components/BookCard"));
-import { useToast } from "@/components/ui/use-toast";
+import useBooks from "@/hooks/useBooks";
+import { useRecoilValue } from "recoil";
+import { userRoleAtom } from "@/atoms/userData";
 
 const Homepage = () => {
-  const [books, setBooks] = useState([]);
-  const { role } = useAuth();
+  const role = useRecoilValue(userRoleAtom);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const searchQuery = queryParams.get("q") || "";
-    setIsLoading(true);
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/books`, {
-        params: { q: searchQuery },
-      })
-      .then((response) => {
-        setBooks(response.data.books);
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsLoading(false));
-  }, [location.search]);
+  const { books, isLoading } = useBooks();
 
   return (
     <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0 md:gap-8">

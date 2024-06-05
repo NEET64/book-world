@@ -1,3 +1,4 @@
+import { isLoggedInAtom } from "@/atoms/userData";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,9 +26,10 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 
 const LoginForm = () => {
-  const { isLoggedIn, login } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const form = useForm({
@@ -37,12 +39,13 @@ const LoginForm = () => {
       password: "",
     },
   });
+
   const navigate = useNavigate();
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/books");
     }
-  }, [isLoggedIn]);
+  }, []);
 
   const onSubmit = (values) => {
     setIsLoading(true);
@@ -50,7 +53,8 @@ const LoginForm = () => {
       .post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, values)
       .then((response) => {
         const { token, role } = response.data;
-        login({ token, role });
+        localStorage.setItem("token", token);
+        setIsLoggedIn(true);
         toast({
           description: response.data.message,
         });

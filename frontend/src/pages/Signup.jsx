@@ -17,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import useAuth from "@/hooks/useAuth";
 import { userSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -39,12 +38,11 @@ const SignupForm = () => {
   });
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
   useEffect(() => {
-    if (isLoggedIn) {
+    if (localStorage.getItem("token")) {
       navigate("/books");
     }
-  }, [isLoggedIn]);
+  }, []);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = (values) => {

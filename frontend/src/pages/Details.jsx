@@ -15,34 +15,39 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { Loader2, Pencil, Star, Trash2 } from "lucide-react";
 import { Suspense, lazy, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import useUserData from "@/hooks/useUserData";
+import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/utilities/formatDate";
+import useGetBook from "@/hooks/useGetBook";
+import { useRecoilValue } from "recoil";
+import {
+  isLoggedInAtom,
+  userRoleAtom,
+  usersFavouriteBooksAtom,
+} from "@/atoms/userData";
 const ReviewList = lazy(() => import("@/components/ReviewList"));
 const ReviewForm = lazy(() => import("@/components/ReviewForm"));
 
 const Details = () => {
-  const [book, setBook] = useState();
   const [isLiked, setisLiked] = useState(false);
-  const { isLoggedIn, role } = useUserData();
-  const [isDetailLoading, setIsDetailLoading] = useState(true);
+  const { book, id, isDetailLoading } = useGetBook();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const { isUserLoading, setIsUserLoading, isFavouriteBook } = useUserData();
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  const role = useRecoilValue(userRoleAtom);
+  const userFavouriteBooks = useRecoilValue(usersFavouriteBooksAtom);
   const [isHeartLoading, setIsHeartLoading] = useState(false);
   const [myReview, setMyReview] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  let { id } = useParams();
-  useEffect(() => {
-    if (!isUserLoading && book) {
-      setisLiked(isFavouriteBook(book._id));
-    }
-  }, [book, isUserLoading]);
 
   useEffect(() => {
-    book &&
+    setisLiked(userFavouriteBooks.includes(book?._id));
+  }, [book, userFavouriteBooks]);
+
+  useEffect(() => {
+    isLoggedIn &&
+      book &&
       axios
         .get(
           `${import.meta.env.VITE_BACKEND_URL}/books/${book?._id}/reviews/me`,
@@ -55,24 +60,13 @@ const Details = () => {
         .then((response) => {
           setMyReview(response.data);
         })
-        .catch((err) => {});
-  }, [book]);
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
-      .then((response) => {
-        setBook(response.data.book);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => setIsDetailLoading(false));
-  }, []);
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [isLoggedIn, book]);
 
   const toggleFavorite = async () => {
     if (isLoggedIn) {
-      setIsUserLoading(true);
       setIsHeartLoading(true);
       axios
         .put(
@@ -116,7 +110,7 @@ const Details = () => {
   }
   return (
     <div className="grid p-4 sm:p-6 gap-2 dark:text-zinc-50">
-      <div className="flex flex-col sm:flex-row gap-5 h-auto w-full max-w-4xl m-auto">
+      <div className="flex flex-col sm:flex-row gap-5 w-full max-w-4xl m-auto">
         <div className="flex flex-col items-center sm:sticky sm:top-24 pb-2 rounded-lg h-full">
           <img
             src={image}
@@ -161,7 +155,7 @@ const Details = () => {
             )}
           </div>
 
-          {myReview && (
+          {isLoggedIn && myReview && (
             <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto dark:border-zinc-800">
               <div className="flex items-center w-full gap-2">
                 <img

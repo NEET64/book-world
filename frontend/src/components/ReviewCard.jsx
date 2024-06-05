@@ -14,7 +14,6 @@ import { Textarea } from "./ui/textarea";
 import { formatDate } from "@/utilities/formatDate";
 import { useToast } from "./ui/use-toast";
 import axios from "axios";
-import useUserData from "@/hooks/useUserData";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -25,32 +24,33 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { useRecoilValue } from "recoil";
+import {
+  isUserLoadingAtom,
+  likedReviewsAtom,
+  userIdAtom,
+  userRoleAtom,
+} from "@/atoms/userData";
 
 const ReviewCard = ({ review, bookId, handleParentReload }) => {
-  const [showForm, setShowForm] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isReplyLoading, setIsReplyLoading] = useState(false);
-  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const userId = useRecoilValue(userIdAtom);
+  const role = useRecoilValue(userRoleAtom);
+  const likedReviews = useRecoilValue(likedReviewsAtom);
+
+  // Usefull when Children are added or deleted
+  const [replyCount, setReplyCount] = useState(0);
+  useEffect(() => {
+    setReplyCount(review.comments.length);
+    setIsLiked(likedReviews.includes(review?._id));
+  }, [review, likedReviews]);
+
+  // Liking Reply
   const [isLikeLoading, setIsLikeLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [comment, setComment] = useState("");
-  const [replies, setReplies] = useState();
-  const { userId, role, isLikedReview, isUserLoading } = useUserData();
-  const [open, setOpen] = useState(false);
-  const [openReport, setOpenReport] = useState(false);
-  const [counter, setCounter] = useState(0);
-  const [replyCount, setReplyCount] = useState(0);
-
-  const handleReload = () => {
-    setCounter(counter + 1);
-  };
-
   const toggleLike = async () => {
     if (!!role) {
       setIsLikeLoading(true);
-
       axios
         .post(
           `${import.meta.env.VITE_BACKEND_URL}/books/${bookId}/reviews/${
@@ -84,7 +84,14 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
     }
   };
 
+  // Trigger for Children to refetch Replies
+  const [showReplies, setShowReplies] = useState(false);
+  const [replies, setReplies] = useState();
+  const [isReplyLoading, setIsReplyLoading] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const handleReload = () => setCounter(counter + 1);
   useEffect(() => {
+    if (!showReplies) return;
     setIsReplyLoading(true);
     axios
       .get(
@@ -105,10 +112,80 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
       .finally(() => setIsReplyLoading(false));
   }, [showReplies, counter]);
 
-  useEffect(() => {
-    if (!isUserLoading && review) setIsLiked(isLikedReview(review._id));
-  }, [isUserLoading]);
+  // Deleting Review
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleDelete = () => {
+    setIsDeleteLoading(true);
+    axios
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/books/${bookId}/reviews/${
+          review._id
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        if (userId === review.userId._id) window.location.reload();
+        handleParentReload();
+        toast({
+          description: response.data.message,
+          variant: "destructive",
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setOpen(false);
+      });
+  };
 
+  // Reporting User
+  const [openReport, setOpenReport] = useState(false);
+  const handleReport = () => {
+    setIsDeleteLoading(true);
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/users/${review.userId._id}/report`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        toast({
+          description: response.data.message,
+          variant: "destructive",
+        });
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsDeleteLoading(false);
+        setOpenReport(false);
+      });
+  };
+
+  // Commenting on Reviews
+  const [showForm, setShowForm] = useState(false);
+  const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -172,7 +249,11 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
         </div>
       </div>
       <div
-        className={showReplies ? "border-l-2 ml-5 pl-6 sm:ml-6 sm:pl-7" : ""}>
+        className={
+          showReplies && replyCount > 0
+            ? "border-l-2 ml-5 pl-6 sm:ml-6 sm:pl-7"
+            : ""
+        }>
         <blockquote className="ml-1 mb-2 sm:mb-4 italic text-sm sm:text-base">
           {review.content}
         </blockquote>
@@ -239,42 +320,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button
-                    variant="destructive"
-                    onClick={() => {
-                      setIsDeleteLoading(true);
-                      axios
-                        .delete(
-                          `${
-                            import.meta.env.VITE_BACKEND_URL
-                          }/books/${bookId}/reviews/${review._id}`,
-                          {
-                            headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                              )}`,
-                            },
-                          }
-                        )
-                        .then((response) => {
-                          handleParentReload();
-                          toast({
-                            description: response.data.message,
-                            variant: "destructive",
-                          });
-                        })
-                        .catch((err) => {
-                          toast({
-                            title: "Error",
-                            description: err.response.data.message,
-                            variant: "destructive",
-                          });
-                        })
-                        .finally(() => {
-                          setIsDeleteLoading(false);
-                          setOpen(false);
-                        });
-                    }}>
+                  <Button variant="destructive" onClick={handleDelete}>
                     {isDeleteLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -310,42 +356,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <Button
-                    variant="destructive"
-                    onClick={() => {
-                      setIsDeleteLoading(true);
-                      axios
-                        .post(
-                          `${import.meta.env.VITE_BACKEND_URL}/users/${
-                            review.userId._id
-                          }/report`,
-                          {},
-                          {
-                            headers: {
-                              Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                              )}`,
-                            },
-                          }
-                        )
-                        .then((response) => {
-                          toast({
-                            description: response.data.message,
-                            variant: "destructive",
-                          });
-                        })
-                        .catch((err) => {
-                          toast({
-                            title: "Error",
-                            description: err.response.data.message,
-                            variant: "destructive",
-                          });
-                        })
-                        .finally(() => {
-                          setIsDeleteLoading(false);
-                          setOpenReport(false);
-                        });
-                    }}>
+                  <Button variant="destructive" onClick={handleReport}>
                     {isDeleteLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -360,6 +371,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
             </AlertDialog>
           )}
         </div>
+
         {showForm && (
           <form onSubmit={handleSubmit} className="sm:w-3/4 mt-2">
             <Textarea
@@ -379,6 +391,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
             )}
           </form>
         )}
+
         {showReplies && isReplyLoading ? (
           <div className="w-full">
             <Loader2 className="mx-auto h-10 w-10 animate-spin" />

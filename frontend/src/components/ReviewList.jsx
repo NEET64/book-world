@@ -5,6 +5,8 @@ import { useToast } from "@/components/ui/use-toast";
 import ReviewCard from "./ReviewCard";
 import { Progress } from "./ui/progress";
 import { formatNumber } from "@/utilities/formatNum";
+import { useRecoilValue } from "recoil";
+import { userIdAtom } from "@/atoms/userData";
 
 const ReviewList = ({ book }) => {
   const [reviews, setReviews] = useState([]);
@@ -61,7 +63,7 @@ const ReviewList = ({ book }) => {
   }
 
   return (
-    <section className="w-full max-w-4xl m-auto h-full mt-5 rounded-lg overflow-hidden">
+    <section className="w-full max-w-4xl m-auto mt-5 rounded-lg overflow-hidden">
       <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl">
         Ratings and Reviews
       </h2>

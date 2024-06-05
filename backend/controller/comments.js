@@ -93,9 +93,13 @@ module.exports.deleteComment = async (req, res) => {
     throw new ExpressError(400, "Comment not found");
   }
 
-  if (!req.userId || req.userId != comment.userId) {
+  if (
+    !req.userId ||
+    !(req.role === "admin" || req.userId == comment.userId._id)
+  ) {
     throw new ExpressError(403, "Unauthorized to delete comment");
   }
+
   await this.deleteCommentAndReplies(commentId);
 
   if (comment.parent) {

@@ -17,11 +17,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EyeOff } from "lucide-react";
-import { DataTableFacetedFilter } from "./DataTableFacetedFilter";
 
 const DataTableToolbar = ({ table, children, searchBy }) => {
   const [searchByState, setSearchByState] = useState(searchBy);
-  const statuses = [];
+
   return (
     <div className="flex justify-between mb-2 gap-2">
       <div className="flex items-center w-full gap-2">
@@ -44,12 +43,6 @@ const DataTableToolbar = ({ table, children, searchBy }) => {
             <SelectItem value="author">Author</SelectItem>
           </SelectContent>
         </Select>
-        <DataTableFacetedFilter
-          column={table.getColumn("genre")}
-          title="Genre"
-          options={statuses}
-        />
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="flex ml-auto sm:ml-0">

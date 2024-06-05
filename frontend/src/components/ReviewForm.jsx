@@ -16,9 +16,14 @@ import {
 import { Loader2 } from "lucide-react";
 import Rating from "./Rating";
 import { useToast } from "./ui/use-toast";
+import { useRecoilValue } from "recoil";
+import { isLoggedInAtom } from "@/atoms/userData";
+import { useNavigate } from "react-router-dom";
 
 const Review = ({ book, isEditing, reviewId }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const isLoggedIn = useRecoilValue(isLoggedInAtom);
+  const navigate = useNavigate();
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(reviewSchema),
@@ -70,8 +75,11 @@ const Review = ({ book, isEditing, reviewId }) => {
           window.location.reload();
         })
         .catch((err) => {
+          navigate("/login");
           toast({
-            description: err.response.data.message,
+            description: isLoggedIn
+              ? err.response.data.message
+              : "You need to Login to write a review",
             variant: "destructive",
           });
         })

@@ -1,31 +1,27 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  isLoggedInAtom,
+  isUserLoadingAtom,
+  likedCommentsAtom,
+  likedReviewsAtom,
+  userIdAtom,
+  userRoleAtom,
+  usersFavouriteBooksAtom,
+} from "@/atoms/userData";
 
 const useUserData = () => {
-  const [isUserLoading, setIsUserLoading] = useState(true);
-  const [userData, setUserData] = useState({
-    role: "",
-    userId: "",
-    isLoggedIn: !!localStorage.getItem("token"),
-    usersFavouriteBooks: [],
-    likedReviews: [],
-    likedComments: [],
-  });
+  const setUserRole = useSetRecoilState(userRoleAtom);
+  const setUserId = useSetRecoilState(userIdAtom);
+  const setUsersFavouriteBooks = useSetRecoilState(usersFavouriteBooksAtom);
+  const setLikedReviews = useSetRecoilState(likedReviewsAtom);
+  const setLikedComments = useSetRecoilState(likedCommentsAtom);
+  const setIsUserLoading = useSetRecoilState(isUserLoadingAtom);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
 
-  const isFavouriteBook = (bookId) => {
-    return userData.usersFavouriteBooks.includes(bookId);
-  };
-
-  const isLikedReview = (reviewId) => {
-    return userData.likedReviews.includes(reviewId);
-  };
-
-  const isLikedComment = (commentId) => {
-    return userData.likedComments.includes(commentId);
-  };
-  useEffect(() => {
-    if (!userData.isLoggedIn) return;
-    console.log("here");
+  const fetchUser = async () => {
+    setIsUserLoading(true);
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/users/me`, {
         headers: {
@@ -33,37 +29,28 @@ const useUserData = () => {
         },
       })
       .then((response) => {
-        setUserData({
-          role: response.data.user.role,
-          userId: response.data.user._id,
-          isLoggedIn: true,
-          likedReviews: response.data.user.likedReviews || [],
-          likedComments: response.data.user.likedComments || [],
-          usersFavouriteBooks: response.data.user.favoriteBooks || [],
-        });
+        setUserRole(response.data.user.role);
+        setUserId(response.data.user._id);
+        setIsLoggedIn(true);
+        setUsersFavouriteBooks(response.data.user.favoriteBooks || []);
+        setLikedReviews(response.data.user.likedReviews || []);
+        setLikedComments(response.data.user.likedComments || []);
       })
-      .catch((error) =>
-        setUserData({
-          role: "",
-          userId: "",
-          isLoggedIn: !!localStorage.getItem("token"),
-          usersFavouriteBooks: [],
-          likedReviews: [],
-          likedComments: [],
-        })
-      )
+      .catch((error) => console.log(error))
       .finally(() => setIsUserLoading(false));
-  }, [isUserLoading]);
-
-  return {
-    ...userData,
-    isFavouriteBook,
-    setUserData,
-    isLikedReview,
-    isLikedComment,
-    isUserLoading,
-    setIsUserLoading,
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setUserRole("");
+      setUserId("");
+      setUsersFavouriteBooks([]);
+      setLikedReviews([]);
+      setLikedComments([]);
+      return;
+    }
+    fetchUser();
+  }, [isLoggedIn]);
 };
 
 export default useUserData;

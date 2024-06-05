@@ -26,6 +26,7 @@ import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 import { useToast } from "@/components/ui/use-toast";
+import useGetBook from "@/hooks/useGetBook";
 
 const EditBook = () => {
   const genre = [
@@ -37,24 +38,9 @@ const EditBook = () => {
     "Non-Fiction",
     "Adventure",
   ];
-  const [book, setBook] = useState();
+  const { book, id } = useGetBook();
   const { toast } = useToast();
   const navigate = useNavigate();
-  let { id } = useParams();
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
-      .then((response) => {
-        setBook(response.data.book);
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      });
-  }, []);
 
   const form = useForm({
     resolver: zodResolver(bookSchema),

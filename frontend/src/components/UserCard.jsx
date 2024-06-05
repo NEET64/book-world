@@ -1,6 +1,5 @@
 import { AlertCircle, Heart, Star } from "lucide-react";
 import { Badge } from "./ui/badge";
-import { Separator } from "./ui/separator";
 
 const UserCard = ({ user }) => {
   return (

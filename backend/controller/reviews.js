@@ -46,7 +46,7 @@ module.exports.updateReview = async (req, res) => {
     throw new ExpressError(400, "Review not found");
   }
 
-  if (review.userId.toString() !== userId) {
+  if (review.userId != userId) {
     throw new ExpressError(403, "Unauthorized to update this review");
   }
 
@@ -61,7 +61,18 @@ module.exports.updateReview = async (req, res) => {
 module.exports.deleteReview = async (req, res) => {
   const { reviewId } = req.params;
 
-  const review = await Review.findByIdAndDelete(reviewId);
+  const review = await Review.findById(reviewId);
+  if (!review) {
+    throw new ExpressError(400, "Review not found");
+  }
+
+  if (
+    !req.userId ||
+    !(req.role === "admin" || req.userId == review.userId._id)
+  ) {
+    throw new ExpressError(403, "Unauthorized to delete Review");
+  }
+  const deletedReview = await Review.findByIdAndDelete(reviewId);
   if (!review) {
     throw new ExpressError(400, "Review not found");
   }

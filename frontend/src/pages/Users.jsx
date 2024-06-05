@@ -7,16 +7,15 @@ import { useToast } from "@/components/ui/use-toast";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const { token } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    token &&
+    localStorage.getItem("token") &&
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/users/`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((response) => setUsers(response.data.users))
@@ -28,14 +27,19 @@ const Users = () => {
           })
         )
         .finally(setIsLoading(false));
-  }, [token]);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full">
+        <Loader2 className="mx-auto h-10 w-10 animate-spin" />
+      </div>
+    );
+  }
+
   return (
     <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0">
-      {isLoading ? (
-        <div className="w-full">
-          <Loader2 className="mx-auto h-10 w-10 animate-spin" />
-        </div>
-      ) : users ? (
+      {users ? (
         <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
           {users.map((user, index) => (
             <UserCard key={index} user={user} />
