@@ -1,4 +1,3 @@
-import useAuth from "@/hooks/useAuth";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";

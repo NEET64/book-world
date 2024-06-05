@@ -11,10 +11,12 @@ import {
   Users2,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import useAuth from "@/hooks/useAuth";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { isLoggedInAtom, userRoleAtom } from "@/atoms/userData";
 
 const CollapsibleSidebar = () => {
-  const { isLoggedIn, logout, role } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
+  const role = useRecoilValue(userRoleAtom);
   const navigate = useNavigate();
   return (
     <Sheet>
@@ -70,7 +72,8 @@ const CollapsibleSidebar = () => {
           {isLoggedIn ? (
             <Link
               onClick={() => {
-                logout();
+                localStorage.removeItem("token");
+                setIsLoggedIn(false);
               }}
               className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500">
               <LogOut className="h-5 w-5" />
