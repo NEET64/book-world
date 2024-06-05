@@ -14,7 +14,7 @@ const SimilarBooks = ({ book }) => {
   return (
     <Carousel
       className="w-full max-w-4xl mx-auto mt-8"
-      opts={{ dragFree: true, loop: true, slidesToScroll: 3 }}>
+      opts={{ dragFree: true, slidesToScroll: 3 }}>
       <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl mb-4">
         Similar Books
       </h2>

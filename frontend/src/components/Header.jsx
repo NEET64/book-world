@@ -47,7 +47,7 @@ const Header = () => {
             setSearch(e.target.value.trim());
           }}
         />
-        <span className="absolute right-24">
+        <span className="hidden sm:absolute right-24">
           <kbd className="pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border my-2 px-2 text-[15px] font-medium opacity-100 dark:bg-zinc-800 dark:text-zinc-500 dark:border-zinc-800 ">
             <span className="text-xs">⌘</span>K
           </kbd>
