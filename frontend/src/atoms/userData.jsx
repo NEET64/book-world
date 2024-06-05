@@ -32,5 +32,5 @@ export const likedCommentsAtom = atom({
 
 export const isUserLoadingAtom = atom({
   key: "isUserLoading",
-  default: true,
+  default: false,
 });

@@ -25,17 +25,9 @@ import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 import { useToast } from "@/components/ui/use-toast";
+import genres from "@/utilities/genres";
 
 const AddBook = () => {
-  const genre = [
-    "Fantasy",
-    "Science Fiction",
-    "Mystery",
-    "Romance",
-    "Historical Fiction",
-    "Non-Fiction",
-    "Adventure",
-  ];
   const form = useForm({
     resolver: zodResolver(bookSchema),
     defaultValues: {
@@ -150,7 +142,7 @@ const AddBook = () => {
                     <FormLabel className="text-left">Genre</FormLabel>
                     <FormControl>
                       <SelectGenreCombobox
-                        options={genre}
+                        options={genres}
                         name="Genre"
                         form={form}
                       />

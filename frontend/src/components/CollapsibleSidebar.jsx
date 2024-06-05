@@ -8,15 +8,17 @@ import {
   LogIn,
   LogOut,
   Menu,
+  User2,
   Users2,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoggedInAtom, userRoleAtom } from "@/atoms/userData";
+import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
 
 const CollapsibleSidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const role = useRecoilValue(userRoleAtom);
+  const userId = useRecoilValue(userIdAtom);
   const navigate = useNavigate();
   return (
     <Sheet>
@@ -30,28 +32,50 @@ const CollapsibleSidebar = () => {
         side="left"
         className="min-w-fit sm:max-w-64 dark:border-zinc-800">
         <nav className="grid gap-6 text-lg font-medium">
-          <Link
-            href="#"
-            className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-zinc-400 text-lg font-semibold sm:text-base">
-            <BookOpen size={20} />
-            <span className="sr-only">Book World</span>
-          </Link>
+          {isLoggedIn ? (
+            <img
+              className="w-10 h-10 rounded-full shadow-lg"
+              src={`https://api.multiavatar.com/${userId}.svg`}
+              alt="user"
+            />
+          ) : (
+            <Link
+              href="#"
+              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-zinc-400 text-lg font-semibold sm:text-base">
+              <BookOpen size={20} />
+              <span className="sr-only">Book World</span>
+            </Link>
+          )}
           <NavLink
             to="books"
             className={({ isActive }) =>
               isActive
                 ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
-                : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500"
+                : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
             }>
             <Home size={20} />
             Home
           </NavLink>
+          {isLoggedIn && (
+            <NavLink
+              to={"users/" + userId}
+              end
+              className={({ isActive }) =>
+                isActive
+                  ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
+                  : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
+              }>
+              <User2 className="h-5 w-5" />
+              User
+            </NavLink>
+          )}
+
           <NavLink
             to="favourites"
             className={({ isActive }) =>
               isActive
                 ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
-                : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500"
+                : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
             }>
             <Heart className="h-5 w-5" />
             Favourites
@@ -59,23 +83,23 @@ const CollapsibleSidebar = () => {
           {role === "admin" && (
             <NavLink
               to="users"
+              end
               className={({ isActive }) =>
                 isActive
                   ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
-                  : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500"
+                  : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
               }>
               <Users2 className="h-5 w-5" />
               Users
             </NavLink>
           )}
-
           {isLoggedIn ? (
             <Link
               onClick={() => {
                 localStorage.removeItem("token");
                 setIsLoggedIn(false);
               }}
-              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500">
+              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400">
               <LogOut className="h-5 w-5" />
               Log Out
             </Link>
@@ -84,7 +108,7 @@ const CollapsibleSidebar = () => {
               onClick={() => {
                 navigate("/login");
               }}
-              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500">
+              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400">
               <LogIn className="h-5 w-5" />
               Log In
             </Link>

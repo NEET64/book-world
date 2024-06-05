@@ -3,15 +3,15 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const useBooks = () => {
+const useBooks = (genre) => {
   const [books, setBooks] = useState([]);
   const location = useLocation();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const searchQuery = queryParams.get("q") || "";
+    let searchQuery = genre || queryParams.get("q") || "";
     setIsLoading(true);
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/books`, {
@@ -28,7 +28,7 @@ const useBooks = () => {
         });
       })
       .finally(() => setIsLoading(false));
-  }, [location.search]);
+  }, [location.search, genre]);
 
   return { books, isLoading };
 };

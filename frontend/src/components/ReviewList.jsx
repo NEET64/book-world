@@ -5,8 +5,6 @@ import { useToast } from "@/components/ui/use-toast";
 import ReviewCard from "./ReviewCard";
 import { Progress } from "./ui/progress";
 import { formatNumber } from "@/utilities/formatNum";
-import { useRecoilValue } from "recoil";
-import { userIdAtom } from "@/atoms/userData";
 
 const ReviewList = ({ book }) => {
   const [reviews, setReviews] = useState([]);

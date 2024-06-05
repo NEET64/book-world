@@ -9,6 +9,7 @@ const useGetBook = () => {
   const { toast } = useToast();
   let { id } = useParams();
   useEffect(() => {
+    setIsDetailLoading(true);
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/books/` + id)
       .then((response) => {
@@ -22,7 +23,7 @@ const useGetBook = () => {
         });
       })
       .finally(() => setIsDetailLoading(false));
-  }, []);
+  }, [id]);
 
   return { book, id, isDetailLoading };
 };

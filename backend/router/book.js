@@ -10,7 +10,6 @@ const {
   updateReview,
   deleteReview,
   likeReview,
-  unlikeReview,
   getReview,
 } = require("../controller/reviews.js");
 const {
@@ -30,20 +29,6 @@ router
     upload.single("image"),
     wrapAsync(bookController.createBook)
   );
-
-router.get("/genre", (req, res) => {
-  res.json({
-    genre: [
-      "Fantasy",
-      "Science Fiction",
-      "Mystery",
-      "Romance",
-      "Historical Fiction",
-      "Non-Fiction",
-      "Adventure",
-    ],
-  });
-});
 
 router
   .route("/:id")

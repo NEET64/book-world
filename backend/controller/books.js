@@ -1,4 +1,5 @@
 const Book = require("../models/books");
+const User = require("../models/users");
 const ExpressError = require("../utils/ExpressErrors");
 
 module.exports.getAllBooks = async (req, res) => {
@@ -6,12 +7,13 @@ module.exports.getAllBooks = async (req, res) => {
 
   let books;
   if (q) {
-    const regex = new RegExp(q, "i");
+    const searchWords = q.split(" ");
+    const regex = new RegExp(searchWords.join("|"), "i");
     books = await Book.find({
-      $or: [{ title: regex }, { author: regex }, { genre: { $in: [regex] } }],
+      $or: [{ title: regex }, { author: regex }, { genre: { $in: regex } }],
     });
   } else {
-    books = await Book.find({});
+    books = await Book.find({}); // Fetch all books if no query provided
   }
   res.json({
     books: books,
@@ -58,6 +60,11 @@ module.exports.deleteBook = async (req, res) => {
   }
   const id = req.params.id;
   const book = await Book.findByIdAndDelete(id);
+  const usersWithBook = await User.find({ favoriteBooks: { $in: [id] } });
+
+  usersWithBook.forEach(async (user) => {
+    await User.updateOne({ _id: user._id }, { $pull: { favoriteBooks: id } });
+  });
   res.json({
     book: book,
     message: `Book Deleted: ${book.title}`,

@@ -1,6 +1,14 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-import { BookOpen, Heart, Home, LogIn, LogOut, Users2 } from "lucide-react";
+import {
+  BookOpen,
+  Heart,
+  Home,
+  LogIn,
+  LogOut,
+  User2,
+  Users2,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -8,22 +16,40 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoggedInAtom, userRoleAtom } from "@/atoms/userData";
+import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
 
 const Sidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const role = useRecoilValue(userRoleAtom);
+  const userId = useRecoilValue(userIdAtom);
   const navigate = useNavigate();
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r sm:flex dark:bg-zinc-950 dark:border-zinc-800">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r sm:flex dark:bg-zinc-950 dark:border-zinc-800">
       <nav className="flex flex-col items-center gap-2">
         <div className="border-b p-2 w-full dark:border-zinc-800">
-          <Link
-            to="books"
-            className="flex items-center justify-center gap-2 rounded-full bg-zinc-500 text-zinc-50 text-lg font-semibold h-10 w-10 dark:bg-zinc-600">
-            <BookOpen size={20} />
-            <span className="sr-only">Acme Inc</span>
-          </Link>
+          {isLoggedIn ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <NavLink to={"users/" + userId} className="pb-0">
+                    <img
+                      className="w-10 h-10 rounded-full shadow-lg"
+                      src={`https://api.multiavatar.com/${userId}.svg`}
+                      alt="user"
+                    />
+                  </NavLink>
+                </TooltipTrigger>
+                <TooltipContent side="right">{role}</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : (
+            <Link
+              to="books"
+              className="flex items-center justify-center gap-2 rounded-full bg-zinc-500 text-zinc-50 text-lg font-semibold h-10 w-10 dark:bg-zinc-600">
+              <BookOpen size={20} />
+              <span className="sr-only">Acme Inc</span>
+            </Link>
+          )}
         </div>
 
         <TooltipProvider>
@@ -61,6 +87,7 @@ const Sidebar = () => {
             <TooltipContent side="right">Favourites</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
         {role === "admin" && (
           <TooltipProvider>
             <Tooltip>

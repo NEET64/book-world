@@ -9,8 +9,11 @@ const {
   toggleFavouriteBook,
   getMe,
   reportUser,
+  getUser,
 } = require("../controller/users");
 const { authorization } = require("../middleware/auth");
+
+router.get("/", authorization, wrapAsync(getAllUsers));
 
 router.post("/signup", wrapAsync(signup));
 
@@ -21,10 +24,10 @@ router
   .get(authorization, wrapAsync(getFavouriteBooks))
   .put(authorization, wrapAsync(toggleFavouriteBook));
 
-router.get("/", authorization, wrapAsync(getAllUsers));
+router.get("/me", authorization, wrapAsync(getMe));
+
+router.get("/:userId", getUser);
 
 router.post("/:userId/report", authorization, wrapAsync(reportUser));
-
-router.get("/me", authorization, wrapAsync(getMe));
 
 module.exports = router;

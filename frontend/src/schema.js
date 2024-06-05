@@ -1,4 +1,5 @@
 import { z } from "zod";
+import genres from "./utilities/genres";
 
 export const reviewSchema = z.object({
   content: z
@@ -36,17 +37,7 @@ export const bookSchema = z.object({
     .trim()
     .min(3, { message: "Author name must be at least 3 characters long" }),
   genre: z
-    .array(
-      z.enum([
-        "Fantasy",
-        "Science Fiction",
-        "Mystery",
-        "Romance",
-        "Historical Fiction",
-        "Non-Fiction",
-        "Adventure",
-      ])
-    )
+    .array(z.enum(genres))
     .min(1, { message: "At least one genre is required" }),
   year_published: z.preprocess(
     (value) => (isNaN(value) ? 0 : value),

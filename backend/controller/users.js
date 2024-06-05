@@ -139,3 +139,10 @@ module.exports.getMe = async (req, res) => {
     user,
   });
 };
+
+module.exports.getUser = async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId, "-password");
+  if (!user) throw new ExpressError(404, "User not Found");
+  res.json({ user: user });
+};

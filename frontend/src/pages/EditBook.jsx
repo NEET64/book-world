@@ -27,17 +27,9 @@ import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 import { useToast } from "@/components/ui/use-toast";
 import useGetBook from "@/hooks/useGetBook";
+import genres from "@/utilities/genres";
 
 const EditBook = () => {
-  const genre = [
-    "Fantasy",
-    "Science Fiction",
-    "Mystery",
-    "Romance",
-    "Historical Fiction",
-    "Non-Fiction",
-    "Adventure",
-  ];
   const { book, id } = useGetBook();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -184,7 +176,7 @@ const EditBook = () => {
                     <FormLabel className="text-left">Genre</FormLabel>
                     <FormControl>
                       <SelectGenreCombobox
-                        options={genre}
+                        options={genres}
                         name="Genre"
                         form={form}
                         previousGenre={book?.genre}

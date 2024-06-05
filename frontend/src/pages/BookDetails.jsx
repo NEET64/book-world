@@ -19,22 +19,25 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/utilities/formatDate";
 import useGetBook from "@/hooks/useGetBook";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   isLoggedInAtom,
   userRoleAtom,
   usersFavouriteBooksAtom,
 } from "@/atoms/userData";
+import SimilarBooks from "@/components/SimilarBooks";
 const ReviewList = lazy(() => import("@/components/ReviewList"));
 const ReviewForm = lazy(() => import("@/components/ReviewForm"));
 
-const Details = () => {
+const BookDetails = () => {
   const [isLiked, setisLiked] = useState(false);
   const { book, id, isDetailLoading } = useGetBook();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const role = useRecoilValue(userRoleAtom);
-  const userFavouriteBooks = useRecoilValue(usersFavouriteBooksAtom);
+  const [userFavouriteBooks, setUserFavouriteBooks] = useRecoilState(
+    usersFavouriteBooksAtom
+  );
   const [isHeartLoading, setIsHeartLoading] = useState(false);
   const [myReview, setMyReview] = useState();
   const [isEditing, setIsEditing] = useState(false);
@@ -80,7 +83,6 @@ const Details = () => {
         )
         .then((response) => {
           setIsHeartLoading(false);
-          setisLiked(!isLiked);
         })
         .catch((error) =>
           toast({
@@ -90,11 +92,16 @@ const Details = () => {
           })
         );
     } else {
-      setisLiked(!isLiked);
       toast({
         description: "You need to be logged in",
         variant: "destructive",
       });
+    }
+    setisLiked(!isLiked);
+    if (isLiked) {
+      setUserFavouriteBooks(userFavouriteBooks.filter((id) => id !== book._id));
+    } else {
+      setUserFavouriteBooks([...userFavouriteBooks, book._id]);
     }
   };
 
@@ -243,7 +250,7 @@ const Details = () => {
                   <AlertDialogTrigger asChild>
                     <Button
                       variant="outline"
-                      className="border-2 border-red-100 hover:border-red-500 hover:bg-red-500/90 text-red-500 hover:text-zinc-50">
+                      className="border-2 border-red-100 hover:border-red-500 hover:bg-red-500/90 text-red-500 hover:text-zinc-50 dark:text-zinc-50">
                       <Trash2 className="mr-2 h-4 w-4" />
                       Delete
                     </Button>
@@ -308,7 +315,7 @@ const Details = () => {
           </div>
         </div>
       </div>
-
+      <SimilarBooks book={book} />
       <Suspense
         fallback={
           <div className="w-full grid items-center">
@@ -321,4 +328,4 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default BookDetails;

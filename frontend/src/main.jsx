@@ -16,10 +16,11 @@ import {
   userRoleAtom,
 } from "./atoms/userData";
 import { ThemeProvider } from "./components/theme-provider";
+import UserDetails from "./pages/UserDetails";
 
 const AddBook = lazy(() => import("./pages/AddBook"));
 const Homepage = lazy(() => import("./pages/Homepage"));
-const Details = lazy(() => import("./pages/Details"));
+const BookDetails = lazy(() => import("./pages/BookDetails"));
 const EditBook = lazy(() => import("./pages/EditBook"));
 const LoginForm = lazy(() => import("./pages/Login"));
 const SignupForm = lazy(() => import("./pages/Signup"));
@@ -137,6 +138,19 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/users/:userId",
+        element: (
+          <Suspense
+            fallback={
+              <div className="w-full">
+                <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
+              </div>
+            }>
+            <UserDetails />
+          </Suspense>
+        ),
+      },
+      {
         path: "/books/:id",
         element: (
           <Suspense
@@ -145,7 +159,7 @@ const router = createBrowserRouter([
                 <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
               </div>
             }>
-            <Details />
+            <BookDetails />
           </Suspense>
         ),
       },
