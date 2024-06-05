@@ -31,11 +31,12 @@ const Homepage = () => {
           {role === "admin" && (
             <div className="ml-auto flex items-center gap-2">
               <Button
+                variant="outline"
                 className="h-10 gap-2"
                 onClick={() => {
                   navigate("add");
                 }}>
-                <PlusCircle className="h-4 w-4" />
+                <PlusCircle size={20} />
                 Add Book
               </Button>
             </div>
