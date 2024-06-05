@@ -84,7 +84,7 @@ const CollapsibleSidebar = () => {
               onClick={() => {
                 navigate("/login");
               }}
-              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950">
+              className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-500">
               <LogIn className="h-5 w-5" />
               Log In
             </Link>
