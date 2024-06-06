@@ -13,7 +13,7 @@ function App() {
 
       <Toaster />
 
-      <div className="flex flex-col min-h-screen sm:pl-14">
+      <div className="flex flex-col min-h-svh sm:pl-14">
         <Header />
 
         <Outlet />

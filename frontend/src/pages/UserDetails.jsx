@@ -48,7 +48,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="mx-auto flex p-4 w-full flex-1 items-center flex-grow col-span-2 max-w-xl text-center">
+    <div className="mx-auto my-5 flex p-4 w-full flex-1 items-center flex-grow col-span-2 max-w-xl text-center">
       <div className="p-2 flex flex-col gap-3 w-full h-fit rounded-lg border relative border-slate-200 dark:border-zinc-800">
         <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b border-slate-200 dark:border-zinc-800">
           <img
