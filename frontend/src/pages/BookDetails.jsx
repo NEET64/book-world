@@ -239,7 +239,6 @@ const BookDetails = () => {
                 {isLiked ? "Added to Favourites" : "Add to Favourites"}
               </span>
             </Button>
-
             {role === "admin" && (
               <div className="flex gap-2 sm:justify-end w-full">
                 <Button
