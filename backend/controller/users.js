@@ -146,3 +146,31 @@ module.exports.getUser = async (req, res) => {
   if (!user) throw new ExpressError(404, "User not Found");
   res.json({ user: user });
 };
+
+module.exports.promoteUser = async (req, res) => {
+  const userId = req.params.userId;
+  const masterRole = req.role;
+
+  if (masterRole !== "admin") {
+    throw new ExpressError(401, "You are not authorized");
+  }
+
+  let user = await User.findById(userId);
+
+  if (!user) {
+    throw new ExpressError(404, "User not found");
+  }
+  if (
+    user.email === "neetdhameliya321@gmail.com" ||
+    user.email === "john.doe2@example.com"
+  ) {
+    throw new ExpressError(401, "Master Admin cannot be modified");
+  }
+  if (user.role === "user") {
+    user = await User.findByIdAndUpdate(userId, { role: "admin" });
+    return res.json({ message: "User was Promoted to Admin", user });
+  } else {
+    user = await User.findByIdAndUpdate(userId, { role: "user" });
+    return res.json({ message: "User was Demoted to User", user });
+  }
+};

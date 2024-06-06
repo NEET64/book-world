@@ -16,10 +16,8 @@ export function ThemeProvider({
   const [theme, setTheme] = useState(
     () => localStorage.getItem(storageKey) || defaultTheme
   );
-
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove("light", "dark");
 
     if (theme === "system") {
@@ -31,7 +29,6 @@ export function ThemeProvider({
       root.classList.add(systemTheme);
       return;
     }
-
     root.classList.add(theme);
   }, [theme]);
 
@@ -42,7 +39,7 @@ export function ThemeProvider({
       setTheme(theme);
     },
   };
-
+  console.log(theme);
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}

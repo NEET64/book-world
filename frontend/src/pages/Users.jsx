@@ -8,29 +8,31 @@ import { pageTitleAtom } from "@/atoms/meta";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const setPageTitle = useSetRecoilState(pageTitleAtom);
+  const [counter, setCounter] = useState(0);
   useEffect(() => setPageTitle("All Users"), []);
 
   useEffect(() => {
-    localStorage.getItem("token") &&
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/users/`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+    console.log("ren");
+    setIsLoading(true);
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/users/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => setUsers(response.data.users))
+      .catch((error) =>
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
         })
-        .then((response) => setUsers(response.data.users))
-        .catch((error) =>
-          toast({
-            title: "Error",
-            description: err.response.data.message,
-            variant: "destructive",
-          })
-        )
-        .finally(setIsLoading(false));
-  }, []);
+      )
+      .finally(setIsLoading(false));
+  }, [counter]);
 
   if (isLoading) {
     return (
@@ -44,8 +46,12 @@ const Users = () => {
     <main className="grid flex-1 items-start p-2 sm:p-4">
       {users ? (
         <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
-          {users.map((user, index) => (
-            <UserCard key={index} user={user} />
+          {users?.map((user, index) => (
+            <UserCard
+              key={index}
+              user={user}
+              handleReload={() => setCounter(counter + 1)}
+            />
           ))}
         </div>
       ) : (

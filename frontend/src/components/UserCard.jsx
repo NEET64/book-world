@@ -1,7 +1,43 @@
 import { AlertCircle, Heart, Star } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { useState } from "react";
+import { useToast } from "./ui/use-toast";
+import axios from "axios";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, handleReload }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const handlePromotion = async () => {
+    setIsLoading(true);
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/users/${user._id}/promote`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        toast({
+          description: response.data.message,
+        });
+        handleReload();
+      })
+      .catch((err) => {
+        toast({
+          title: "Error",
+          description: err.response.data.message,
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <div className="p-1 w-full col-span-2 sm:w-1/2 lg:w-1/3 xl:w-1/4 text-center">
       <div className="p-2 flex flex-col gap-3 w-full rounded-lg border relative border-slate-200 dark:border-zinc-800">
@@ -24,7 +60,11 @@ const UserCard = ({ user }) => {
             </span>
           </div>
           <div className="absolute right-4 top-4">
-            <Badge variant="outline" className="ml-auto">
+            <Badge
+              variant={user?.role == "admin" ? "default" : "outline"}
+              onClick={handlePromotion}
+              title={user?.role == "admin" ? "Demote User" : "Promote User"}
+              className="ml-auto cursor-pointer">
               {user?.role}
             </Badge>
           </div>

@@ -94,6 +94,7 @@ const Sidebar = () => {
               <TooltipTrigger>
                 <NavLink
                   to="users"
+                  end
                   className={({ isActive }) =>
                     isActive
                       ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-200 transition-colors bg-slate-200 dark:bg-zinc-800 dark:text-zinc-50"
