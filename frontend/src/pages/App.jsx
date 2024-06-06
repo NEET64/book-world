@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";
 function App() {
   useUserData();
   return (
-    <div className="flex min-h-screen w-full flex-col dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="flex min-h-svh w-full flex-col dark:bg-zinc-950 dark:text-zinc-50">
       <Sidebar />
 
       <Toaster />
