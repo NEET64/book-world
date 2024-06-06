@@ -69,7 +69,7 @@ const SignupForm = () => {
     <div className="flex justify-center items-center p-4 min-h-svh dark:bg-zinc-950">
       <Toaster />
 
-      <Card className="mx-6 max-w-sm h-fit">
+      <Card className="mx-2 max-w-2xl h-fit">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <CardHeader>
@@ -79,8 +79,8 @@ const SignupForm = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="grid gap-4 w-full">
+                <div className="grid sm:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="firstName"

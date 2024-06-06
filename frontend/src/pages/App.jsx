@@ -8,12 +8,12 @@ import { Outlet } from "react-router-dom";
 function App() {
   useUserData();
   return (
-    <div className="flex min-h-screen w-full flex-col dark:bg-zinc-950 dark:text-zinc-50">
+    <div className="flex min-h-svh w-full flex-col dark:bg-zinc-950 dark:text-zinc-50">
       <Sidebar />
 
       <Toaster />
 
-      <div className="flex flex-col min-h-screen sm:pl-14">
+      <div className="flex flex-col min-h-svh sm:pl-14">
         <Header />
 
         <Outlet />
