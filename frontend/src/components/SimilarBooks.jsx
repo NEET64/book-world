@@ -14,7 +14,7 @@ const SimilarBooks = ({ book }) => {
   return (
     <Carousel
       className="w-full max-w-4xl mx-auto mt-8"
-      opts={{ dragFree: true, slidesToScroll: 3 }}>
+      opts={{ dragFree: true, slidesToScroll: 2 }}>
       <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl mb-4">
         Similar Books
       </h2>
@@ -22,7 +22,7 @@ const SimilarBooks = ({ book }) => {
         {books.map((book, index) => (
           <CarouselItem
             key={index}
-            className="pl-0 basis-1/3 md:basis-1/4 lg:basis-1/5">
+            className="pl-0 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5">
             <BookCard book={book} />
           </CarouselItem>
         ))}
