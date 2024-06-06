@@ -24,9 +24,9 @@ const Sidebar = () => {
   const userId = useRecoilValue(userIdAtom);
   const navigate = useNavigate();
   return (
-    <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r sm:flex dark:bg-zinc-950 dark:border-zinc-800">
+    <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r border-slate-200 sm:flex dark:bg-zinc-950 dark:border-zinc-800">
       <nav className="flex flex-col items-center gap-2">
-        <div className="border-b p-2 w-full dark:border-zinc-800">
+        <div className="border-b p-2 w-full border-slate-200 dark:border-zinc-800">
           {isLoggedIn ? (
             <TooltipProvider>
               <Tooltip>
@@ -45,9 +45,9 @@ const Sidebar = () => {
           ) : (
             <Link
               to="books"
-              className="flex items-center justify-center gap-2 rounded-full bg-zinc-500 text-zinc-50 text-lg font-semibold h-10 w-10 dark:bg-zinc-600">
+              className="flex items-center justify-center gap-2 rounded-full bg-slate-500 text-slate-50 text-lg font-semibold h-10 w-10 dark:bg-zinc-600">
               <BookOpen size={20} />
-              <span className="sr-only">Acme Inc</span>
+              <span className="sr-only">Book World</span>
             </Link>
           )}
         </div>
@@ -59,8 +59,8 @@ const Sidebar = () => {
                 to="books"
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
-                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Home className="h-5 w-5" />
                 <span className="sr-only">Home</span>
@@ -77,8 +77,8 @@ const Sidebar = () => {
                 end
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
-                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Heart className="h-5 w-5" />
                 <span className="sr-only">Favourites</span>
@@ -96,8 +96,8 @@ const Sidebar = () => {
                   to="users"
                   className={({ isActive }) =>
                     isActive
-                      ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-zinc-300 transition-colors bg-zinc-300 dark:bg-zinc-800 dark:text-zinc-50"
-                      : "flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 hover:bg-zinc-300 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
+                      ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                      : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                   }>
                   <Users2 className="h-5 w-5" />
                   <span className="sr-only">Users</span>
@@ -108,7 +108,7 @@ const Sidebar = () => {
           </TooltipProvider>
         )}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-2 px-2 border-t dark:border-zinc-800 py-2">
+      <nav className="mt-auto flex flex-col items-center gap-2 px-2 border-t border-slate-200 dark:border-zinc-800 py-2">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -118,8 +118,8 @@ const Sidebar = () => {
                     localStorage.removeItem("token");
                     setIsLoggedIn(false);
                   }}
-                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 bg-white hover:bg-zinc-300 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
-                  <LogOut className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 bg-white hover:bg-slate-200 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
+                  <LogOut className="h-5 w-5 text-slate-950 dark:text-zinc-50" />
                   <span className="sr-only">Log Out</span>
                 </span>
               ) : (
@@ -127,8 +127,8 @@ const Sidebar = () => {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-zinc-300 bg-white hover:bg-zinc-300 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
-                  <LogIn className="h-5 w-5 text-zinc-950 dark:text-zinc-50" />
+                  className="flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 bg-white hover:bg-slate-200 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
+                  <LogIn className="h-5 w-5 text-slate-950 dark:text-zinc-50" />
                   <span className="sr-only">Log In</span>
                 </span>
               )}

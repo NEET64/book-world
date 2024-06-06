@@ -24,7 +24,7 @@ const Header = () => {
     });
   }, []);
   return (
-    <header className="sticky top-0 py-2 bg-gray-200 z-30 flex h-14 items-center gap-2 border-b px-4 sm:h-auto sm:border-b sm:px-6 sm:bg-white dark:bg-zinc-950 dark:border-zinc-800">
+    <header className="sticky top-0 py-2 bg-slate-100 z-30 flex h-14 items-center gap-2 border-b border-slate-200 px-4 sm:h-auto sm:border-b sm:px-6 sm:bg-white dark:bg-zinc-950 dark:border-zinc-800">
       <CollapsibleSidebar />
 
       <h1 className="text-2xl md:text-3xl font-semibold tracking-tight transition-colors hidden sm:flex dark:text-zinc-50">
@@ -48,7 +48,7 @@ const Header = () => {
           }}
         />
         <span className="hidden sm:flex absolute right-24">
-          <kbd className="pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border my-2 px-2 text-[15px] font-medium opacity-100 dark:bg-zinc-800 dark:text-zinc-500 dark:border-zinc-800 ">
+          <kbd className="pointer-events-none border-slate-200 inline-flex h-6 select-none items-center gap-1 rounded border my-2 px-2 text-[15px] font-medium opacity-100 dark:bg-zinc-800 dark:text-zinc-500 dark:border-zinc-800 ">
             <span className="text-xs">⌘</span>K
           </kbd>
         </span>

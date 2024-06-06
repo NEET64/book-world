@@ -24,7 +24,7 @@ const BookDetails = lazy(() => import("./pages/BookDetails"));
 const EditBook = lazy(() => import("./pages/EditBook"));
 const LoginForm = lazy(() => import("./pages/Login"));
 const SignupForm = lazy(() => import("./pages/Signup"));
-const NotFound = lazy(() => import("./components/NotFound"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 const FavouriteBooks = lazy(() => import("./pages/FavouriteBooks"));
 const Users = lazy(() => import("./pages/Users"));
 

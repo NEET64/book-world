@@ -1,4 +1,4 @@
-import NotFound from "@/components/NotFound";
+import NotFound from "@/pages/NotFound";
 import Heart from "@/components/Heart";
 import {
   AlertDialog,
@@ -126,7 +126,7 @@ const BookDetails = () => {
           />
         </div>
         <div className="h-fit w-full space-y-2">
-          <div className="w-full h-full border-2 rounded-lg p-4 dark:border-zinc-800">
+          <div className="w-full h-full border-2 rounded-lg p-4 border-slate-200 dark:border-zinc-800">
             <h1 className="scroll-m-20 mb-5 text-4xl font-bold tracking-tight lg:text-5xl">
               {book?.title}
             </h1>
@@ -136,8 +136,8 @@ const BookDetails = () => {
                 {book?.author}
               </h2>
             </div>
-            <div className="flex space-x-4 text-sm py-4 my-2 border-b-2 border-t-2 dark:border-zinc-800">
-              <div className="pr-4 border-r-2 text-right dark:border-zinc-800">
+            <div className="flex space-x-4 text-sm py-4 my-2 border-b-2 border-t-2 border-slate-200 dark:border-zinc-800">
+              <div className="pr-4 border-r-2 text-right border-slate-200 dark:border-zinc-800">
                 <h3 className="italic w-24 pb-2">Year Published</h3>
                 <h4 className="font-semibold">{book?.year_published}</h4>
               </div>
@@ -155,7 +155,7 @@ const BookDetails = () => {
                 <h3 className="text-2xl font-semibold tracking-tight">
                   Description
                 </h3>
-                <blockquote className="my-4 border-l-2 pl-6 italic dark:border-zinc-800">
+                <blockquote className="my-4 border-l-2 pl-6 italic border-slate-200 dark:border-zinc-800">
                   {book?.description}
                 </blockquote>
               </div>
@@ -163,7 +163,7 @@ const BookDetails = () => {
           </div>
 
           {isLoggedIn && myReview && (
-            <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto dark:border-zinc-800">
+            <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto border-slate-200 dark:border-zinc-800">
               <div className="flex items-center w-full gap-2">
                 <img
                   className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
@@ -195,10 +195,10 @@ const BookDetails = () => {
               <div className="flex gap-2 items-center">
                 <Button
                   variant="outline"
-                  className="border-2 border-zinc-300"
+                  className="border-2 border-slate-300"
                   onClick={() => setIsEditing(!isEditing)}>
                   <Pencil className="mr-2 h-4 w-4" />
-                  <span className="hidden md:flex">Edit</span>
+                  <span className="flex">Edit</span>
                 </Button>
               </div>
             </div>
@@ -232,7 +232,10 @@ const BookDetails = () => {
               ) : (
                 <Heart isLiked={isLiked} />
               )}
-              <span className="hidden md:flex">
+              <span
+                className={
+                  role !== "admin" ? "flex" : "flex sm:hidden md:flex"
+                }>
                 {isLiked ? "Added to Favourites" : "Add to Favourites"}
               </span>
             </Button>
@@ -241,7 +244,7 @@ const BookDetails = () => {
                 <Button
                   title="Edit Book"
                   variant="outline"
-                  className="border-2 border-zinc-300 hover:border-zinc-500 hover:bg-zinc-500/90 hover:text-zinc-50"
+                  className="border-2 border-slate-300"
                   onClick={() => navigate(`edit`)}>
                   <Pencil className="mr-2 h-4 w-4" />
                   Edit

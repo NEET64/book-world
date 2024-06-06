@@ -1,4 +1,4 @@
-import NotFound from "@/components/NotFound";
+import NotFound from "@/pages/NotFound";
 import UserCard from "@/components/UserCard";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
@@ -45,10 +45,10 @@ const UserDetails = () => {
 
   return (
     <div className="mx-auto flex p-4 w-full min-h-[calc(100vh-80px)] items-center flex-grow col-span-2 max-w-xl text-center">
-      <div className="p-2 flex flex-col gap-3 w-full h-fit rounded-lg border relative dark:border-zinc-800">
-        <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b dark:border-zinc-800">
+      <div className="p-2 flex flex-col gap-3 w-full h-fit rounded-lg border relative border-slate-200 dark:border-zinc-800">
+        <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b border-slate-200 dark:border-zinc-800">
           <img
-            className="absolute w-32 h-32 -top-20 rounded-full shadow-lg p-3 border-2 bg-zinc-50 dark:bg-zinc-950 dark:border-zinc-800"
+            className="absolute w-32 h-32 -top-20 rounded-full shadow-lg p-3 border-2 bg-slate-50 border-slate-200 dark:bg-zinc-950 dark:border-zinc-800"
             src={`https://api.multiavatar.com/${user?._id}.svg`}
             alt="user"
           />

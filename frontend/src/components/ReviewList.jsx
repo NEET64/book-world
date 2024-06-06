@@ -65,8 +65,8 @@ const ReviewList = ({ book }) => {
       <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight lg:text-3xl">
         Ratings and Reviews
       </h2>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm py-4 my-2 border-b-2 dark:border-zinc-800">
-        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 dark:border-zinc-800">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm py-4 my-2 border-b-2 border-slate-200   dark:border-zinc-800">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 border-slate-200 dark:border-zinc-800">
           <h3 className="text-md font-bold mb-2">Total Reviews</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">
@@ -85,7 +85,7 @@ const ReviewList = ({ book }) => {
             Growth in reviews this year
           </p>
         </div>
-        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 dark:border-zinc-800">
+        <div className="flex flex-col justify-center p-4 pl-10 sm:pl-4 rounded-lg border-2 border-slate-200 dark:border-zinc-800">
           <h3 className="text-md font-bold mb-2">Average Rating</h3>
           <div className="flex items-center gap-2">
             <p className="text-4xl font-bold">
@@ -96,9 +96,14 @@ const ReviewList = ({ book }) => {
           </div>
           <p className="text-gray-500/60 text-sm">Average Rating this year</p>
         </div>
-        <div className="flex flex-col sm:col-span-2 md:col-span-1 gap-2 justify-center p-4 rounded-lg border-2 dark:border-zinc-800">
+        <div className="flex flex-col sm:col-span-2 md:col-span-1 gap-2 justify-center p-4 rounded-lg border-2 border-slate-200 dark:border-zinc-800">
           <div className="flex h-3 items-center gap-2">
-            <Star size={15} color="grey" fill="grey" opacity={0.3} />
+            <Star
+              size={15}
+              color="#E2E8F0"
+              fill="#E2E8F0"
+              className="dark:opacity-30"
+            />
             <span>5</span>
             <Progress
               value={(meta.stars[4] / meta.totalReviews) * 100}
@@ -107,7 +112,12 @@ const ReviewList = ({ book }) => {
             />
           </div>
           <div className="flex h-3 items-center gap-2">
-            <Star size={15} color="grey" fill="grey" opacity={0.3} />
+            <Star
+              size={15}
+              color="#E2E8F0"
+              fill="#E2E8F0"
+              className="dark:opacity-30"
+            />
             <span>4</span>
             <Progress
               value={(meta.stars[3] / meta.totalReviews) * 100}
@@ -116,7 +126,12 @@ const ReviewList = ({ book }) => {
             />
           </div>
           <div className="flex h-3 items-center gap-2">
-            <Star size={15} color="grey" fill="grey" opacity={0.3} />
+            <Star
+              size={15}
+              color="#E2E8F0"
+              fill="#E2E8F0"
+              className="dark:opacity-30"
+            />
             <span>3</span>
             <Progress
               value={(meta.stars[2] / meta.totalReviews) * 100}
@@ -125,7 +140,12 @@ const ReviewList = ({ book }) => {
             />
           </div>
           <div className="flex h-3 items-center gap-2">
-            <Star size={15} color="grey" fill="grey" opacity={0.3} />
+            <Star
+              size={15}
+              color="#E2E8F0"
+              fill="#E2E8F0"
+              className="dark:opacity-30"
+            />
             <span>2</span>
             <Progress
               value={(meta.stars[1] / meta.totalReviews) * 100}
@@ -134,7 +154,12 @@ const ReviewList = ({ book }) => {
             />
           </div>
           <div className="flex h-3 items-center gap-2">
-            <Star size={15} color="grey" fill="grey" opacity={0.3} />
+            <Star
+              size={15}
+              color="#E2E8F0"
+              fill="#E2E8F0"
+              className="dark:opacity-30"
+            />
             <span>1</span>
             <Progress
               value={(meta.stars[0] / meta.totalReviews) * 100}

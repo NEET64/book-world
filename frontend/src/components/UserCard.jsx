@@ -4,8 +4,8 @@ import { Badge } from "./ui/badge";
 const UserCard = ({ user }) => {
   return (
     <div className="p-1 w-full col-span-2 sm:w-1/2 lg:w-1/3 xl:w-1/4 text-center">
-      <div className="p-2 flex flex-col gap-3 w-full rounded-lg border relative dark:border-zinc-800">
-        <div className="flex items-center gap-2 p-2 pb-4 border-b dark:border-zinc-800">
+      <div className="p-2 flex flex-col gap-3 w-full rounded-lg border relative border-slate-200 dark:border-zinc-800">
+        <div className="flex items-center gap-2 p-2 pb-4 border-b border-slate-200 dark:border-zinc-800">
           <img
             className="w-16 h-16 rounded-full shadow-lg"
             src={`https://api.multiavatar.com/${user?._id}.svg`}

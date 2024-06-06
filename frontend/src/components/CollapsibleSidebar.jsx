@@ -41,7 +41,7 @@ const CollapsibleSidebar = () => {
           ) : (
             <Link
               href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-zinc-400 text-lg font-semibold sm:text-base">
+              className="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-full bg-slate-400 text-lg font-semibold sm:text-base">
               <BookOpen size={20} />
               <span className="sr-only">Book World</span>
             </Link>
@@ -50,7 +50,7 @@ const CollapsibleSidebar = () => {
             to="books"
             className={({ isActive }) =>
               isActive
-                ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
+                ? " flex items-center gap-4 px-2.5 text-slate-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
                 : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
             }>
             <Home size={20} />
@@ -62,7 +62,7 @@ const CollapsibleSidebar = () => {
               end
               className={({ isActive }) =>
                 isActive
-                  ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
+                  ? " flex items-center gap-4 px-2.5 text-slate-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
                   : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
               }>
               <User2 className="h-5 w-5" />
@@ -74,7 +74,7 @@ const CollapsibleSidebar = () => {
             to="favourites"
             className={({ isActive }) =>
               isActive
-                ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
+                ? " flex items-center gap-4 px-2.5 text-slate-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
                 : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
             }>
             <Heart className="h-5 w-5" />
@@ -86,7 +86,7 @@ const CollapsibleSidebar = () => {
               end
               className={({ isActive }) =>
                 isActive
-                  ? " flex items-center gap-4 px-2.5 text-zinc-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
+                  ? " flex items-center gap-4 px-2.5 text-slate-950 font-bold hover:text-zinc-950 dark:text-zinc-50"
                   : "flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400"
               }>
               <Users2 className="h-5 w-5" />

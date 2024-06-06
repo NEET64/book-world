@@ -91,7 +91,7 @@ const Review = ({ book, isEditing, reviewId }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-2 mb-2 border-2 rounded-lg p-4 dark:border-zinc-800">
+        className="space-y-2 mb-2 border-2 rounded-lg p-4 border-slate-200 dark:border-zinc-800">
         <Rating form={form} />
         <FormField
           control={form.control}

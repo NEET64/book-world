@@ -188,7 +188,6 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
     if (!comment) {
       toast({
         description: "Please write a comment",
@@ -196,6 +195,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
       });
       return;
     }
+    setIsLoading(true);
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/books/${bookId}/reviews/${
@@ -222,7 +222,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
   };
 
   return (
-    <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto dark:border-zinc-800">
+    <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto border-slate-200 dark:border-zinc-800">
       <div className="flex items-center w-full gap-2 pb-2">
         <img
           className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
@@ -238,8 +238,8 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
               <Star
                 size={15}
                 key={index}
-                color={review.rating >= index + 1 ? "gold" : "grey"}
-                fill={review.rating >= index + 1 ? "gold" : "grey"}
+                color={review.rating >= index + 1 ? "gold" : "#E2E8F0"}
+                fill={review.rating >= index + 1 ? "gold" : "#E2E8F0"}
               />
             ))}
             <span className="text-gray-500 text-sm ml-3">
@@ -262,7 +262,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
             variant="outline"
             className={`gap-2 p-2 ${
               isLiked &&
-              "bg-zinc-200 border-2 border-zinc-300 dark:border-zinc-500 dark:bg-zinc-800"
+              "bg-slate-200 border-2 border-slate-300 dark:border-zinc-500 dark:bg-zinc-800"
             }`}
             title={isLiked ? "unlike" : "like"}
             onClick={toggleLike}>
@@ -294,7 +294,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
                 <span className="hidden md:flex">
                   {showReplies ? "Hide Replies" : "Show Replies"}
                 </span>
-                <span className="flex items-center justify-center bg-zinc-200 text-gray-600 p-3 h-5 w-5 rounded-full">
+                <span className="flex items-center justify-center bg-slate-200 text-slate-600 p-3 h-5 w-5 rounded-full">
                   {replyCount}
                 </span>
               </span>
@@ -380,7 +380,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
               onChange={(event) => setComment(event.target.value)}
             />
             {isLoading ? (
-              <Button disabled className="mt-2">
+              <Button disabled className="mt-2 bg-slate-200 text-slate-800">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>

@@ -91,14 +91,14 @@ const Commentcard = ({
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
-    if (!comment) {
+    if (!myComment) {
       toast({
         description: "Please write a comment",
         variant: "destructive",
       });
       return;
     }
+    setIsLoading(true);
     axios
       .post(
         `${
@@ -269,7 +269,7 @@ const Commentcard = ({
             size="sm"
             className={`flex rounded-full p-2 ${
               isLiked &&
-              "bg-zinc-200 border-2 border-zinc-300 dark:border-zinc-500 dark:bg-zinc-800"
+              "bg-slate-200 border-2 border-slate-300 dark:border-zinc-500 dark:bg-zinc-800"
             }`}
             onClick={toggleLike}>
             {isLikeLoading ? (
@@ -296,7 +296,7 @@ const Commentcard = ({
               className="flex gap-1 rounded-full p-2"
               onClick={() => setShowReplies(!showReplies)}>
               <MessagesSquare size={20} />
-              <span className="flex items-center justify-center bg-zinc-200 text-gray-600 p-3 h-5 w-5 rounded-full">
+              <span className="flex items-center justify-center bg-slate-200 text-slate-600 p-3 h-5 w-5 rounded-full">
                 {replyCount}
               </span>
             </Button>
@@ -383,7 +383,7 @@ const Commentcard = ({
               onChange={(event) => setMyComment(event.target.value)}
             />
             {isLoading ? (
-              <Button disabled className="mt-2">
+              <Button disabled className="mt-2 bg-slate-200 text-slate-800">
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
               </Button>

@@ -71,7 +71,7 @@ const AddBook = () => {
       <Card className="w-full max-w-xl mx-auto rounded-lg shadow-md overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader className="border-b dark:border-zinc-800">
+            <CardHeader className="border-b border-slate-200 dark:border-zinc-800">
               <CardTitle>Add Book</CardTitle>
             </CardHeader>
             <CardContent className="grid sm:grid-cols-3 gap-3 py-5">
@@ -156,7 +156,7 @@ const AddBook = () => {
                 name="image"
                 render={({ field }) => {
                   return (
-                    <FormItem className="space-y-0">
+                    <FormItem className="space-y-0 sm:col-span-2">
                       <FormLabel>Image</FormLabel>
                       <FormControl>
                         <Input
@@ -176,7 +176,7 @@ const AddBook = () => {
                 }}
               />
             </CardContent>
-            <CardFooter className="border-t px-6 py-4 dark:border-zinc-800">
+            <CardFooter className="border-t border-slate-200 px-6 py-4 dark:border-zinc-800">
               {isLoading ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

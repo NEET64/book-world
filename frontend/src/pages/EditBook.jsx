@@ -101,11 +101,11 @@ const EditBook = () => {
   };
 
   return (
-    <div className="grid flex-1 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+    <div className="grid flex-1 gap-4 p-4 mb-4 sm:px-6 sm:py-0 md:gap-8">
       <Card className="w-full max-w-xl mx-auto rounded-lg shadow-md overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardHeader className="border-b dark:border-zinc-800">
+            <CardHeader className="border-b border-slate-200 dark:border-zinc-800">
               <CardTitle>Edit Book</CardTitle>
             </CardHeader>
             <CardContent className="grid sm:grid-cols-3 gap-3 py-5">
@@ -222,7 +222,7 @@ const EditBook = () => {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="border-t px-6 py-4 dark:border-zinc-800">
+            <CardFooter className="border-t border-slate-200 px-6 py-4 dark:border-zinc-800">
               {isEditLoading ? (
                 <>
                   <Button disable>
