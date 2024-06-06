@@ -72,7 +72,7 @@ const LoginForm = () => {
   return (
     <>
       <Toaster />
-      <div className="grid items-center p-4 min-h-screen dark:bg-zinc-950">
+      <div className="grid items-center p-4 min-h-svh dark:bg-zinc-950">
         <Card className="mx-auto max-w-sm">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
