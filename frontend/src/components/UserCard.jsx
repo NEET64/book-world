@@ -1,9 +1,24 @@
-import { AlertCircle, Heart, Star } from "lucide-react";
+import {
+  AlertCircle,
+  Heart,
+  Loader2,
+  MoreHorizontal,
+  MoreVertical,
+  MoreVerticalIcon,
+  Star,
+} from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
 import axios from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const UserCard = ({ user, handleReload }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -59,14 +74,31 @@ const UserCard = ({ user, handleReload }) => {
               {user?.email}
             </span>
           </div>
-          <div className="absolute right-4 top-4">
-            <Badge
-              variant={user?.role == "admin" ? "default" : "outline"}
-              onClick={handlePromotion}
-              title={user?.role == "admin" ? "Demote User" : "Promote User"}
-              className="ml-auto cursor-pointer">
-              {user?.role}
-            </Badge>
+          <div className="absolute right-4 top-4 flex items-center">
+            {isLoading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <Badge
+                variant={user?.role == "admin" ? "default" : "outline"}
+                title={user?.role == "admin" ? "Demote User" : "Promote User"}
+                className="m-1">
+                {user?.role}
+              </Badge>
+            )}
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <MoreVertical />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <span className="m-2">
+                  {user?.role == "admin" ? "Admin" : "User"}
+                </span>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handlePromotion}>
+                  {user?.role == "admin" ? "Demote User" : "Promote User"}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
         <div className="grid grid-cols-3 dark:text-zinc-50/60">
