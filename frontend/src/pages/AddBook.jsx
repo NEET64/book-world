@@ -19,15 +19,19 @@ import {
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 import { useToast } from "@/components/ui/use-toast";
 import genres from "@/utilities/genres";
+import { useSetRecoilState } from "recoil";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const AddBook = () => {
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("Add Book"), []);
   const form = useForm({
     resolver: zodResolver(bookSchema),
     defaultValues: {
@@ -67,7 +71,7 @@ const AddBook = () => {
   };
 
   return (
-    <div className="grid flex-1 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+    <div className="grid flex-1 gap-4 p-4 sm:px-6 md:gap-8">
       <Card className="w-full max-w-xl mx-auto rounded-lg shadow-md overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

@@ -1,14 +1,18 @@
+import { pageTitleAtom } from "@/atoms/meta";
 import BookCard from "@/components/BookCard";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 
 const FavouriteBooks = () => {
   const [books, setBooks] = useState([]);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("My Favourite Books"), []);
 
   useEffect(() => {
     localStorage.getItem("token") &&
@@ -40,7 +44,7 @@ const FavouriteBooks = () => {
     );
   }
   return (
-    <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0 md:gap-8 w-full">
+    <main className="flex-1 items-start p-2 sm:px-4 w-full">
       <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
         {books?.length !== 0 ? (
           books.map((book, index) => <BookCard key={index} book={book} />)

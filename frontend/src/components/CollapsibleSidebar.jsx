@@ -41,7 +41,7 @@ const CollapsibleSidebar = () => {
           ) : (
             <Link
               href="#"
-              className="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-full bg-slate-400 text-lg font-semibold sm:text-base">
+              className="group flex h-12 w-12 shrink-0 items-center justify-center gap-2 rounded-full bg-slate-400 text-slate-50 text-lg font-semibold sm:text-base">
               <BookOpen size={20} />
               <span className="sr-only">Book World</span>
             </Link>

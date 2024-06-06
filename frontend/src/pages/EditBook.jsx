@@ -28,11 +28,15 @@ import SelectGenreCombobox from "@/components/SelectGenreCombobox";
 import { useToast } from "@/components/ui/use-toast";
 import useGetBook from "@/hooks/useGetBook";
 import genres from "@/utilities/genres";
+import { useSetRecoilState } from "recoil";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const EditBook = () => {
   const { book, id } = useGetBook();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("Edit Book"), []);
 
   const form = useForm({
     resolver: zodResolver(bookSchema),

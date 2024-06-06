@@ -47,7 +47,7 @@ export function DataTable({ columns, data, children, searchBy = "name" }) {
   });
 
   return (
-    <div className="p-2 overflow-auto">
+    <div className="px-2 py-1 overflow-auto">
       <DataTableToolbar table={table} searchBy={searchBy}>
         {children}
       </DataTableToolbar>

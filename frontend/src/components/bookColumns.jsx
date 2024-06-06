@@ -46,7 +46,7 @@ export const bookColumns = [
       return (
         <div className="flex flex-wrap max-w-sm gap-2">
           {data?.slice(0, 2).map((genre, index) => (
-            <Badge variant="dark:secondary" key={index}>
+            <Badge variant="dark:secondary" className="rounded-md" key={index}>
               {genre}
             </Badge>
           ))}

@@ -5,10 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CollapsibleSidebar from "./CollapsibleSidebar";
 import { ModeToggle } from "./mode-toggle";
+import { useRecoilValue } from "recoil";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const Header = () => {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const pageTitle = useRecoilValue(pageTitleAtom);
   useEffect(() => {
     window.addEventListener("keydown", function (e) {
       if (e.key === 114 || (e.ctrlKey && e.key === "k")) {
@@ -28,7 +31,7 @@ const Header = () => {
       <CollapsibleSidebar />
 
       <h1 className="text-2xl md:text-3xl font-semibold tracking-tight transition-colors hidden sm:flex dark:text-zinc-50">
-        The Book World
+        {pageTitle}
       </h1>
 
       <form

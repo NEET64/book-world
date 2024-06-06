@@ -6,6 +6,8 @@ import axios from "axios";
 import { AlertCircle, Heart, Loader2, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const UserDetails = () => {
   const [user, setUser] = useState();
@@ -13,6 +15,8 @@ const UserDetails = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   let { userId } = useParams();
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("User Profile"), []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -44,7 +48,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="mx-auto flex p-4 w-full min-h-[calc(100vh-80px)] items-center flex-grow col-span-2 max-w-xl text-center">
+    <div className="mx-auto flex p-4 w-full flex-1 items-center flex-grow col-span-2 max-w-xl text-center">
       <div className="p-2 flex flex-col gap-3 w-full h-fit rounded-lg border relative border-slate-200 dark:border-zinc-800">
         <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b border-slate-200 dark:border-zinc-800">
           <img

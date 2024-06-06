@@ -59,7 +59,7 @@ const Sidebar = () => {
                 to="books"
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-200 transition-colors bg-slate-200 dark:bg-zinc-800 dark:text-zinc-50"
                     : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Home className="h-5 w-5" />
@@ -77,7 +77,7 @@ const Sidebar = () => {
                 end
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                    ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-200 transition-colors bg-slate-200 dark:bg-zinc-800 dark:text-zinc-50"
                     : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                 }>
                 <Heart className="h-5 w-5" />
@@ -96,7 +96,7 @@ const Sidebar = () => {
                   to="users"
                   className={({ isActive }) =>
                     isActive
-                      ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-300 transition-colors bg-slate-300 dark:bg-zinc-800 dark:text-zinc-50"
+                      ? "flex items-center justify-center rounded-lg h-10 w-10 hover:bg-slate-200 transition-colors bg-slate-200 dark:bg-zinc-800 dark:text-zinc-50"
                       : "flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 hover:bg-slate-200 transition-colors bg-white dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800"
                   }>
                   <Users2 className="h-5 w-5" />

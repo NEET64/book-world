@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import { Toaster } from "@/components/ui/toaster";
@@ -12,10 +13,14 @@ function App() {
 
       <Toaster />
 
-      <div className="flex flex-col sm:gap-4 sm:pl-14">
+      <div className="flex flex-col min-h-screen sm:pl-14">
         <Header />
 
         <Outlet />
+
+        <div className="flex-1"></div>
+
+        <Footer />
       </div>
     </div>
   );

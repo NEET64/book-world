@@ -3,11 +3,15 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserCard from "@/components/UserCard";
 import { useToast } from "@/components/ui/use-toast";
+import { useSetRecoilState } from "recoil";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("All Users"), []);
 
   useEffect(() => {
     localStorage.getItem("token") &&
@@ -37,7 +41,7 @@ const Users = () => {
   }
 
   return (
-    <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0">
+    <main className="grid flex-1 items-start p-2 sm:p-4">
       {users ? (
         <div className="grid grid-cols-2 sm:flex sm:flex-wrap">
           {users.map((user, index) => (

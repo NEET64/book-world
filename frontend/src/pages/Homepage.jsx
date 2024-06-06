@@ -1,5 +1,5 @@
 import { LayoutGrid, Loader2, PlusCircle, Table } from "lucide-react";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { DataTable } from "@/components/DataTable";
 import { bookColumns } from "@/components/bookColumns";
@@ -7,16 +7,19 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 const BookCard = lazy(() => import("@/components/BookCard"));
 import useBooks from "@/hooks/useBooks";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userRoleAtom } from "@/atoms/userData";
+import { pageTitleAtom } from "@/atoms/meta";
 
 const Homepage = () => {
   const role = useRecoilValue(userRoleAtom);
   const navigate = useNavigate();
   const { books, isLoading } = useBooks();
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("The Book World"), []);
 
   return (
-    <main className="grid flex-1 items-start p-2 sm:px-4 sm:py-0 md:gap-8">
+    <main className="grid flex-1 items-start p-2 sm:px-4 md:gap-8">
       <Tabs defaultValue="block">
         <div className="flex items-center px-2 pt-2">
           <TabsList>

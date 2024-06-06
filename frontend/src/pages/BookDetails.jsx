@@ -19,17 +19,20 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/utilities/formatDate";
 import useGetBook from "@/hooks/useGetBook";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   isLoggedInAtom,
   userRoleAtom,
   usersFavouriteBooksAtom,
 } from "@/atoms/userData";
 import SimilarBooks from "@/components/SimilarBooks";
+import { pageTitleAtom } from "@/atoms/meta";
 const ReviewList = lazy(() => import("@/components/ReviewList"));
 const ReviewForm = lazy(() => import("@/components/ReviewForm"));
 
 const BookDetails = () => {
+  const setPageTitle = useSetRecoilState(pageTitleAtom);
+  useEffect(() => setPageTitle("Book Details"), []);
   const [isLiked, setisLiked] = useState(false);
   const { book, id, isDetailLoading } = useGetBook();
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -118,7 +121,7 @@ const BookDetails = () => {
   return (
     <div className="grid p-4 sm:p-6 gap-2 dark:text-zinc-50">
       <div className="flex flex-col sm:flex-row gap-5 w-full max-w-4xl m-auto">
-        <div className="flex flex-col items-center sm:sticky sm:top-24 pb-2 rounded-lg h-full">
+        <div className="flex flex-col items-center sm:sticky sm:top-[81px] pb-2 rounded-lg h-full">
           <img
             src={image}
             alt="Book cover"
