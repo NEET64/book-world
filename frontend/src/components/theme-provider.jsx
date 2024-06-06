@@ -39,7 +39,6 @@ export function ThemeProvider({
       setTheme(theme);
     },
   };
-  console.log(theme);
   return (
     <ThemeProviderContext.Provider {...props} value={value}>
       {children}
