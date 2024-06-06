@@ -47,6 +47,14 @@ const genres = [
   "Religion & Spirituality",
   "Memoir",
   "Business & Economics",
+
+  "Adventure",
+  "Classics",
+  "Coming-of-Age",
+  "Mystery",
+  "Tragedy",
+  "Post-Apocalyptic",
+  "Drama",
 ];
 
 export default genres;

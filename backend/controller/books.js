@@ -1,6 +1,8 @@
 const Book = require("../models/books");
+const Review = require("../models/review");
 const User = require("../models/users");
 const ExpressError = require("../utils/ExpressErrors");
+const { deleteCommentAndReplies } = require("./comments");
 
 module.exports.getAllBooks = async (req, res) => {
   const { q } = req.query;
@@ -65,6 +67,16 @@ module.exports.deleteBook = async (req, res) => {
   usersWithBook.forEach(async (user) => {
     await User.updateOne({ _id: user._id }, { $pull: { favoriteBooks: id } });
   });
+
+  const reviews = await Review.find({ bookId: book._id });
+  reviews.map(async (review) => {
+    const deletedReview = await Review.findByIdAndDelete(review._id);
+    const replies = review.comments;
+    for (const replyId of replies) {
+      await deleteCommentAndReplies(replyId);
+    }
+  });
+
   res.json({
     book: book,
     message: `Book Deleted: ${book.title}`,
