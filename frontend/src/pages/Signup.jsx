@@ -15,8 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { userSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -25,6 +23,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const SignupForm = () => {
   const form = useForm({
@@ -36,7 +35,6 @@ const SignupForm = () => {
       password: "",
     },
   });
-  const { toast } = useToast();
   const navigate = useNavigate();
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -47,28 +45,24 @@ const SignupForm = () => {
 
   const onSubmit = (values) => {
     setIsLoading(true);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, values)
-      .then((response) => {
-        toast({
-          description: response.data.message,
-        });
+    let promise = axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/users/signup`,
+      values
+    );
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
         navigate("/login");
-      })
-      .catch((error) => {
-        toast({
-          title: "Error",
-          description: error.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsLoading(false));
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsLoading(false),
+    });
   };
 
   return (
     <div className="flex justify-center items-center p-4 min-h-svh dark:bg-zinc-950">
-      <Toaster />
-
       <Card className="mx-2 max-w-2xl h-fit">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

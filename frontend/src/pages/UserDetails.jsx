@@ -1,18 +1,16 @@
 import NotFound from "@/pages/NotFound";
-import UserCard from "@/components/UserCard";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { AlertCircle, Heart, Loader2, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { pageTitleAtom } from "@/atoms/meta";
+import { toast } from "sonner";
 
 const UserDetails = () => {
   const [user, setUser] = useState();
   const location = useLocation();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   let { userId } = useParams();
   const setPageTitle = useSetRecoilState(pageTitleAtom);
@@ -26,11 +24,7 @@ const UserDetails = () => {
         setUser(response.data.user);
       })
       .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
+        toast.error(err.response.data.message);
       })
       .finally(() => setIsLoading(false));
   }, [location.search]);

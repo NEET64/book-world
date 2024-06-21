@@ -1,12 +1,11 @@
-import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "sonner";
 
 const useBooks = (genre) => {
   const [books, setBooks] = useState([]);
   const location = useLocation();
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -21,11 +20,7 @@ const useBooks = (genre) => {
         setBooks(response.data.books);
       })
       .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
+        toast.error(err.response.data.message);
       })
       .finally(() => setIsLoading(false));
   }, [location.search, genre]);

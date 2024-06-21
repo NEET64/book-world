@@ -24,10 +24,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
-import { useToast } from "@/components/ui/use-toast";
 import genres from "@/utilities/genres";
 import { useSetRecoilState } from "recoil";
 import { pageTitleAtom } from "@/atoms/meta";
+import { toast } from "sonner";
 
 const AddBook = () => {
   const setPageTitle = useSetRecoilState(pageTitleAtom);
@@ -46,28 +46,28 @@ const AddBook = () => {
   const navigate = useNavigate();
   const fileRef = form.register("file");
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const onSubmit = (values) => {
     setIsLoading(true);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/books`, values, {
+    let promise = axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/books`,
+      values,
+      {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
-      .then((response) => {
-        toast({ description: response.data.message });
-        navigate("/books");
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsLoading(false));
+      }
+    );
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
+        navigate("/books/");
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsLoading(false),
+    });
   };
 
   return (

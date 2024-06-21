@@ -2,20 +2,18 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserCard from "@/components/UserCard";
-import { useToast } from "@/components/ui/use-toast";
 import { useSetRecoilState } from "recoil";
 import { pageTitleAtom } from "@/atoms/meta";
+import { toast } from "sonner";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const setPageTitle = useSetRecoilState(pageTitleAtom);
   const [counter, setCounter] = useState(0);
   useEffect(() => setPageTitle("All Users"), []);
 
   useEffect(() => {
-    console.log("ren");
     setIsLoading(true);
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/users/`, {
@@ -24,13 +22,7 @@ const Users = () => {
         },
       })
       .then((response) => setUsers(response.data.users))
-      .catch((error) =>
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        })
-      )
+      .catch((error) => toast.error(error.response.data.message))
       .finally(setIsLoading(false));
   }, [counter]);
 

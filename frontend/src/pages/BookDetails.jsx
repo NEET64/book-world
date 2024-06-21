@@ -16,7 +16,6 @@ import axios from "axios";
 import { Loader2, Pencil, Star, Trash2 } from "lucide-react";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
 import { formatDate } from "@/utilities/formatDate";
 import useGetBook from "@/hooks/useGetBook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
@@ -27,6 +26,7 @@ import {
 } from "@/atoms/userData";
 import SimilarBooks from "@/components/SimilarBooks";
 import { pageTitleAtom } from "@/atoms/meta";
+import { toast } from "sonner";
 const ReviewList = lazy(() => import("@/components/ReviewList"));
 const ReviewForm = lazy(() => import("@/components/ReviewForm"));
 
@@ -44,7 +44,7 @@ const BookDetails = () => {
   const [isHeartLoading, setIsHeartLoading] = useState(false);
   const [myReview, setMyReview] = useState();
   const [isEditing, setIsEditing] = useState(false);
-  const { toast } = useToast();
+  const [counter, setCounter] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,11 +65,12 @@ const BookDetails = () => {
         )
         .then((response) => {
           setMyReview(response.data);
+          setIsEditing(false);
         })
         .catch((err) => {
           console.log(err);
         });
-  }, [isLoggedIn, book]);
+  }, [isLoggedIn, book, counter]);
 
   const toggleFavorite = async () => {
     if (isLoggedIn) {
@@ -86,25 +87,18 @@ const BookDetails = () => {
         )
         .then((response) => {
           setIsHeartLoading(false);
+          if (isLiked) {
+            setUserFavouriteBooks(
+              userFavouriteBooks.filter((id) => id !== book._id)
+            );
+          } else {
+            setUserFavouriteBooks([...userFavouriteBooks, book._id]);
+          }
         })
-        .catch((error) =>
-          toast({
-            title: "Error",
-            description: err.response.data.message,
-            variant: "destructive",
-          })
-        );
+        .catch((error) => toast.error(error.response.data.message));
     } else {
-      toast({
-        description: "You need to be logged in",
-        variant: "destructive",
-      });
-    }
-    setisLiked(!isLiked);
-    if (isLiked) {
-      setUserFavouriteBooks(userFavouriteBooks.filter((id) => id !== book._id));
-    } else {
-      setUserFavouriteBooks([...userFavouriteBooks, book._id]);
+      setisLiked(!isLiked);
+      toast.error("You need to be logged in");
     }
   };
 
@@ -166,7 +160,7 @@ const BookDetails = () => {
           </div>
 
           {isLoggedIn && myReview && (
-            <div className="flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto border-slate-200 dark:border-zinc-800">
+            <div className="relative flex flex-col border-2 rounded-md p-3 sm:p-4 mt-4 w-full overflow-y-auto border-slate-200 dark:border-zinc-800">
               <div className="flex items-center w-full gap-2">
                 <img
                   className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
@@ -191,19 +185,17 @@ const BookDetails = () => {
                     </span>
                   </div>
                 </div>
+
+                <Button
+                  variant="outline"
+                  className="absolute flex top-4 right-2 p-2 rounded-full"
+                  onClick={() => setIsEditing(!isEditing)}>
+                  <Pencil size={20} />
+                </Button>
               </div>
               <blockquote className="ml-1 my-2 sm:my-4 italic text-sm sm:text-base">
                 {myReview.content}
               </blockquote>
-              <div className="flex gap-2 items-center">
-                <Button
-                  variant="outline"
-                  className="border-2 border-slate-300"
-                  onClick={() => setIsEditing(!isEditing)}>
-                  <Pencil className="mr-2 h-4 w-4" />
-                  <span className="flex">Edit</span>
-                </Button>
-              </div>
             </div>
           )}
 
@@ -212,6 +204,7 @@ const BookDetails = () => {
               book={book}
               isEditing={isEditing}
               reviewId={myReview?._id}
+              handleUserReply={() => setCounter(counter + 1)}
             />
           )}
 
@@ -274,32 +267,26 @@ const BookDetails = () => {
                         variant="destructive"
                         onClick={() => {
                           setIsDeleteLoading(true);
-                          axios
-                            .delete(
-                              `${import.meta.env.VITE_BACKEND_URL}/books/` + id,
-                              {
-                                headers: {
-                                  Authorization: `Bearer ${localStorage.getItem(
-                                    "token"
-                                  )}`,
-                                },
-                              }
-                            )
-                            .then((response) => {
-                              toast({
-                                description: response.data.message,
-                                variant: "destructive",
-                              });
+                          let promise = axios.delete(
+                            `${import.meta.env.VITE_BACKEND_URL}/books/` + id,
+                            {
+                              headers: {
+                                Authorization: `Bearer ${localStorage.getItem(
+                                  "token"
+                                )}`,
+                              },
+                            }
+                          );
+
+                          toast.promise(promise, {
+                            loading: "Loading...",
+                            success: (response) => {
                               navigate("/books");
-                            })
-                            .catch((err) => {
-                              toast({
-                                title: "Error",
-                                description: err.response.data.message,
-                                variant: "destructive",
-                              });
-                            })
-                            .finally(() => setIsDeleteLoading(false));
+                              return response.data.message;
+                            },
+                            error: (error) => error.response.data.message,
+                            finally: () => setIsDeleteLoading(false),
+                          });
                         }}>
                         {isDeleteLoading ? (
                           <>
@@ -325,7 +312,11 @@ const BookDetails = () => {
             <Loader2 className="mx-auto h-10 w-10 animate-spin dark:text-zinc-50" />
           </div>
         }>
-        <ReviewList book={book} />
+        <ReviewList
+          book={book}
+          userReplyCounter={counter}
+          setUserReplyCounter={setCounter}
+        />
       </Suspense>
     </div>
   );

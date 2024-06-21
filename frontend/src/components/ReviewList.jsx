@@ -1,14 +1,14 @@
 import { Loader2, Star, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useToast } from "@/components/ui/use-toast";
 import ReviewCard from "./ReviewCard";
 import { Progress } from "./ui/progress";
 import { formatNumber } from "@/utilities/formatNum";
+import { toast } from "sonner";
+import { set } from "react-hook-form";
 
-const ReviewList = ({ book }) => {
+const ReviewList = ({ book, userReplyCounter, setUserReplyCounter }) => {
   const [reviews, setReviews] = useState([]);
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [counter, setCounter] = useState(0);
 
@@ -19,15 +19,9 @@ const ReviewList = ({ book }) => {
       .then((response) => {
         setReviews(response.data.reviews);
       })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
+      .catch((err) => toast.error(err.response.data.message))
       .finally(() => setIsLoading(false));
-  }, [counter]);
+  }, [counter, userReplyCounter]);
 
   const [meta, setMeta] = useState({
     totalReviews: 4000,
@@ -175,6 +169,9 @@ const ReviewList = ({ book }) => {
             key={index}
             review={review}
             bookId={book._id}
+            setUserReplyCounter={() =>
+              setUserReplyCounter(userReplyCounter + 1)
+            }
             handleParentReload={() => setCounter(counter + 1)}
           />
         ))

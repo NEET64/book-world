@@ -17,6 +17,7 @@ import {
 } from "./atoms/userData";
 import { ThemeProvider } from "./components/theme-provider";
 import UserDetails from "./pages/UserDetails";
+import { Toaster } from "sonner";
 
 const AddBook = lazy(() => import("./pages/AddBook"));
 const Homepage = lazy(() => import("./pages/Homepage"));
@@ -198,6 +199,13 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
     <RecoilRoot>
+      <Toaster
+        gap="8"
+        offset="20px"
+        position="top-center"
+        theme={"light"}
+        richColors
+      />
       <RouterProvider router={router} />
     </RecoilRoot>
   </ThemeProvider>

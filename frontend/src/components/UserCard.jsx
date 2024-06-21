@@ -1,16 +1,6 @@
-import {
-  AlertCircle,
-  Heart,
-  Loader2,
-  MoreHorizontal,
-  MoreVertical,
-  MoreVerticalIcon,
-  Star,
-} from "lucide-react";
+import { AlertCircle, Heart, Loader2, MoreVertical, Star } from "lucide-react";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import { useState } from "react";
-import { useToast } from "./ui/use-toast";
 import axios from "axios";
 import {
   DropdownMenu,
@@ -19,38 +9,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { toast } from "sonner";
 
 const UserCard = ({ user, handleReload }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const handlePromotion = async () => {
     setIsLoading(true);
-    axios
-      .put(
-        `${import.meta.env.VITE_BACKEND_URL}/users/${user._id}/promote`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        toast({
-          description: response.data.message,
-        });
+    let promise = axios.put(
+      `${import.meta.env.VITE_BACKEND_URL}/users/${user._id}/promote`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
         handleReload();
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsLoading(false),
+    });
   };
 
   return (

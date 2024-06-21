@@ -16,8 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -26,11 +24,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -48,30 +46,26 @@ const LoginForm = () => {
 
   const onSubmit = (values) => {
     setIsLoading(true);
-    axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/users/login`, values)
-      .then((response) => {
-        const { token, role } = response.data;
+    let promise = axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/users/login`,
+      values
+    );
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
+        const { token } = response.data;
         localStorage.setItem("token", token);
         setIsLoggedIn(true);
-        toast({
-          description: response.data.message,
-        });
         navigate("/books");
-      })
-      .catch((error) => {
-        toast({
-          title: "Error",
-          description: error.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsLoading(false));
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsLoading(false),
+    });
   };
 
   return (
     <>
-      <Toaster />
       <div className="grid items-center p-4 min-h-svh dark:bg-zinc-950">
         <Card className="mx-auto max-w-sm">
           <Form {...form}>

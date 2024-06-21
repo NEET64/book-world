@@ -10,7 +10,6 @@ import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { formatDate } from "@/utilities/formatDate";
-import { useToast } from "./ui/use-toast";
 import axios from "axios";
 import {
   AlertDialog,
@@ -29,6 +28,7 @@ import {
   userIdAtom,
   userRoleAtom,
 } from "@/atoms/userData";
+import { toast } from "sonner";
 
 const Commentcard = ({
   comment,
@@ -36,7 +36,6 @@ const Commentcard = ({
   reviewId,
   handleParentReloadReply,
 }) => {
-  const { toast } = useToast();
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
@@ -72,12 +71,7 @@ const Commentcard = ({
           setReplies(response.data.comments);
           setReplyCount(response.data.comments.length);
         })
-        .catch((err) => {
-          toast({
-            description: err.response.data.message,
-            variant: "destructive",
-          });
-        })
+        .catch((err) => toast.error(err.response.data.message))
         .finally(() => {
           setIsReplyLoading(false);
         });
@@ -92,10 +86,7 @@ const Commentcard = ({
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!myComment) {
-      toast({
-        description: "Please write a comment",
-        variant: "destructive",
-      });
+      toast.error("Please write a comment");
       return;
     }
     setIsLoading(true);
@@ -113,14 +104,9 @@ const Commentcard = ({
       )
       .then((response) => {
         handleParentReloadReply();
-        toast({ description: response.data.message });
+        toast.success("Replied successfully");
       })
-      .catch((err) => {
-        toast({
-          description: err.message,
-          variant: "destructive",
-        });
-      })
+      .catch((err) => toast.error("Something went wrong"))
       .finally(() => setIsLoading(false));
   };
 
@@ -140,20 +126,8 @@ const Commentcard = ({
           },
         }
       )
-      .then((response) => {
-        toast({
-          description: response.data.message,
-          variant: "destructive",
-        });
-        navigate("/books");
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
+      .then((response) => toast.warning(response.data.message))
+      .catch((err) => toast.error(err.response.data.message))
       .finally(() => {
         setIsDeleteLoading(false);
         setOpenReport(false);
@@ -177,19 +151,10 @@ const Commentcard = ({
         }
       )
       .then((response) => {
+        toast.warning("Comment Deleted");
         handleParentReloadReply();
-        toast({
-          description: response.data.message,
-          variant: "destructive",
-        });
       })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
+      .catch((err) => toast.error("Something went wrong"))
       .finally(() => {
         setIsDeleteLoading(false);
         setOpen(false);
@@ -217,20 +182,11 @@ const Commentcard = ({
         .then((response) => {
           setIsLiked(!isLiked);
         })
-        .catch((error) =>
-          toast({
-            title: "Error",
-            description: error.response.data.message,
-            variant: "destructive",
-          })
-        )
+        .catch((error) => toast.error(error.response.data.message))
         .finally(() => setIsLikeLoading(false));
     } else {
       setIsLiked(!isLiked);
-      toast({
-        description: "You need to be logged in",
-        variant: "destructive",
-      });
+      toast.error("You need to be logged in");
     }
   };
 

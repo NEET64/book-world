@@ -25,15 +25,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { bookSchema } from "@/schema";
 import SelectGenreCombobox from "@/components/SelectGenreCombobox";
-import { useToast } from "@/components/ui/use-toast";
 import useGetBook from "@/hooks/useGetBook";
 import genres from "@/utilities/genres";
 import { useSetRecoilState } from "recoil";
 import { pageTitleAtom } from "@/atoms/meta";
+import { toast } from "sonner";
 
 const EditBook = () => {
   const { book, id } = useGetBook();
-  const { toast } = useToast();
   const navigate = useNavigate();
   const setPageTitle = useSetRecoilState(pageTitleAtom);
   useEffect(() => setPageTitle("Edit Book"), []);
@@ -81,27 +80,26 @@ const EditBook = () => {
   const [isEditLoading, setIsEditLoading] = useState(false);
   const onSubmit = (values) => {
     setIsEditLoading(true);
-    axios
-      .put(`${import.meta.env.VITE_BACKEND_URL}/books/` + id, values, {
+    let promise = axios.put(
+      `${import.meta.env.VITE_BACKEND_URL}/books/` + id,
+      values,
+      {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
-      .then((response) => {
-        toast({
-          description: response.data.message,
-        });
+      }
+    );
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
         navigate("/books/" + id);
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsEditLoading(false));
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsEditLoading(false),
+    });
   };
 
   return (

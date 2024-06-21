@@ -12,7 +12,6 @@ import Commentcard from "./CommentCard";
 import { useEffect, useState } from "react";
 import { Textarea } from "./ui/textarea";
 import { formatDate } from "@/utilities/formatDate";
-import { useToast } from "./ui/use-toast";
 import axios from "axios";
 import {
   AlertDialog,
@@ -25,15 +24,15 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useRecoilValue } from "recoil";
-import {
-  isUserLoadingAtom,
-  likedReviewsAtom,
-  userIdAtom,
-  userRoleAtom,
-} from "@/atoms/userData";
+import { likedReviewsAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import { toast } from "sonner";
 
-const ReviewCard = ({ review, bookId, handleParentReload }) => {
-  const { toast } = useToast();
+const ReviewCard = ({
+  review,
+  bookId,
+  handleParentReload,
+  setUserReplyCounter,
+}) => {
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
   const likedReviews = useRecoilValue(likedReviewsAtom);
@@ -67,20 +66,11 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
           setIsLikeLoading(false);
           setIsLiked(!isLiked);
         })
-        .catch((error) =>
-          toast({
-            title: "Error",
-            description: error.response.data.message,
-            variant: "destructive",
-          })
-        )
+        .catch((error) => toast.error(error.response.data.message))
         .finally(() => setIsLikeLoading(false));
     } else {
       setIsLiked(!isLiked);
-      toast({
-        description: "You need to be logged in",
-        variant: "destructive",
-      });
+      toast.error("You need to be logged in");
     }
   };
 
@@ -103,12 +93,7 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
         setReplies(response.data.comments);
         setReplyCount(response.data.comments.length);
       })
-      .catch((err) => {
-        toast({
-          description: "User can only have 1 review ",
-          variant: "destructive",
-        });
-      })
+      .catch((err) => toast.error("User can only have 1 review"))
       .finally(() => setIsReplyLoading(false));
   }, [showReplies, counter]);
 
@@ -129,20 +114,11 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
         }
       )
       .then((response) => {
-        if (userId === review.userId._id) window.location.reload();
+        if (userId === review.userId._id) setUserReplyCounter(-1);
         handleParentReload();
-        toast({
-          description: response.data.message,
-          variant: "destructive",
-        });
+        toast.warning(response.data.message);
       })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
+      .catch((err) => toast.error(err.response.data.message))
       .finally(() => {
         setIsDeleteLoading(false);
         setOpen(false);
@@ -163,19 +139,8 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
           },
         }
       )
-      .then((response) => {
-        toast({
-          description: response.data.message,
-          variant: "destructive",
-        });
-      })
-      .catch((err) => {
-        toast({
-          title: "Error",
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
+      .then((response) => toast.warning(response.data.message))
+      .catch((err) => toast.error(err.response.data.message))
       .finally(() => {
         setIsDeleteLoading(false);
         setOpenReport(false);
@@ -189,36 +154,31 @@ const ReviewCard = ({ review, bookId, handleParentReload }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!comment) {
-      toast({
-        description: "Please write a comment",
-        variant: "destructive",
-      });
+      toast.error("Please write a comment");
       return;
     }
     setIsLoading(true);
-    axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/books/${bookId}/reviews/${
-          review._id
-        }/comments`,
-        { content: comment },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((response) => {
+    const promise = axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/books/${bookId}/reviews/${
+        review._id
+      }/comments`,
+      { content: comment },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    toast.promise(promise, {
+      loading: "Loading...",
+      success: (response) => {
         handleParentReload();
-        toast({ description: response.data.message });
-      })
-      .catch((err) => {
-        toast({
-          description: err.response.data.message,
-          variant: "destructive",
-        });
-      })
-      .finally(() => setIsLoading(false));
+        return response.data.message;
+      },
+      error: (error) => error.response.data.message,
+      finally: () => setIsLoading(false),
+    });
   };
 
   return (

@@ -1,15 +1,14 @@
 import { pageTitleAtom } from "@/atoms/meta";
 import BookCard from "@/components/BookCard";
-import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+import { toast } from "sonner";
 
 const FavouriteBooks = () => {
   const [books, setBooks] = useState([]);
-  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const setPageTitle = useSetRecoilState(pageTitleAtom);
   useEffect(() => setPageTitle("My Favourite Books"), []);
@@ -24,16 +23,11 @@ const FavouriteBooks = () => {
         })
         .then((response) => {
           setBooks(response.data.books);
-          setIsLoading(false);
         })
         .catch((error) => {
-          toast({
-            title: "Error",
-            description: error.response.data.message,
-            variant: "destructive",
-          });
-          setIsLoading(false);
-        });
+          toast.error(error.response.data.message);
+        })
+        .finally(() => setIsLoading(false));
   }, []);
 
   if (isLoading) {

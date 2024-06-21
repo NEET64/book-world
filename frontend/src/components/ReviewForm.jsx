@@ -15,16 +15,15 @@ import {
 } from "./ui/form";
 import { Loader2 } from "lucide-react";
 import Rating from "./Rating";
-import { useToast } from "./ui/use-toast";
 import { useRecoilValue } from "recoil";
 import { isLoggedInAtom } from "@/atoms/userData";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
-const Review = ({ book, isEditing, reviewId }) => {
+const Review = ({ book, isEditing, reviewId, handleUserReply }) => {
   const [isLoading, setIsLoading] = useState(false);
   const isLoggedIn = useRecoilValue(isLoggedInAtom);
   const navigate = useNavigate();
-  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
@@ -36,54 +35,51 @@ const Review = ({ book, isEditing, reviewId }) => {
   const onSubmit = (values) => {
     setIsLoading(true);
     if (isEditing) {
-      axios
-        .put(
-          `${import.meta.env.VITE_BACKEND_URL}/books/${
-            book._id
-          }/reviews/${reviewId}`,
-          values,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          toast({ description: response.data.message });
-          window.location.reload();
-        })
-        .catch((err) => {
-          toast({
-            description: err.response.data.message,
-            variant: "destructive",
-          });
-        })
-        .finally(() => setIsLoading(false));
+      let promise = axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/books/${
+          book._id
+        }/reviews/${reviewId}`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (response) => {
+          handleUserReply();
+          return response.data.message;
+        },
+        error: (error) => error.response.data.message,
+        finally: () => setIsLoading(false),
+      });
     } else {
-      axios
-        .post(
-          `${import.meta.env.VITE_BACKEND_URL}/books/${book._id}/reviews/`,
-          values,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          toast({ description: response.data.message });
-          window.location.reload();
-        })
-        .catch((err) => {
+      let promise = axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/books/${book._id}/reviews/`,
+        values,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      toast.promise(promise, {
+        loading: "Loading...",
+        success: (response) => {
+          handleUserReply();
+          return response.data.message;
+        },
+        error: (error) => {
           navigate("/login");
-          toast({
-            description: isLoggedIn
-              ? err.response.data.message
-              : "You need to Login to write a review",
-            variant: "destructive",
-          });
-        })
-        .finally(() => setIsLoading(false));
+          return isLoggedIn
+            ? error.response.data.message
+            : "You need to Login to write a review";
+        },
+        finally: () => setIsLoading(false),
+      });
     }
   };
 
