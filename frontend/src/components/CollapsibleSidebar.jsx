@@ -14,6 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import { toast } from "sonner";
 
 const CollapsibleSidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
@@ -98,6 +99,7 @@ const CollapsibleSidebar = () => {
               onClick={() => {
                 localStorage.removeItem("token");
                 setIsLoggedIn(false);
+                toast.success("Logged Out Successfully");
               }}
               className="flex items-center gap-4 px-2.5 text-gray-600 hover:text-zinc-950 dark:hover:text-zinc-400">
               <LogOut className="h-5 w-5" />

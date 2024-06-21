@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import { toast } from "sonner";
 
 const Sidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
@@ -118,6 +119,7 @@ const Sidebar = () => {
                   onClick={() => {
                     localStorage.removeItem("token");
                     setIsLoggedIn(false);
+                    toast.success("Logged Out Successfully");
                   }}
                   className="flex items-center justify-center rounded-lg h-10 w-10 border border-slate-200 bg-white hover:bg-slate-200 transition-colors dark:bg-zinc-950 dark:text-zinc-50 dark:border-zinc-800 dark:hover:bg-zinc-800">
                   <LogOut className="h-5 w-5 text-slate-950 dark:text-zinc-50" />
