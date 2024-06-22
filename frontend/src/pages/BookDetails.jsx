@@ -114,12 +114,14 @@ const BookDetails = () => {
   }
   return (
     <div className="grid p-4 sm:p-6 gap-2 dark:text-zinc-50">
-      <div className="flex flex-col sm:flex-row gap-5 w-full max-w-4xl m-auto">
+      <div className="flex flex-col sm:flex-row gap-5 w-full max-w-5xl m-auto">
         <div className="flex flex-col items-center sm:sticky sm:top-[81px] pb-2 rounded-lg h-full">
           <img
+            width="512px"
+            loading="loading..."
             src={image}
             alt="Book cover"
-            className="sm:max-w-lg w-full object-cover rounded-md"
+            className="min-w-full md:min-w-lg object-cover rounded-md"
           />
         </div>
         <div className="h-fit w-full space-y-2">
@@ -149,10 +151,10 @@ const BookDetails = () => {
             </div>
             {book?.description && (
               <div>
-                <h3 className="text-2xl font-semibold tracking-tight">
+                <h3 className="text-xl font-semibold tracking-tight">
                   Description
                 </h3>
-                <blockquote className="my-4 border-l-2 pl-6 italic border-slate-200 dark:border-zinc-800">
+                <blockquote className="my-4 italic border-slate-200 dark:border-zinc-800">
                   {book?.description}
                 </blockquote>
               </div>
