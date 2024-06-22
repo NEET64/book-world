@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NotFound = () => {
   return (
-    <section className="bg-white min-h-svh dark:bg-zinc-900 dark:text-zinc-50 w-full">
+    <section className="bg-white min-h-dvh dark:bg-zinc-900 dark:text-zinc-50 w-full">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
         <div className="mx-auto max-w-screen-sm text-center">
           <h1 className="mb-4 text-7xl tracking-tight font-extrabold lg:text-9xl text-primary-600">
