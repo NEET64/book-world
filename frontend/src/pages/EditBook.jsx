@@ -103,7 +103,7 @@ const EditBook = () => {
   };
 
   return (
-    <div className="grid flex-1 gap-4 p-4 mb-4 sm:px-6 sm:py-0 md:gap-8">
+    <div className="grid flex-1 gap-4 p-4 my-4 sm:px-6 sm:py-0 md:gap-8">
       <Card className="w-full max-w-xl mx-auto rounded-lg shadow-md overflow-hidden">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
