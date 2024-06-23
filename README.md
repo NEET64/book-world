@@ -1,50 +1,64 @@
-![/favourites](https://github.com/NEET64/book-world/assets/67575976/8f3fc809-86d2-4212-87f4-6481b8626d09)
+![Homepage](https://github.com/NEET64/book-world/assets/67575976/f1c41565-9ad9-47d5-86b3-60e95f4f9215)
 
 # Book World
 
-A simple MERN (`MongoDB`, `Express`, `React`, `Node.js`) application for managing a collection of books. Admins can add, edit, and delete books, while users can browse books and add them to their collection by liking them. used JWT for authorization, the app is responsive for differnet screen sizes. I used `Shadcn` UI library for fast and easy UI which uses `Radix-UI`, `Tailwind`, `react-hook-forms`, `Tanstack Tables` and `lucide-react`.
+A full-featured book review and management application built with the MERN stack (`MongoDB`, `Express`, `React`, `Node.js`). Users can browse books, leave reviews with star ratings, and manage their favorites. Admins have extended capabilities for adding, editing, and deleting books, as well as managing user data and access. 
+
+Live Link: https://book-world-beta.vercel.app/
 
 ## Features
 
-- **Admin Capabilities:**
+- **User Authentication:**
+  - Secure user registration and login system.
+  - JWT for authorization.
+  - Bcrypt for password hashing.
 
-  - Add new books
-  - Edit existing books
-  - Delete books
+- **Book Listing with Reviews & Ratings:**
+  - Browse and search for books.
+  - Leave comprehensive reviews with star ratings.
+  - Read and gain insights from community reviews.
 
-- **User Capabilities:**
-  - Browse books
-  - Add books to their collection by liking them
+- **User Profile Pages:**
+  - Personalized profiles to track activity.
+  - Manage and curate a list of favorite books.
+
+- **Advanced Feature:**
+  - Unique nested commenting system using Depth-First Search (DFS) for efficient comment deletion within the review tree structure.
+
+- **User Roles & Permissions:**
+  - Differentiation between user and admin roles.
+  - Admin capabilities to add, update, and delete book listings.
+  - Manage user data and user roles (excluding a master admin).
+
 
 ## Technologies Used
 
-- Node.js
-- Express.js
-- React.js
-- MongoDB
-- Tailwind
+- **Frontend:**
+  - React.js
+  - Recoil for State Management
+  - Tailwind CSS
+  - Shadcn UI library
+  - React Hook Form
+  - Tanstack Tables
+  - Lucide-React for icons
 
-## Other Dependencies
 
-- zod
-- react-router-dom
-- multer
-- lucide-react
-- mongoose
-- cors
-- jwt
-- bycrypt
-- shadcn
+- **Backend:**
+  - Node.js
+  - Express.js
+  - MongoDB
+  - Mongoose for MongoDB object modeling
+  - Multer for handling `multipart/form-data`
+  - CORS for Cross-Origin Resource Sharing
+  - JWT for token-based authentication
+  - Bcrypt for secure password storage
 
-## Screenshots
 
-![/books](https://github.com/NEET64/book-world/assets/67575976/64fbd12a-fd5a-407f-92ad-45903a69dd5a)
-![/books/:bookId](https://github.com/NEET64/book-world/assets/67575976/a3bf2908-55ca-4f1f-964e-6beaad9fd51b)
-![/users](https://github.com/NEET64/book-world/assets/67575976/cefde2a6-8f2b-48ec-8765-02b1e87d6806)
-![/books/add](https://github.com/NEET64/book-world/assets/67575976/122cfb57-8f6f-4a8d-8d90-cf27d19d1535)
-![/login](https://github.com/NEET64/book-world/assets/67575976/adebcb9e-c427-41c4-95a7-9ec1fe46b996)
-![/signup](https://github.com/NEET64/book-world/assets/67575976/c8a625bd-e941-4a4b-a8d4-8f5ecd04c70c)
-![smaller screens](https://github.com/NEET64/book-world/assets/67575976/f7b62436-0a41-4878-87fd-900c4537be32) ![small screens](https://github.com/NEET64/book-world/assets/67575976/534ea768-90ff-4d7f-8d28-180edd55b10e)
+- **Other Dependencies:**
+  - Axios   
+  - Zod for schema validation
+  - React Router DOM for routing
+  - Cloudinary for image uploads (optional)
 
 ## Installation Guide
 
@@ -52,8 +66,16 @@ A simple MERN (`MongoDB`, `Express`, `React`, `Node.js`) application for managin
 
 - Node.js
 - MongoDB
-
+  
 You can use use Mongo Atlas URL instead of local MongoDB
+
+### Configure Environment Variables
+
+Rename .env.example to .env in both backend and frontend directories.
+
+Add your `MONGO_URL`, `JWT_SECRET`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET`, and `PORT` to the backend .env files.
+
+If you don't have Cloudinary, you can replace `cloudStorage` with `diskStorage` in `/backend/middleware/upload.js`.
 
 ### Installation
 
@@ -74,19 +96,12 @@ cd frontend
 npm install
 ```
 
-Now rename env files from .env.example to .env in both backend and frontend
-and add your `MONGO_URL`, `JWT_SECRET`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET` and `PORT`
-
-if you don't have cloud you can replace `cloudStorage` to `diskStorage` at `/backend/middleware/upload.js`
-
-now start the frontend and backend on different terminals
-
 #### Start Frontend
 
 Make sure you are in `frontend` directory
 
 ```shell
-npm run dev -- --host
+npm run dev
 ```
 
 #### Start Backend
@@ -97,4 +112,18 @@ Make sure you are in `backend` directory
 node index.js
 ```
 
-Now open localhost:5173 on your browser
+Now open `localhost:5173` on your browser
+
+## Screenshots
+
+![Tableview](https://github.com/NEET64/book-world/assets/67575976/de404c8a-54a6-405f-b221-e6b62adc7fd9)
+![All Users](https://github.com/NEET64/book-world/assets/67575976/ee99ce2a-f59c-40cb-b003-4711a7754b04)
+![Favourites](https://github.com/NEET64/book-world/assets/67575976/ace1988d-f50d-429d-b33f-ce9a33db4649)
+![Details1](https://github.com/NEET64/book-world/assets/67575976/05a3a1dc-ac37-4602-82ef-46d3c23372fd)
+![Details2](https://github.com/NEET64/book-world/assets/67575976/496d598b-7895-426a-8403-deec71ff0901)
+![Details3](https://github.com/NEET64/book-world/assets/67575976/3bfc1aba-9b7c-49c4-81a5-a345ea19076a)
+![User](https://github.com/NEET64/book-world/assets/67575976/b254902a-4aae-4c1f-b05b-7946487a8935)
+![Add New](https://github.com/NEET64/book-world/assets/67575976/e158ccd6-fbed-45ee-849d-1851b922e93c)
+![Login](https://github.com/NEET64/book-world/assets/67575976/54af8184-ada3-434f-8b6e-8f7c864217ed)
+![Signup](https://github.com/NEET64/book-world/assets/67575976/c12a69fe-2e26-4b5f-9407-6b9bf6e1f636)
+
