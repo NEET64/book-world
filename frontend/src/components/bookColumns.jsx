@@ -5,19 +5,16 @@ import DataTableColumnHeader from "./DataTableColumnHeader";
 
 export const bookColumns = [
   {
-    accessorKey: "image_url",
-    header: ({ column }) => <h1>Thumbnail</h1>,
-    cell: ({ row }) => {
-      return <img src={row.getValue("image_url")} className="h-28" />;
-    },
-  },
-  {
     accessorKey: "title",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      return <span className="truncate">{row.getValue("title")}</span>;
+      return (
+        <span title={row.getValue("title")} className="w-40 truncate block">
+          {row.getValue("title")}
+        </span>
+      );
     },
   },
   {
@@ -32,10 +29,14 @@ export const bookColumns = [
   {
     accessorKey: "year_published",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Year Published" />
+      <DataTableColumnHeader column={column} title="Year" />
     ),
     cell: ({ row }) => {
-      return <span className="truncate">{row.getValue("year_published")}</span>;
+      return (
+        <span className="w-8 truncate block">
+          {row.getValue("year_published")}
+        </span>
+      );
     },
   },
   {
