@@ -11,16 +11,6 @@ function App() {
   useEffect(() => {
     const logVisit = async () => {
       const userAgent = navigator.userAgent;
-      if (!localStorage.getItem("hasVisited")) {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/log-visit`, {
-          userAgent,
-        });
-        localStorage.setItem("hasVisited", "true");
-      } else {
-        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/log-visit`, {
-          userAgent,
-        });
-      }
       const { data } = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/log-visit`,
         {
