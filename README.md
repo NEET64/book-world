@@ -2,27 +2,31 @@
 
 # Book World
 
-A full-featured book review and management application built with the MERN stack (`MongoDB`, `Express`, `React`, `Node.js`). Users can browse books, leave reviews with star ratings, and manage their favorites. Admins have extended capabilities for adding, editing, and deleting books, as well as managing user data and access. 
+A full-featured book review and management application built with the MERN stack (`MongoDB`, `Express`, `React`, `Node.js`). Users can browse books, leave reviews with star ratings, and manage their favorites. Admins have extended capabilities for adding, editing, and deleting books, as well as managing user data and access.
 
 Live Link: https://book-world-beta.vercel.app/
 
 ## Features
 
 - **User Authentication:**
+
   - Secure user registration and login system.
   - JWT for authorization.
   - Bcrypt for password hashing.
 
 - **Book Listing with Reviews & Ratings:**
+
   - Browse and search for books.
   - Leave comprehensive reviews with star ratings.
   - Read and gain insights from community reviews.
 
 - **User Profile Pages:**
+
   - Personalized profiles to track activity.
   - Manage and curate a list of favorite books.
 
 - **Advanced Feature:**
+
   - Unique nested commenting system using Depth-First Search (DFS) for efficient comment deletion within the review tree structure.
 
 - **User Roles & Permissions:**
@@ -30,10 +34,10 @@ Live Link: https://book-world-beta.vercel.app/
   - Admin capabilities to add, update, and delete book listings.
   - Manage user data and user roles (excluding a master admin).
 
-
 ## Technologies Used
 
 - **Frontend:**
+
   - React.js
   - Recoil for State Management
   - Tailwind CSS
@@ -42,8 +46,8 @@ Live Link: https://book-world-beta.vercel.app/
   - Tanstack Tables
   - Lucide-React for icons
 
-
 - **Backend:**
+
   - Node.js
   - Express.js
   - MongoDB
@@ -53,9 +57,8 @@ Live Link: https://book-world-beta.vercel.app/
   - JWT for token-based authentication
   - Bcrypt for secure password storage
 
-
 - **Other Dependencies:**
-  - Axios   
+  - Axios
   - Zod for schema validation
   - React Router DOM for routing
   - Cloudinary for image uploads (optional)
@@ -66,7 +69,7 @@ Live Link: https://book-world-beta.vercel.app/
 
 - Node.js
 - MongoDB
-  
+
 You can use use Mongo Atlas URL instead of local MongoDB
 
 ### Configure Environment Variables
@@ -114,6 +117,10 @@ node index.js
 
 Now open `localhost:5173` on your browser
 
+## Licence
+
+[MIT LICENSE](LICENSE)
+
 ## Screenshots
 
 ![Tableview](https://github.com/NEET64/book-world/assets/67575976/de404c8a-54a6-405f-b221-e6b62adc7fd9)
@@ -126,4 +133,3 @@ Now open `localhost:5173` on your browser
 ![Add New](https://github.com/NEET64/book-world/assets/67575976/e158ccd6-fbed-45ee-849d-1851b922e93c)
 ![Login](https://github.com/NEET64/book-world/assets/67575976/54af8184-ada3-434f-8b6e-8f7c864217ed)
 ![Signup](https://github.com/NEET64/book-world/assets/67575976/c12a69fe-2e26-4b5f-9407-6b9bf6e1f636)
-
