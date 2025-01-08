@@ -20,11 +20,45 @@ mongoose
   .catch(() => console.log("Error Connecting to Database"));
 
 const path = require("path");
+const wrapAsync = require("./utils/wrapAsync");
+const Visitor = require("./models/visits");
 app.use("/public", express.static(path.join(__dirname, "./public")));
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/books", bookRouter);
 app.use("/users", userRouter);
+app.post(
+  "/log-visit",
+  wrapAsync(async (req, res) => {
+    const { userAgent } = req.body;
+    ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+    let visitor = await Visitor.findOne({ ip });
+
+    if (visitor) {
+      visitor.visitCount += 1;
+      await visitor.save();
+      return res.status(200).json({
+        message: "Visit logged",
+        newVisitor: false,
+        totalVisitors: await Visitor.countDocuments(),
+        totalVisits: visitor.visitCount,
+      });
+    } else {
+      visitor = new Visitor({
+        userAgent,
+        ip,
+      });
+      await visitor.save();
+      return res.status(200).json({
+        message: "New visitor created",
+        newVisitor: true,
+        totalVisitors: await Visitor.countDocuments(),
+        totalVisits: visitor.visitCount,
+      });
+    }
+  })
+);
 
 app.get("/", (req, res) => {
   res.json({

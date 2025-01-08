@@ -36,7 +36,7 @@ const useUserData = () => {
         setLikedReviews(response.data.user.likedReviews || []);
         setLikedComments(response.data.user.likedComments || []);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error?.response?.data))
       .finally(() => setIsUserLoading(false));
   };
 
