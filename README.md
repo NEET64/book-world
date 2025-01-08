@@ -117,7 +117,7 @@ node index.js
 
 Now open `localhost:5173` on your browser
 
-## Licence
+## License
 
 [MIT LICENSE](LICENSE)
 
