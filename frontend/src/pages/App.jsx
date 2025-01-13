@@ -46,6 +46,7 @@ function App() {
       });
     },
     auto_select: true,
+    use_fedcm_for_prompt: true,
     disabled: isLoggedIn,
   });
 
