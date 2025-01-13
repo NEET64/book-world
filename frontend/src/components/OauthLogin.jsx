@@ -33,9 +33,7 @@ export const OauthLogin = () => {
           });
         }}
         useOneTap
-        flow="auth-code"
         auto_select
-        use_fedcm_for_prompt
         shape="pill"
         theme="filled_black"
       />
