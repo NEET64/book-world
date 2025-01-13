@@ -25,6 +25,7 @@ import { useRecoilValue } from "recoil";
 import {
   isUserLoadingAtom,
   likedCommentsAtom,
+  userAvatarSelector,
   userIdAtom,
   userRoleAtom,
 } from "@/atoms/userData";
@@ -38,6 +39,7 @@ const Commentcard = ({
 }) => {
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
+  const userAvatar = useRecoilValue(userAvatarSelector);
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
   const likedComments = useRecoilValue(likedCommentsAtom);
 
@@ -195,7 +197,7 @@ const Commentcard = ({
       <div className="flex items-center h-12 w-full gap-2">
         <img
           className="h-10 w-10 rounded-full shadow-lg"
-          src={`https://api.multiavatar.com/${comment.userId._id}.svg`}
+          src={userAvatar}
           alt="user"
         />
         <div className="flex flex-col items-start">

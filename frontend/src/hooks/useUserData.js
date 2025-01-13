@@ -6,6 +6,7 @@ import {
   isUserLoadingAtom,
   likedCommentsAtom,
   likedReviewsAtom,
+  userAvatarSelector,
   userIdAtom,
   userRoleAtom,
   usersFavouriteBooksAtom,
@@ -18,6 +19,7 @@ const useUserData = () => {
   const setLikedReviews = useSetRecoilState(likedReviewsAtom);
   const setLikedComments = useSetRecoilState(likedCommentsAtom);
   const setIsUserLoading = useSetRecoilState(isUserLoadingAtom);
+  const setUserAvatar = useSetRecoilState(userAvatarSelector);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
 
   const fetchUser = async () => {
@@ -31,6 +33,7 @@ const useUserData = () => {
       .then((response) => {
         setUserRole(response.data.user.role);
         setUserId(response.data.user._id);
+        setUserAvatar(response.data.user.picture || "");
         setIsLoggedIn(true);
         setUsersFavouriteBooks(response.data.user.favoriteBooks || []);
         setLikedReviews(response.data.user.likedReviews || []);
@@ -44,6 +47,7 @@ const useUserData = () => {
     if (!isLoggedIn) {
       setUserRole("");
       setUserId("");
+      setUserAvatar("");
       setUsersFavouriteBooks([]);
       setLikedReviews([]);
       setLikedComments([]);
@@ -51,6 +55,8 @@ const useUserData = () => {
     }
     fetchUser();
   }, [isLoggedIn]);
+
+  return [isLoggedIn, setIsLoggedIn];
 };
 
 export default useUserData;

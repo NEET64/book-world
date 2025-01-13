@@ -24,7 +24,12 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
 import { useRecoilValue } from "recoil";
-import { likedReviewsAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import {
+  likedReviewsAtom,
+  userAvatarSelector,
+  userIdAtom,
+  userRoleAtom,
+} from "@/atoms/userData";
 import { toast } from "sonner";
 
 const ReviewCard = ({
@@ -35,6 +40,7 @@ const ReviewCard = ({
 }) => {
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
+  const userAvatar = useRecoilValue(userAvatarSelector);
   const likedReviews = useRecoilValue(likedReviewsAtom);
 
   // Usefull when Children are added or deleted
@@ -186,7 +192,7 @@ const ReviewCard = ({
       <div className="flex items-center w-full gap-2 pb-2">
         <img
           className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
-          src={`https://api.multiavatar.com/${review.userId._id}.svg`}
+          src={userAvatar}
           alt="user"
         />
         <div className="flex flex-col items-start">

@@ -10,6 +10,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  auth_method: {
+    type: String,
+    enum: ["local", "google"],
+    default: "local",
+  },
+  picture: {
+    type: String,
+    default: "",
+  },
   email: {
     type: String,
     required: true,
@@ -18,7 +27,6 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   role: {
     type: String,

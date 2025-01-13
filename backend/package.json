@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "google-auth-library": "^9.15.0",
     "jose": "^5.3.0",
     "mongoose": "^8.4.0",
     "multer": "^1.4.5-lts.1",

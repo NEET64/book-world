@@ -42,7 +42,7 @@ const UserCard = ({ user, handleReload }) => {
         <div className="flex items-center gap-2 p-2 pb-4 border-b border-slate-200 dark:border-zinc-800">
           <img
             className="w-16 h-16 rounded-full shadow-lg"
-            src={`https://api.multiavatar.com/${user?._id}.svg`}
+            src={user.picture || `https://api.multiavatar.com/${user?._id}.svg`}
             alt="user"
           />
           <div className="flex flex-col text-left">

@@ -21,6 +21,7 @@ import useGetBook from "@/hooks/useGetBook";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   isLoggedInAtom,
+  userAvatarSelector,
   userRoleAtom,
   usersFavouriteBooksAtom,
 } from "@/atoms/userData";
@@ -32,6 +33,7 @@ const ReviewForm = lazy(() => import("@/components/ReviewForm"));
 
 const BookDetails = () => {
   const setPageTitle = useSetRecoilState(pageTitleAtom);
+  const userAvatar = useRecoilValue(userAvatarSelector);
   useEffect(() => setPageTitle("Book Details"), []);
   const [isLiked, setisLiked] = useState(false);
   const { book, id, isDetailLoading } = useGetBook();
@@ -166,7 +168,7 @@ const BookDetails = () => {
               <div className="flex items-center w-full gap-2">
                 <img
                   className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
-                  src={`https://api.multiavatar.com/${myReview.userId._id}.svg`}
+                  src={userAvatar}
                   alt="user"
                 />
                 <div className="flex flex-col items-start">

@@ -1,14 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
-import {
-  BookOpen,
-  Heart,
-  Home,
-  LogIn,
-  LogOut,
-  User2,
-  Users2,
-} from "lucide-react";
+import { BookOpen, Heart, Home, LogIn, LogOut, Users2 } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -16,13 +8,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import {
+  isLoggedInAtom,
+  userAvatarSelector,
+  userIdAtom,
+  userRoleAtom,
+} from "@/atoms/userData";
 import { toast } from "sonner";
+import { googleLogout } from "@react-oauth/google";
 
 const Sidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const role = useRecoilValue(userRoleAtom);
   const userId = useRecoilValue(userIdAtom);
+  const userAvatar = useRecoilValue(userAvatarSelector);
   const navigate = useNavigate();
   return (
     <aside className="fixed inset-y-0 left-0 z-50 hidden w-14 flex-col border-r border-slate-200 sm:flex dark:bg-zinc-950 dark:border-zinc-800">
@@ -35,7 +34,7 @@ const Sidebar = () => {
                   <NavLink to={"users/" + userId} className="pb-0">
                     <img
                       className="w-10 h-10 rounded-full shadow-lg"
-                      src={`https://api.multiavatar.com/${userId}.svg`}
+                      src={userAvatar}
                       alt="user"
                     />
                   </NavLink>
@@ -118,6 +117,7 @@ const Sidebar = () => {
                 <span
                   onClick={() => {
                     localStorage.removeItem("token");
+                    googleLogout();
                     setIsLoggedIn(false);
                     toast.success("Logged Out Successfully");
                   }}

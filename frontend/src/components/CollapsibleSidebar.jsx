@@ -13,13 +13,21 @@ import {
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { isLoggedInAtom, userIdAtom, userRoleAtom } from "@/atoms/userData";
+import {
+  isLoggedInAtom,
+  userAvatarAtom,
+  userIdAtom,
+  userRoleAtom,
+} from "@/atoms/userData";
 import { toast } from "sonner";
+import { googleLogout } from "@react-oauth/google";
 
 const CollapsibleSidebar = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInAtom);
   const role = useRecoilValue(userRoleAtom);
   const userId = useRecoilValue(userIdAtom);
+  const userAvatar = useRecoilValue(userAvatarAtom);
+
   const navigate = useNavigate();
   return (
     <Sheet>
@@ -36,7 +44,7 @@ const CollapsibleSidebar = () => {
           {isLoggedIn ? (
             <img
               className="w-10 h-10 rounded-full shadow-lg"
-              src={`https://api.multiavatar.com/${userId}.svg`}
+              src={userAvatar}
               alt="user"
             />
           ) : (
@@ -98,6 +106,7 @@ const CollapsibleSidebar = () => {
             <Link
               onClick={() => {
                 localStorage.removeItem("token");
+                googleLogout();
                 setIsLoggedIn(false);
                 toast.success("Logged Out Successfully");
               }}

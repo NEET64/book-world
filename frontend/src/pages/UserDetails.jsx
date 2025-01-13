@@ -47,7 +47,7 @@ const UserDetails = () => {
         <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b border-slate-200 dark:border-zinc-800">
           <img
             className="absolute w-32 h-32 -top-20 rounded-full shadow-lg p-3 border-2 bg-slate-50 border-slate-200 dark:bg-zinc-950 dark:border-zinc-800"
-            src={`https://api.multiavatar.com/${user?._id}.svg`}
+            src={user.picture || `https://api.multiavatar.com/${user._id}.svg`}
             alt="user"
           />
           <div className="flex flex-col justify-center">

@@ -11,14 +11,17 @@ const {
   reportUser,
   getUser,
   promoteUser,
+  googleAuth,
 } = require("../controller/users");
-const { authorization } = require("../middleware/auth");
+const { authorization, googleAuthMiddleware } = require("../middleware/auth");
 
 router.get("/", authorization, wrapAsync(getAllUsers));
 
 router.post("/signup", wrapAsync(signup));
 
 router.post("/login", wrapAsync(login));
+
+router.post("/google-auth", googleAuthMiddleware, wrapAsync(googleAuth));
 
 router
   .route("/favourites")

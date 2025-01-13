@@ -29,6 +29,11 @@ export function ThemeProvider({
       root.classList.add(systemTheme);
       return;
     }
+
+    if (theme === "dark") {
+      document.body.style.backgroundColor = "#09090b";
+    } else document.body.style.backgroundColor = "#fff";
+
     root.classList.add(theme);
   }, [theme]);
 

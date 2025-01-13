@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { OauthLogin } from "@/components/OauthLogin";
 import { loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -135,6 +136,7 @@ const LoginForm = () => {
               </CardContent>
             </form>
           </Form>
+          <OauthLogin />
           <div className="w-full text-center">
             <h3 className="text-zinc-400">user: john.doe@example.com</h3>
             <h3 className="text-zinc-400">admin: john.doe2@example.com</h3>

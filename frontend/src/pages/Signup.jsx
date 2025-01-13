@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { OauthLogin } from "@/components/OauthLogin";
 import { userSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -152,6 +153,7 @@ const SignupForm = () => {
             </CardContent>
           </form>
         </Form>
+        <OauthLogin />
       </Card>
     </div>
   );

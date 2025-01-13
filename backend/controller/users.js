@@ -57,6 +57,42 @@ module.exports.login = async (req, res) => {
   });
 };
 
+module.exports.googleAuth = async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (!user) {
+    user = new User({
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      picture: req.body.picture,
+      auth_method: "google",
+    });
+    await user.save();
+  } else {
+    user.auth_method = "google";
+    user.picture = req.body.picture;
+    await user.save();
+  }
+
+  const payload = {
+    id: user._id,
+    role: user.role,
+  };
+
+  const secret = process.env.JWT_SECRET;
+  const secretBytes = new TextEncoder().encode(secret);
+  const signer = new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt();
+  const token = await signer.sign(secretBytes);
+
+  res.status(200).json({
+    token,
+    role: user.role,
+    message: `Welcome ${user.firstName}! to the Book World`,
+  });
+};
+
 module.exports.getAllUsers = async (req, res) => {
   if (req.role !== "admin") {
     throw new ExpressError(401, "not Authorized");
