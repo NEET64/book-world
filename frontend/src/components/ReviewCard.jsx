@@ -31,6 +31,7 @@ import {
   userRoleAtom,
 } from "@/atoms/userData";
 import { toast } from "sonner";
+import multiavatar from "@multiavatar/multiavatar";
 
 const ReviewCard = ({
   review,
@@ -40,8 +41,9 @@ const ReviewCard = ({
 }) => {
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
-  const userAvatar = useRecoilValue(userAvatarSelector);
   const likedReviews = useRecoilValue(likedReviewsAtom);
+  const svgCode = multiavatar(review.userId._id);
+  const svgBase64 = `data:image/svg+xml;base64,${btoa(svgCode)}`;
 
   // Usefull when Children are added or deleted
   const [replyCount, setReplyCount] = useState(0);
@@ -192,7 +194,7 @@ const ReviewCard = ({
       <div className="flex items-center w-full gap-2 pb-2">
         <img
           className="h-10 w-10 sm:h-12 sm:w-12 rounded-full shadow-lg"
-          src={userAvatar}
+          src={review.userId.picture || svgBase64}
           alt="user"
         />
         <div className="flex flex-col items-start">

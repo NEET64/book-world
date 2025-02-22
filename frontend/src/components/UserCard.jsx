@@ -10,9 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { toast } from "sonner";
+import multiavatar from "@multiavatar/multiavatar";
 
 const UserCard = ({ user, handleReload }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const svgCode = multiavatar(user._id);
+  const svgBase64 = `data:image/svg+xml;base64,${btoa(svgCode)}`;
+  if (user.picture) console.log(user);
+
   const handlePromotion = async () => {
     setIsLoading(true);
     let promise = axios.put(
@@ -42,7 +47,7 @@ const UserCard = ({ user, handleReload }) => {
         <div className="flex items-center gap-2 p-2 pb-4 border-b border-slate-200 dark:border-zinc-800">
           <img
             className="w-16 h-16 rounded-full shadow-lg"
-            src={user.picture || `https://api.multiavatar.com/${user?._id}.svg`}
+            src={user.picture || svgBase64}
             alt="user"
           />
           <div className="flex flex-col text-left">

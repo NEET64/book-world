@@ -7,12 +7,15 @@ import { useLocation, useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { pageTitleAtom } from "@/atoms/meta";
 import { toast } from "sonner";
+import multiavatar from "@multiavatar/multiavatar";
 
 const UserDetails = () => {
   const [user, setUser] = useState();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   let { userId } = useParams();
+  const svgCode = multiavatar(userId);
+  const svgBase64 = `data:image/svg+xml;base64,${btoa(svgCode)}`;
   const setPageTitle = useSetRecoilState(pageTitleAtom);
   useEffect(() => setPageTitle("User Profile"), []);
 
@@ -47,7 +50,7 @@ const UserDetails = () => {
         <div className="flex flex-col text-center items-center justify-center gap-4 px-auto py-10 border-b border-slate-200 dark:border-zinc-800">
           <img
             className="absolute w-32 h-32 -top-20 rounded-full shadow-lg p-3 border-2 bg-slate-50 border-slate-200 dark:bg-zinc-950 dark:border-zinc-800"
-            src={user.picture || `https://api.multiavatar.com/${user._id}.svg`}
+            src={user.picture || svgBase64}
             alt="user"
           />
           <div className="flex flex-col justify-center">

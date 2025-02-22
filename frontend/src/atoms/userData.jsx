@@ -1,3 +1,4 @@
+import multiavatar from "@multiavatar/multiavatar";
 import { atom, selector } from "recoil";
 
 export const userRoleAtom = atom({
@@ -11,21 +12,28 @@ export const userIdAtom = atom({
 });
 
 export const userAvatarAtom = atom({
-  key: "userAvatar",
-  default: "",
+  key: "userAvatarAtom",
+  default: selector({
+    key: "userAvatarDefault",
+    get: ({ get }) => {
+      const userId = get(userIdAtom);
+      const svgCode = multiavatar(userId);
+      return `data:image/svg+xml;base64,${btoa(svgCode)}`;
+    },
+  }),
 });
 
 export const userAvatarSelector = selector({
-  key: "userAvatarImage",
+  key: "userAvatarSelector",
   get: ({ get }) => {
-    const userId = get(userIdAtom);
-    const avatar = get(userAvatarAtom);
-    return avatar || `https://api.multiavatar.com/${userId}.svg`;
+    return get(userAvatarAtom);
   },
   set: ({ set, get }, newValue) => {
-    const userId = get(userIdAtom);
-    if (newValue === "") {
-      set(userAvatarAtom, `https://api.multiavatar.com/${userId}.svg`);
+    if (!newValue) {
+      const userId = get(userIdAtom);
+      const svgCode = multiavatar(userId);
+      const defaultAvatar = `data:image/svg+xml;base64,${btoa(svgCode)}`;
+      set(userAvatarAtom, defaultAvatar);
     } else {
       set(userAvatarAtom, newValue);
     }

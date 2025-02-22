@@ -30,6 +30,7 @@ import {
   userRoleAtom,
 } from "@/atoms/userData";
 import { toast } from "sonner";
+import multiavatar from "@multiavatar/multiavatar";
 
 const Commentcard = ({
   comment,
@@ -39,7 +40,8 @@ const Commentcard = ({
 }) => {
   const userId = useRecoilValue(userIdAtom);
   const role = useRecoilValue(userRoleAtom);
-  const userAvatar = useRecoilValue(userAvatarSelector);
+  const svgCode = multiavatar(comment.userId._id);
+  const svgBase64 = `data:image/svg+xml;base64,${btoa(svgCode)}`;
   const isUserLoading = useRecoilValue(isUserLoadingAtom);
   const likedComments = useRecoilValue(likedCommentsAtom);
 
@@ -197,7 +199,7 @@ const Commentcard = ({
       <div className="flex items-center h-12 w-full gap-2">
         <img
           className="h-10 w-10 rounded-full shadow-lg"
-          src={userAvatar}
+          src={comment.userId.picture || svgBase64}
           alt="user"
         />
         <div className="flex flex-col items-start">
